@@ -56,7 +56,7 @@
                                     <div class="dropdown-divider"></div>
 
                                     <a class="dropdown-item" href="{{ route('home') }}">
-                                    <i class="fas fa-user-tie"></i> &nbsp;
+                                    <i class="fas fa-school"></i> &nbsp;
                                         {{ __('Escola') }}
                                     </a>
 
