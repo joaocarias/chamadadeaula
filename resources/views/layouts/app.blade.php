@@ -9,12 +9,16 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+     <!-- Select2 -->
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('lib/select2-bootstrap4/select2-bootstrap4.css') }}" rel="stylesheet" />
+
+    <!-- Fontawesome -->
+     <link href="{{ asset('lib/fontawesome//css/all.css') }}" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -33,7 +37,53 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                    @Auth
+                        <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ __('Cadastro') }} <span class="caret"></span>
+                                </a>
 
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <i class="fas fa-user-plus"></i> &nbsp;
+                                        {{ __('Alunos') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <i class="fas fa-barcode"></i> &nbsp;
+                                        {{ __('Professores') }}
+                                    </a>
+                                    
+                                    <div class="dropdown-divider"></div>
+
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <i class="fas fa-user-tie"></i> &nbsp;
+                                        {{ __('Escola') }}
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <i class="fas fa-tools"></i> &nbsp;
+                                        {{ __('Turmas') }}
+                                    </a>             
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ __('Sala de Aula') }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <i class="fas fa-cash-register"></i> &nbsp;
+                                        {{ __('Chamada') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <i class="fas fa-wallet"></i> &nbsp;
+                                        {{ __('Planejamento Semanal') }}
+                                    </a>
+                                </div>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -75,6 +125,16 @@
         <main class="py-4">
             @yield('content')
         </main>
+
     </div>
+
+     <!-- Scripts -->
+     <script src="{{ asset('js/app.js') }}"></script>  
+    <script src="{{ asset('lib/jquery-mask/jquery.mask.js') }}"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>        
+           
+    @hasSection('javascript')
+        @yield('javascript')
+    @endif
 </body>
 </html>
