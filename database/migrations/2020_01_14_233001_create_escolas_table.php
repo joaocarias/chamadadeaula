@@ -17,12 +17,19 @@ class CreateEscolasTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->bigIncrements('id');
-            $table->string('tabela');
-            $table->unsignedBigInteger('tabela_id');
-            $table->string('acao', 30);
-            $table->string('descricao');
-            $table->bigInteger('usuario_id');
-            
+            $table->string('prefeitura', 255);
+            $table->string('secretaria', 255);
+            $table->string('escola', 255);
+                             
+            $table->unsignedBigInteger('endereco_id');
+            $table->foreign('endereco_id')->references('id')->on('enderecos'); 
+
+            $table->string('email', 255)->nullable();
+            $table->string('telefone', 30)->nullable();
+
+            $table->unsignedBigInteger('usuario_cadastro');
+            $table->foreign('usuario_cadastro')->references('id')->on('users');
+
             $table->softDeletes();
             $table->timestamps();
         });
