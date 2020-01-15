@@ -2,47 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Endereco;
+use App\Escola;
 use Illuminate\Http\Request;
 
 class EscolaController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+{    
     public function index()
     {
-        //
+        $escola = Escola::First();
+        if(isset($escola)){
+            $endereco = Endereco::Find($escola->endereco_id);
+            return view('escola.index', ['escola' => $escola, 'endereco' => $endereco]);
+        }
+        return view('escola.index', ['escola' => $escola]); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
