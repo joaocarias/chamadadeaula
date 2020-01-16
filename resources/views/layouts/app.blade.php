@@ -44,8 +44,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                    <i class="fas fa-user-plus"></i> &nbsp;
+                                    <a class="dropdown-item" href="{{ route('alunos') }}">
+                                    <i class="fas fa-user-graduate"></i> &nbsp;
                                         {{ __('Alunos') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('home') }}">

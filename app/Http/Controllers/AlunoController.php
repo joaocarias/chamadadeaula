@@ -10,23 +10,17 @@ class AlunoController extends Controller
     public function index()
     {
         $alunos = Aluno::All();
-        var_dump($alunos);
+        return view('aluno.index', ['alunos' => $alunos]); 
     }
 
     public function create()
     {
-        //
+        return view('aluno.create', ['aluno' => null]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
-        //
+    
     }
 
     /**
