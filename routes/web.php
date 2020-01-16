@@ -12,4 +12,5 @@ Route::group(['middleware' => 'auth'], function () {
     /* Escola */
     Route::get('/escolas', 'EscolaController@index')->name('escolas');
     Route::get('/escolas/editar/{id}', 'EscolaController@edit')->name('editar_escola');
+    Route::put('/escolas/update/{id}', 'EscolaController@update')->name('update_escola');
 });
