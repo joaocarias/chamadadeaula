@@ -17,8 +17,10 @@ Route::group(['middleware' => 'auth'], function () {
     /* Aluno */
     Route::get('/alunos', 'AlunoController@index')->name('alunos');
     Route::get('/alunos/exibir/{id}', 'AlunoController@show')->name('exibir_aluno');
-    Route::get('/alunos/novo', 'AlunoController@create')->name('novo_aluno');
+    Route::get('/alunos/novo', 'AlunoController@create')->name('novo_aluno');    
     Route::post('/alunos/store', 'AlunoController@store')->name('cadastrar_aluno');
     Route::get('/alunos/excluir/{id}', 'AlunoController@destroy')->name('excluir_aluno');
- 
+    Route::get('/alunos/editar/{id}', 'AlunoController@edit')->name('editar_aluno');
+    Route::put('/alunos/update/{id}', 'AlunoController@update')->name('update_aluno');
+
 });

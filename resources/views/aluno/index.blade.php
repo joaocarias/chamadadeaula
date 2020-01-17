@@ -59,7 +59,7 @@
                         <tbody>
                             @foreach ($alunos as $item)
                             <tr>                                                              
-                                <td>{{ __($item->nome_social) }}</td>                                
+                                <td>{{ __($item->nome) }}</td>                                
                                 <td class="text-right">
                                     <a href="{{ route('exibir_aluno', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>
