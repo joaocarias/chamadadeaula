@@ -23,4 +23,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/alunos/editar/{id}', 'AlunoController@edit')->name('editar_aluno');
     Route::put('/alunos/update/{id}', 'AlunoController@update')->name('update_aluno');
 
+    /* Professores */
+    Route::get('/professores', 'ProfessorController@index')->name('professores');
+    Route::get('/professores/novo', 'ProfessorController@create')->name('novo_professor');    
+    Route::post('/professores/store', 'ProfessorController@store')->name('cadastrar_professor');
+    Route::get('/professores/exibir/{id}', 'ProfessorController@show')->name('exibir_professor');
+    Route::get('/professores/editar/{id}', 'ProfessorController@edit')->name('editar_professor');
+    Route::put('/professores/update/{id}', 'ProfessorController@update')->name('update_professor');
+    Route::get('/professores/excluir/{id}', 'ProfessorController@destroy')->name('excluir_professor');
 });

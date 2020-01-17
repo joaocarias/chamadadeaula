@@ -48,8 +48,8 @@
                                     <i class="fas fa-user-graduate"></i> &nbsp;
                                         {{ __('Alunos') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                    <i class="fas fa-barcode"></i> &nbsp;
+                                    <a class="dropdown-item" href="{{ route('professores') }}">
+                                    <i class="fas fa-chalkboard-teacher"></i> &nbsp;
                                         {{ __('Professores') }}
                                     </a>
                                     
