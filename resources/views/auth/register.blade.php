@@ -26,6 +26,20 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('UserName') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="username" type="text" class="mask_cpf form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+
+                                @error('username')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
@@ -74,4 +88,12 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+    $(document).ready(function($){
+        $('.mask_cpf').mask('000.000.000-00', {reverse: true});
+    });   
+</script>
 @endsection

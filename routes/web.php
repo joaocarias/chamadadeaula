@@ -1,12 +1,13 @@
 <?php
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', 'HomeController@index')->name('inicio');
     Route::get('/home', 'HomeController@index')->name('home');
 
     /* Escola */
@@ -31,4 +32,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/professores/editar/{id}', 'ProfessorController@edit')->name('editar_professor');
     Route::put('/professores/update/{id}', 'ProfessorController@update')->name('update_professor');
     Route::get('/professores/excluir/{id}', 'ProfessorController@destroy')->name('excluir_professor');
+
+    /* User */
+    Route::get('/usuarios/atualizarsenha', 'Auth\\UserController@atualizarSenha')->name('atualizar_senha');
+    Route::put('/usuarios/updatepassword/{id}', 'Auth\\UserController@updatePassword')->name('update_password');
+    
 });

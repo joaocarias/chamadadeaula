@@ -65,6 +65,8 @@ class ProfessorController extends Controller
             'nome.min' => 'É necessário no mínimo 3 caracteres!',
         ];
        
+        $request->validate($regras, $messagens);
+        
         $obj = Professor::find($id);
         if (isset($obj)) {
             $stringLog = "";
