@@ -52,6 +52,10 @@
                                     <i class="fas fa-chalkboard-teacher"></i> &nbsp;
                                         {{ __('Professores') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('profissionais') }}">
+                                    <i class="fas fa-chalkboard-teacher"></i> &nbsp;
+                                        {{ __('Profissionais') }}
+                                    </a>
                                     
                                     <div class="dropdown-divider"></div>
 

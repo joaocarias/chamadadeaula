@@ -28,8 +28,8 @@
                         <div class="card mb-3">
                             <div class="card-header">{{ __('Cadastro') }}</div>
                             <div class="card-body">
-                                <div class="form-group row">                                    
-                                    <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-9">
                                         <label for="nome" class="col-form-label text-md-right">{{ __('* Nome') }}</label>
                                         <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome', $professor->nome ?? '') }}" autocomplete="nome" required maxlength="255">
 
@@ -39,6 +39,10 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    
+                                   
+
+
                                 </div>
                             </div>
                         </div>

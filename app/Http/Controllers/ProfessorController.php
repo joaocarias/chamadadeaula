@@ -17,7 +17,7 @@ class ProfessorController extends Controller
     
     public function create()
     {
-        return view('professor.create', ['professor' => null]);
+        return view('professor.create', ['professor' => null, 'user' => null]);
     }
     
     public function store(Request $request)
@@ -66,7 +66,7 @@ class ProfessorController extends Controller
         ];
        
         $request->validate($regras, $messagens);
-        
+
         $obj = Professor::find($id);
         if (isset($obj)) {
             $stringLog = "";
