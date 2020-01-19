@@ -81,38 +81,128 @@ class ProfissionalController extends Controller
                                              , 'usuario' => $usuario]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $obj = Profissional::find($id);
+        $tiposProfissionais = TipoProfissional::OrderBy('nome', 'ASC')->get();
+        return view('profissional.edit', ['profissional' => $obj,  'user' => null, 'tiposProfissionais' => $tiposProfissionais]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
-        //
-    }
+        $regras = [
+            'nome' => 'required|min:3|max:254',
+            'cpf' => 'required|min:14|max:20',
+            'tipo_profissional_id' => 'required',
+        ];
+       
+        $messagens = [
+            'required' => 'Campo Obrigatório!',
+            'nome.required' => 'Campo Obrigatório!',
+            'nome.min' => 'É necessário no mínimo 3 caracteres!',
+            'cpf.required' => 'Campo Obrigatório!',
+            'cpf.min' => 'É necessário no mínimo 14 caracteres!',
+            'tipo_profissional_id.required' => 'Campo Obrigatório!',          
+        ];
+       
+        $request->validate($regras, $messagens);
+        $obj = Profissional::find($id);
+        if (isset($obj)) {
+            $stringLog = "";
+            $atualizarNome = false;
+            $atualizarCpf = false;
+                         
+            if($obj->nome != $request->input('nome')){                
+                $stringLog = $stringLog . " - nome: " . $obj->nome;
+                $obj->nome = $request->input('nome');
+                $atualizarNome = true;
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+            if($obj->cpf != $request->input('cpf')){                
+                $stringLog = $stringLog . " - cpf: " . $obj->cpf;
+                $obj->cpf = $request->input('cpf');
+                $atualizarCpf = true;
+            }
+
+            if($obj->tipo_profissional_id != $request->input('tipo_profissional_id')){                
+                $stringLog = $stringLog . " - tipo_profissional_id: " . $obj->tipo_profissional_id;
+                $obj->tipo_profissional_id = $request->input('tipo_profissional_id');
+            }
+            
+            $obj->save();
+            if($stringLog != ""){
+                $log = new LogSistema();
+                $log->tabela = "profissional";
+                $log->tabela_id = $obj->id;
+                $log->acao = "EDICAO";
+                $log->descricao = $stringLog;
+                $log->usuario_id = Auth::user()->id;
+                $log->save();
+            }
+
+            if($atualizarCpf || $atualizarNome){
+                $usuario = User::find($obj->user_id);
+                if(isset($usuario)){
+                    $stringLogUsuario = "";
+                    
+                    if($atualizarNome){
+                        $stringLogUsuario = $stringLogUsuario . " - name: " . $usuario->name;
+                        $usuario->name = $request->input('nome');                        
+                    }
+
+                    if($atualizarCpf){
+                        $stringLogUsuario = $stringLogUsuario . " - username: " . $usuario->username;
+                        $usuario->username = $request->input('cpf');                      
+                    }
+
+                    $usuario->save();
+                    if($stringLogUsuario != ""){
+                        $log = new LogSistema();
+                        $log->tabela = "users";
+                        $log->tabela_id = $usuario->id;
+                        $log->acao = "EDICAO";
+                        $log->descricao = $stringLogUsuario;
+                        $log->usuario_id = Auth::user()->id;
+                        $log->save();
+                    }
+                }                
+            }
+
+            return redirect()->route('profissionais')->withStatus(__('Cadastro Atualizado com Sucesso!'));
+        }
+        return redirect()->route('profissionais')->withStatus(__('Cadastro Não Atualizado!'));
+    }
+  
     public function destroy($id)
     {
-        //
+        $obj = Profissional::find($id);
+      
+        if (isset($obj)) {
+            $obj->delete();
+            $log = new LogSistema();
+            $log->tabela = "profissionals";
+            $log->tabela_id = $id;
+            $log->acao = "EXCLUSAO";
+            $log->descricao = "EXCLUSAO";
+            $log->usuario_id = Auth::user()->id;
+            $log->save();
+            
+            $usuario = User::find($obj->user_id);
+            if(isset($usuario)){
+                $usuario->delete;
+                $log = new LogSistema();
+                $log->tabela = "users";
+                $log->tabela_id = $usuario->id;
+                $log->acao = "EXCLUSAO";
+                $log->descricao = "EXCLUSAO";
+                $log->usuario_id = Auth::user()->id;
+                $log->save();                
+            }
+
+            return redirect()->route('profissionais')->withStatus(__('Cadastro Excluído com Sucesso!'));
+        }
+
+        return redirect()->route('profissionais')->withStatus(__('Cadastro Não Excluído!'));
     }
 
     public function resetPassword($id){

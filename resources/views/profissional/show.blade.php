@@ -160,8 +160,8 @@
 @section('javascript')
 <script type="text/javascript">
     $('.btn-excluir').on('click', function() {
-        var id = $(this).attr('id-professor');
-        $('#url-modal-excluir').attr('href', '/professores/excluir/' + id);
+        var id = $(this).attr('id-profissional');
+        $('#url-modal-excluir').attr('href', '/profissionais/excluir/' + id);
         $('#ModalExcluir').modal('show');
     });
 </script>
