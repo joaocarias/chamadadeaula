@@ -52,8 +52,8 @@
                         </div>
 
                         <div class="col-md-3">
-                            Tipo: <strong>@if(isset($tipo_profissional))
-                                {{ __($tipo_profissional->nome)  }}
+                            Tipo: <strong>@if(isset($profissional->tipo_profissional_id))
+                                {{ __($profissional->tipoProfissional->nome)  }}
                                 @else
                                 {{ __("Não Informado!")  }}
                                 @endif

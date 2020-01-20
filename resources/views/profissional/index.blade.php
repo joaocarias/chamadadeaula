@@ -65,7 +65,7 @@
                                 <td scope="row">{{ __($item->id) }}</td>                                                                   
                                 <td>{{ __($item->nome) }}</td>                                
                                 <td>{{ __($item->cpf) }}</td>
-                                <td>{{ __($item->tipo_profissional_id) }}</td>                                
+                                <td>{{ __($item->tipoProfissional->nome) }}</td>                                
                                 <td class="text-right">
                                     <a href="{{ route('exibir_profissional', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>

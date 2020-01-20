@@ -48,10 +48,10 @@
                                     <i class="fas fa-user-graduate"></i> &nbsp;
                                         {{ __('Alunos') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('professores') }}">
+                                    <!-- <a class="dropdown-item" href="{{ route('professores') }}">
                                     <i class="fas fa-chalkboard-teacher"></i> &nbsp;
                                         {{ __('Professores') }}
-                                    </a>
+                                    </a> -->
                                     <a class="dropdown-item" href="{{ route('profissionais') }}">
                                     <i class="fas fa-chalkboard-teacher"></i> &nbsp;
                                         {{ __('Profissionais') }}

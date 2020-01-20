@@ -69,16 +69,13 @@ class ProfissionalController extends Controller
     public function show($id)
     {
         $obj = Profissional::find($id);
-        $tipo_profissional = null;
         $usuario = null;
         
         if(isset($obj)){
-            $tipo_profissional = TipoProfissional::find($obj->tipo_profissional_id);
-            $usuario = User::find($obj->user_id);
+             $usuario = User::find($obj->user_id);
         }
         
-         return view('profissional.show', ['profissional' => $obj, 'tipo_profissional' => $tipo_profissional
-                                             , 'usuario' => $usuario]);
+         return view('profissional.show', ['profissional' => $obj , 'usuario' => $usuario]);
     }
 
     public function edit($id)
@@ -189,7 +186,8 @@ class ProfissionalController extends Controller
             
             $usuario = User::find($obj->user_id);
             if(isset($usuario)){
-                $usuario->delete;
+                $usuario->delete();
+               // $usuario->save();
                 $log = new LogSistema();
                 $log->tabela = "users";
                 $log->tabela_id = $usuario->id;
