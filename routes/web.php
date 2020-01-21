@@ -48,5 +48,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profissionais/resentarsenha/{id}', 'ProfissionalController@resetPassword')->name('resetar_senha_profissional');    
     Route::get('/profissionais/criarusuario/{id}', 'ProfissionalController@createUser')->name('criar_usuario_profissional');    
     
+    /* Turma */
+    Route::get('/turmas', 'TurmaController@index')->name('turmas');
+    Route::get('/turmas/novo', 'TurmaController@create')->name('nova_turma'); 
+    Route::get('/turmas/exibir/{id}', 'TurmaController@show')->name('exibir_turma');
+    Route::post('/turmas/store', 'TurmaController@store')->name('cadastrar_turma');
+    Route::get('/turmas/editar/{id}', 'TurmaController@edit')->name('editar_turma');
+    Route::put('/turmas/update/{id}', 'TurmaController@update')->name('update_turma');
+    Route::get('/turmas/excluir/{id}', 'TurmaController@destroy')->name('excluir_turma');
     
 });

@@ -64,8 +64,8 @@
                                         {{ __('Escola') }}
                                     </a>
 
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                    <i class="fas fa-tools"></i> &nbsp;
+                                    <a class="dropdown-item" href="{{ route('turmas') }}">
+                                    <i class="fas fa-shapes"></i> &nbsp;
                                         {{ __('Turmas') }}
                                     </a>             
                                 </div>
@@ -78,7 +78,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('home') }}">
-                                    <i class="fas fa-cash-register"></i> &nbsp;
+                                    <i class="fas fa-book-reader"></i> &nbsp;
                                         {{ __('Chamada') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('home') }}">
