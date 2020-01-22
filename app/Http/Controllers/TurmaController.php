@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\LogSistema;
+use App\Profissional;
 use App\Turma;
+use App\TurmaProfessor;
 use App\Turno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +41,8 @@ class TurmaController extends Controller
     public function show($id)
     {
         $turma = turma::find($id);
-        return view('turma.show', ['turma' => $turma]);
+        $professores = Profissional::where('tipo_profissional_id', 1)->orderBy('nome', 'asc')->get();        
+        return view('turma.show', ['turma' => $turma, 'professores' => $professores]);
     }
 
     public function edit($id)
@@ -125,5 +128,27 @@ class TurmaController extends Controller
         ];
        
         $request->validate($regras, $messagens);
+    }
+
+    public function associarprofessor(Request $request){
+        $regras = [
+            'professor_id' => 'required',
+        ];
+
+        $messagens = [
+            'required' => 'Campo Obrigatório!',
+            'professor_id.required' => 'Campo Obrigatório!',          
+        ];
+       
+        $request->validate($regras, $messagens);
+
+        // $obj = new TurmaProfessor();
+        // $obj->turma_id = $request->input('turma_id');
+        // $obj->professor_id = $request->input('professor_id');           
+        // $obj->usuario_cadastro = Auth::user()->id;
+        // $obj->save();
+
+        var_dump("aqui");
+      //  return redirect()->route('show', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Realizado com Sucesso!'));
     }
 }

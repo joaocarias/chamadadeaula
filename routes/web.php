@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/turmas/store', 'TurmaController@store')->name('cadastrar_turma');
     Route::get('/turmas/editar/{id}', 'TurmaController@edit')->name('editar_turma');
     Route::put('/turmas/update/{id}', 'TurmaController@update')->name('update_turma');
-    Route::get('/turmas/excluir/{id}', 'TurmaController@destroy')->name('excluir_turma');
+   
+    Route::post('/turmas/associarprofessor', 'TurmaController@associarprofessor')->name('associarturmaprofessor');
     
 });

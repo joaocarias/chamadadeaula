@@ -78,6 +78,34 @@
         </div>
     </div>
 
+
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">{{ __('Professores') }}</div>
+
+                <div class="card-body">
+                    <div class="row">
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="#" class="btn btn-dark btn-sm btn-inserir-professor"> <i class="far fa-edit"></i> Inserir Professor </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     @endif
 
 </div>
@@ -103,6 +131,38 @@
     </div>
 </div>
 
+<!-- Modal Associar Professor -->
+<div class="modal fade" id="ModalAssociarProfessor" tabindex="-1" role="dialog" aria-labelledby="TituloModalAssociarProfessor" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TituloModalAssociarProfessor"><i class="fas fa-exclamation-circle"></i> Associar Professor!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('associarturmaprofessor') }}" class="form-associa-professor">
+                    @csrf
+
+                    <input type="hidden" name="turma_id_associa_professor" id="turma_id_associa_professor" value="{{ __($turma->id) }}">
+                    <select id="professor_id_associa_professor" type="text" class="form-control @error('professor_id_associa_professor') is-invalid @enderror" name="professor_id_associa_professor" autocomplete="professor_id_associa_professor" required>
+                        <option selected disabled>-- Selecione --</option>
+
+                        @foreach($professores as $professor)
+                        <option value="{{ __($professor->id) }}">{{ __($professor->nome) }}</option>
+                        @endforeach 
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button href="#" class="btn btn-primary url-modal-submit-form"> <i class="far fa-trash-alt"></i> Associar Professor</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"> <i class="fas fa-ban"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('javascript')
@@ -112,5 +172,15 @@
         $('#url-modal-excluir').attr('href', '/turmas/excluir/' + id);
         $('#ModalExcluir').modal('show');
     });
+
+    $('.btn-inserir-professor').on('click', function() {
+        var id = $(this).attr('id-turma');
+        $('#ModalAssociarProfessor').modal('show');
+    });
+
+    $('.url-modal-submit-form').on('click', function() {
+        $('.form-associa-professor').submit();
+    });
+
 </script>
 @endsection
