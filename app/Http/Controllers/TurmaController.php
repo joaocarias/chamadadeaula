@@ -41,8 +41,10 @@ class TurmaController extends Controller
     public function show($id)
     {
         $turma = turma::find($id);
-        $professores = Profissional::where('tipo_profissional_id', 1)->orderBy('nome', 'asc')->get();        
-        return view('turma.show', ['turma' => $turma, 'professores' => $professores]);
+        $professores = Profissional::where('tipo_profissional_id', 1)->orderBy('nome', 'asc')->get();  
+        $turmaProfessor = TurmaProfessor::where('turma_id', $id)->get();
+      
+        return view('turma.show', ['turma' => $turma, 'professores' => $professores, 'turmaProfessor' => $turmaProfessor]);
     }
 
     public function edit($id)
@@ -132,23 +134,40 @@ class TurmaController extends Controller
 
     public function associarprofessor(Request $request){
         $regras = [
-            'professor_id' => 'required',
+            'professor_id_associa_professor' => 'required',
         ];
 
         $messagens = [
             'required' => 'Campo Obrigatório!',
-            'professor_id.required' => 'Campo Obrigatório!',          
+            'professor_id_associa_professor.required' => 'Campo Obrigatório!',          
         ];
        
         $request->validate($regras, $messagens);
 
-        // $obj = new TurmaProfessor();
-        // $obj->turma_id = $request->input('turma_id');
-        // $obj->professor_id = $request->input('professor_id');           
-        // $obj->usuario_cadastro = Auth::user()->id;
-        // $obj->save();
+        $obj = new TurmaProfessor();
+        $obj->turma_id = $request->input('turma_id_associa_professor');
+        $obj->professor_id = $request->input('professor_id_associa_professor');           
+        $obj->usuario_cadastro = Auth::user()->id;
+        $obj->save();
 
-        var_dump("aqui");
-      //  return redirect()->route('show', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Realizado com Sucesso!'));
+        return redirect()->route('exibir_turma', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Realizado com Sucesso!'));
+    }
+
+    public function removerprofessor($id){
+        $obj = TurmaProfessor::find($id);
+        
+        if (isset($obj)) {
+            $obj->delete();
+            $log = new LogSistema();
+            $log->tabela = "turmaProfessors";
+            $log->tabela_id = $id;
+            $log->acao = "EXCLUSAO";
+            $log->descricao = "EXCLUSAO";
+            $log->usuario_id = Auth::user()->id;
+            $log->save();
+            
+            return redirect()->route('exibir_turma', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Excluído com Sucesso!'));
+        }
+        return redirect()->route('exibir_turma', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Não Excluído!'));
     }
 }

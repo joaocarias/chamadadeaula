@@ -86,7 +86,32 @@
 
                 <div class="card-body">
                     <div class="row">
-
+                        @if(count($turmaProfessor) > 0)
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Professor</th>
+                                    <th scope="col"></th>
+                                <tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($turmaProfessor as $item)
+                                <tr>
+                                    <td scope="row">{{ __($item->professor_id) }}</td>
+                                    <td>{{ __($item->professor->nome) }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ route('removerturmaprofessor', [$item->id]) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> &nbsp; Remover</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                        <div class="col-md-12">
+                            <p>Nenhum Professor Cadastrado para a Turma!</p>
+                        </div>
+                        @endif
                     </div>
 
                     <div class="row">
@@ -151,7 +176,7 @@
 
                         @foreach($professores as $professor)
                         <option value="{{ __($professor->id) }}">{{ __($professor->nome) }}</option>
-                        @endforeach 
+                        @endforeach
                     </select>
                 </form>
             </div>
@@ -181,6 +206,5 @@
     $('.url-modal-submit-form').on('click', function() {
         $('.form-associa-professor').submit();
     });
-
 </script>
 @endsection

@@ -12,11 +12,11 @@ class TurmaProfessor extends Model
 
     public function turma()
     {
-        return $this->belongsToMany('App\Turma', 'id', 'turma_id');
+        return $this->belongsToMany('App\Turma', 'turma_id', 'id');
     }
 
     public function professor()
     {
-        return $this->belongsToMany('App\Profissional', 'id', 'professor_id');
+        return $this->belongsTo('App\Profissional', 'professor_id', 'id');
     }
 }
