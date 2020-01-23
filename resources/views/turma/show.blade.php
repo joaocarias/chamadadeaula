@@ -131,6 +131,58 @@
     </div>
 
 
+    
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">{{ __('Alunos') }}</div>
+
+                <div class="card-body">
+                    <div class="row">
+                        @if(count($turmaAluno) > 0)
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Aluno</th>
+                                    <th scope="col"></th>
+                                <tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($turmaAluno as $item)
+                                <tr>
+                                    <td scope="row">{{ __($item->aluno_id) }}</td>
+                                    <td>{{ __($item->aluno->nome) }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ route('removerturmaaluno', [$item->id]) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> &nbsp; Remover</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                        <div class="col-md-12">
+                            <p>Nenhum Aluno Cadastrado na Turma!</p>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="#" class="btn btn-dark btn-sm btn-inserir-aluno"> <i class="far fa-edit"></i> Inserir Aluno </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @endif
 
 </div>
@@ -188,10 +240,46 @@
     </div>
 </div>
 
+<!-- Modal Associar Aluno -->
+<div class="modal fade" id="ModalAssociarAluno" tabindex="-1" role="dialog" aria-labelledby="TituloModalAssociarAluno" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TituloModalAssociarAluno"><i class="fas fa-exclamation-circle"></i> Associar Aluno!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('associarturmaaluno') }}" class="form-associa-aluno">
+                    @csrf
+
+                    <input type="hidden" name="turma_id_associa_aluno" id="turma_id_associa_aluno" value="{{ __($turma->id) }}">
+                    <select id="aluno_id_associa_aluno" type="text" class="select2 form-control @error('aluno_id_associa_aluno') is-invalid @enderror" name="aluno_id_associa_aluno" autocomplete="aluno_id_associa_aluno" required>
+                        <option selected disabled>-- Selecione --</option>
+
+                        @foreach($alunos as $aluno)
+                        <option value="{{ __($aluno->id) }}">{{ __($aluno->nome) }}</option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button href="#" class="btn btn-primary url-modal-submit-form-aluno"> <i class="far fa-trash-alt"></i> Associar Aluno</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"> <i class="fas fa-ban"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('javascript')
 <script type="text/javascript">
+    $('#aluno_id_associa_aluno').select2({
+        dropdownParent: $('#ModalAssociarAluno')
+    });
+
     $('.btn-excluir').on('click', function() {
         var id = $(this).attr('id-turma');
         $('#url-modal-excluir').attr('href', '/turmas/excluir/' + id);
@@ -205,6 +293,15 @@
 
     $('.url-modal-submit-form').on('click', function() {
         $('.form-associa-professor').submit();
+    });
+
+    $('.btn-inserir-aluno').on('click', function() {
+        var id = $(this).attr('id-turma');
+        $('#ModalAssociarAluno').modal('show');
+    });
+
+    $('.url-modal-submit-form-aluno').on('click', function() {
+        $('.form-associa-aluno').submit();
     });
 </script>
 @endsection

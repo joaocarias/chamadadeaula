@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Aluno;
 use App\LogSistema;
 use App\Profissional;
 use App\Turma;
+use App\TurmaAluno;
 use App\TurmaProfessor;
 use App\Turno;
 use Illuminate\Http\Request;
@@ -42,9 +44,13 @@ class TurmaController extends Controller
     {
         $turma = turma::find($id);
         $professores = Profissional::where('tipo_profissional_id', 1)->orderBy('nome', 'asc')->get();  
+        $alunos = Aluno::orderBy('nome', 'asc')->get();
+
         $turmaProfessor = TurmaProfessor::where('turma_id', $id)->get();
-      
-        return view('turma.show', ['turma' => $turma, 'professores' => $professores, 'turmaProfessor' => $turmaProfessor]);
+        $turmaAluno = TurmaAluno::where('turma_id', $id)->get();
+
+        return view('turma.show', ['turma' => $turma, 'professores' => $professores
+                    , 'turmaProfessor' => $turmaProfessor, 'alunos' => $alunos, 'turmaAluno' => $turmaAluno]);
     }
 
     public function edit($id)
@@ -159,7 +165,46 @@ class TurmaController extends Controller
         if (isset($obj)) {
             $obj->delete();
             $log = new LogSistema();
-            $log->tabela = "turmaProfessors";
+            $log->tabela = "turma_professors";
+            $log->tabela_id = $id;
+            $log->acao = "EXCLUSAO";
+            $log->descricao = "EXCLUSAO";
+            $log->usuario_id = Auth::user()->id;
+            $log->save();
+            
+            return redirect()->route('exibir_turma', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Excluído com Sucesso!'));
+        }
+        return redirect()->route('exibir_turma', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Não Excluído!'));
+    }
+
+    public function associaraluno(Request $request){
+        $regras = [
+            'aluno_id_associa_aluno' => 'required',
+        ];
+
+        $messagens = [
+            'required' => 'Campo Obrigatório!',
+            'aluno_id_associa_aluno.required' => 'Campo Obrigatório!',          
+        ];
+       
+        $request->validate($regras, $messagens);
+
+        $obj = new TurmaAluno();
+        $obj->turma_id = $request->input('turma_id_associa_aluno');
+        $obj->aluno_id = $request->input('aluno_id_associa_aluno');           
+        $obj->usuario_cadastro = Auth::user()->id;
+        $obj->save();
+
+        return redirect()->route('exibir_turma', ['id' =>  $obj->turma_id ])->withStatus(__('Cadastro Realizado com Sucesso!'));
+    }
+
+    public function removeraluno($id){
+        $obj = TurmaAluno::find($id);
+        
+        if (isset($obj)) {
+            $obj->delete();
+            $log = new LogSistema();
+            $log->tabela = "turma_alunos";
             $log->tabela_id = $id;
             $log->acao = "EXCLUSAO";
             $log->descricao = "EXCLUSAO";
