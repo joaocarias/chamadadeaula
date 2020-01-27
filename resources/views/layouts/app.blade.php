@@ -22,6 +22,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/site.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -77,7 +78,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <a class="dropdown-item" href="{{ route('chamadas') }}">
                                     <i class="fas fa-book-reader"></i> &nbsp;
                                         {{ __('Chamada') }}
                                     </a>
