@@ -37,6 +37,15 @@ class ChamadaTurmaAlunoController extends Controller
         return view('chamada_turma_aluno.registro', ['turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos]);
     }
     
+    public function presenca(Request $request){
+        $situacao = $request->input("situacao");
+        $data = $request->input("data");
+        $id_turma = $request->input("id_turma");
+        $id_aluno = $request->input("id_aluno");
+        $array = [$situacao, $data, $id_turma, $id_aluno];
+        return json_encode($array);
+    }
+
     public function create()
     {
         

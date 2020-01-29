@@ -42,20 +42,20 @@
                 <div class="card-body">
                     <table class="table table-hover">
                         <thead>
-                            <tr>        
-                                <th scope="col">#</th>                                                
-                                <th scope="col">Nome</th>                               
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nome</th>
                                 <th scope="col"></th>
                             <tr>
                         </thead>
                         <tbody>
                             @foreach ($turmaAlunos as $item)
-                            <tr>                                                              
+                            <tr>
                                 <td>{{ __($item->aluno_id) }}</td>
-                                <td>{{ __($item->aluno->nome) }}</td>                                
+                                <td>{{ __($item->aluno->nome) }}</td>
                                 <td class="text-right">
-                                    <a href="#" class="btn btn-sm btn-circle btn-outline-success btn-chamada btn-p btn-p-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="P" data="2020-01-27" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="far fa-folder-open"></i></a>
-                                    <a href="#" class="btn btn-sm btn-circle btn-outline-danger btn-chamada btn-f btn-f-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="F" data="2020-01-27" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="far fa-folder-open"></i></a>
+                                    <a href="#" class="btn btn-sm btn-outline-success btn-chamada btn-p btn-p-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="P" data="2020-01-27" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="fas fa-check-square"></i></a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger btn-chamada btn-f btn-f-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="F" data="2020-01-27" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="fas fa-exclamation-circle"></i></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -73,20 +73,42 @@
 @section('javascript')
 <script type="text/javascript">
     $(document).ready(function($) {
-        $('.btn-chamada').on('click', function(){
-            var id_btn = $(this).attr('id-btn');
+        $('.btn-chamada').on('click', function() {
             event.preventDefault();
-            if($(this).hasClass("btn-p")){
-                $(this).removeClass( "btn-outline-success" ).addClass("btn-success");  
-                $('.btn-f-'+id_btn).removeClass("btn-danger").addClass("btn-outline-danger");      
+
+            var id_btn = $(this).attr('id-btn');
+            var situacao = $(this).attr('situacao');
+            var data = $(this).attr('data');
+            var id_turma = $(this).attr('id-turma');
+            var id_aluno = $(this).attr('id-aluno');
+
+            if ($(this).hasClass("btn-p")) {
+                $(this).removeClass("btn-outline-success").addClass("btn-success");
+                $('.btn-f-' + id_btn).removeClass("btn-danger").addClass("btn-outline-danger");
             }
-            
-            if($(this).hasClass("btn-f")){
-                $(this).removeClass( "btn-outline-danger" ).addClass("btn-danger");        
-                $('.btn-p-'+id_btn).removeClass("btn-success").addClass("btn-outline-success");
+
+            if ($(this).hasClass("btn-f")) {
+                $(this).removeClass("btn-outline-danger").addClass("btn-danger");
+                $('.btn-p-' + id_btn).removeClass("btn-success").addClass("btn-outline-success");
             }
-            
+
+            registrarChamada(situacao, data, id_turma, id_aluno);
         });
+
+        function registrarChamada(situacao, data, id_turma, id_aluno) {
+            $.get("{{ route('presenca') }}", {
+                situacao: situacao, 
+                data: data, 
+                id_turma: id_turma,
+                id_aluno: id_aluno
+            })
+            .done(function(data){
+                console.log(data);
+            })
+            .fail(function(data){
+                console.log("erro");
+            });
+        }
     });
 </script>
 @endsection
