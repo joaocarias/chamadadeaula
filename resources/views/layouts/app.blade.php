@@ -18,7 +18,10 @@
     <link href="{{ asset('lib/select2-bootstrap4/select2-bootstrap4.css') }}" rel="stylesheet" />
 
     <!-- Fontawesome -->
-     <link href="{{ asset('lib/fontawesome//css/all.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/fontawesome/css/all.css') }}" rel="stylesheet">
+
+    <!-- DatePicker -->
+    <link href="{{ asset('lib/datepicker/css/bootstrap-datepicker.css') }}" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -139,10 +142,12 @@
 
     </div>
 
-     <!-- Scripts -->
-     <script src="{{ asset('js/app.js') }}"></script>  
-    <script src="{{ asset('lib/jquery-mask/jquery.mask.js') }}"></script>    
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>  
+    <script src="{{ asset('lib/jquery-mask/jquery.mask.js') }}"></script> 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>        
+    <script src="{{ asset('lib/datepicker/js/bootstrap-datepicker.js') }}"></script>    
+    <script src="{{ asset('lib/datepicker/locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>    
            
     @hasSection('javascript')
         @yield('javascript')

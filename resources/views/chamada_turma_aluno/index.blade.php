@@ -4,13 +4,13 @@
 <div class="container">
     <div class="row text-center">
         <div class="col-md-12">
-            <h1>Turmas</h1>
+            <h1>Chamada</h1>
         </div>
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">                    
                     <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i> &nbsp; Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Turmas</li>
+                    <li class="breadcrumb-item active" aria-current="page">Chamada</li>
                 </ol>
             </nav>
         </div>

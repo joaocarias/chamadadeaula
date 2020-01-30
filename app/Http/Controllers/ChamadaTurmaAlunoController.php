@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class ChamadaTurmaAlunoController extends Controller
 {
     public function index()
-    {
+    {       
         $profissional = Profissional::where('user_id', Auth::user()->id)->first();
         $turmas = null;
         if(isset($profissional)){
@@ -25,16 +25,21 @@ class ChamadaTurmaAlunoController extends Controller
         //     return view('chamada_turma_aluno.show', ['turma', $turmas]);
         // }
 
-        // echo "<pre>";
-        // var_dump($turmas);
-        // echo "</pre>";
+        
         return view('chamada_turma_aluno.index', ['turmas' => $turmas]);
     }
 
-    public function registro($id){
+    public function registro(Request $request, $id){
+        $data = $request->input('data');
+        if(!isset($data)){
+            $data = date("d/m/Y");
+        }         
         $turmaProfessor = TurmaProfessor::find($id);
         $turmaAlunos = TurmaAluno::where('turma_id', $turmaProfessor->turma_id)->get();
-        return view('chamada_turma_aluno.registro', ['turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos]);
+              
+        return view('chamada_turma_aluno.registro', 
+            ['turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos
+            , 'data' => $data]);
     }
     
     public function presenca(Request $request){
