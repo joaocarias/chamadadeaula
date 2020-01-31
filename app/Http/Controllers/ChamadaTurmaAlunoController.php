@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ChamadaTurmaAluno;
+use App\Lib\Auxiliar;
 use App\Profissional;
 use App\Turma;
 use App\TurmaAluno;
@@ -18,14 +20,7 @@ class ChamadaTurmaAlunoController extends Controller
         if(isset($profissional)){
             $turmas = TurmaProfessor::where('professor_id', $profissional->id)->get();
         }
-       // $turmas = TurmaProfessor::where('professor_id', $profissional->id)->get();
-        // if(isset($turmas) && $turmas->count() == 0){
-        //     return view('chamada_turma_aluno.index', ['turmas', $turmas]);
-        // }else if(isset($turmas) && $turmas->count() == 1 ){
-        //     return view('chamada_turma_aluno.show', ['turma', $turmas]);
-        // }
 
-        
         return view('chamada_turma_aluno.index', ['turmas' => $turmas]);
     }
 
@@ -36,29 +31,37 @@ class ChamadaTurmaAlunoController extends Controller
         }         
         $turmaProfessor = TurmaProfessor::find($id);
         $turmaAlunos = TurmaAluno::where('turma_id', $turmaProfessor->turma_id)->get();
-              
+        $chamadaTurmaAluno = ChamadaTurmaAluno::where('turma_id', $turmaProfessor->turma_id)
+                            ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))   
+                            ->get();   
+
         return view('chamada_turma_aluno.registro', 
             ['turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos
-            , 'data' => $data]);
+            , 'data' => $data, 'chamadaTurmaAluno' => $chamadaTurmaAluno ]);
     }
     
-    public function presenca(Request $request){
-        $situacao = $request->input("situacao");
-        $data = $request->input("data");
-        $id_turma = $request->input("id_turma");
-        $id_aluno = $request->input("id_aluno");
-        $array = [$situacao, $data, $id_turma, $id_aluno];
-        return json_encode($array);
-    }
-
-    public function create()
-    {
-        
-    }
-
     public function store(Request $request)
     {
+        $situacao = $request->input("situacao");
+        $data_da_aula = Auxiliar::converterDataParaUSA($request->input("data"));
+        $turma_id = $request->input("id_turma");
+        $aluno_id = $request->input("id_aluno");
+        $usuario_cadastro = $request->input("id_usuario");
+
+        ChamadaTurmaAluno::where("data_da_aula", $data_da_aula)
+                            ->where("turma_id", $turma_id)
+                            ->where("aluno_id", $aluno_id)
+                            ->delete();
+
+        $obj = new ChamadaTurmaAluno();
+        $obj->situacao = $situacao;
+        $obj->data_da_aula = $data_da_aula;
+        $obj->turma_id = $turma_id;
+        $obj->aluno_id = $aluno_id;
+        $obj->usuario_cadastro = $usuario_cadastro;
+        $obj->save();
         
+        return json_encode($obj);
     }
 
     public function show($id)

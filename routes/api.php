@@ -18,5 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'api'], function () {
-    Route::get('/presenca', "ChamadaTurmaAlunoController@presenca")->name('presenca');
+    Route::get('/presenca', "ChamadaTurmaAlunoController@store")->name('presenca');
 });

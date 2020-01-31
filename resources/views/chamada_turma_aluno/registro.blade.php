@@ -40,8 +40,8 @@
             <div class="card mb-3">
                 <div class="card-header">{{ __('Chamada de Aula') }}</div>
                 <div class="card-body">
-                    <div class="row">
-                    <form class="form-inline" method="GET" action="{{ route('registro_chamada', ['id' => $turmaProfessor->id]) }}">
+                    <div class="row justify-content-center">
+                        <form class="form-inline" method="GET" action="{{ route('registro_chamada', ['id' => $turmaProfessor->id]) }}">
                    
                             <div class="form-group mx-sm-3 mb-2">
                                 <div class="input-group mb-2">
@@ -74,8 +74,26 @@
                                     <td>{{ __($item->aluno_id) }}</td>
                                     <td>{{ __($item->aluno->nome) }}</td>
                                     <td class="text-right">
-                                        <a href="#" class="btn btn-sm btn-outline-success btn-chamada btn-p btn-p-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="P" data="2020-01-27" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="fas fa-check-square"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger btn-chamada btn-f btn-f-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="F" data="2020-01-27" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="fas fa-exclamation-circle"></i></a>
+                                        <?php
+                                            $_botaoPresenca = "btn-outline-success";
+                                            $_botaoFalta = "btn-outline-danger";
+                                            // $presente = $chamadaTurmaAluno->where('aluno_id', $item->aluno_id)
+                                            //                                 ->where('situacao', 'P')
+                                            //                                 ->get();
+                                            // if(count($presente) > 0){
+                                            //     $_botaoPresenca = "btn-success";
+                                            // }
+                                            
+                                            // $falta = $chamadaTurmaAluno->where('aluno_id', $item->aluno_id)
+                                            //                                 ->where('situacao', 'F')
+                                            //                                 ->get();
+                                            // if(count($falta) > 0){
+                                            //     $_botaoFalta = "btn-danger";;
+                                            // }
+
+                                        ?>
+                                        <a href="#" class="btn btn-sm {{ __($_botaoPresenca) }} btn-chamada btn-p btn-p-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="P" data="{{ $data }}" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="fas fa-check-square"></i></a>
+                                        <a href="#" class="btn btn-sm {{ __($_botaoFalta) }} btn-chamada btn-f btn-f-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="F" data="{{ $data }}" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="fas fa-exclamation-circle"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -97,6 +115,8 @@
                 format: 'dd/mm/yyyy', 
                 language: 'pt-BR',   
                 endDate: '{{__(date("d/m/Y"))}}',
+                todayBtn: 'linked',
+                todayHighlight: true,
             });
 
 
@@ -127,13 +147,14 @@
                         situacao: situacao,
                         data: data,
                         id_turma: id_turma,
-                        id_aluno: id_aluno
+                        id_aluno: id_aluno,
+                        id_usuario: "{{ Auth::user()->id }}"
                     })
                     .done(function(data) {
                         console.log(data);
                     })
                     .fail(function(data) {
-                        console.log("erro");
+                        console.log(data);
                     });
             }
         });
