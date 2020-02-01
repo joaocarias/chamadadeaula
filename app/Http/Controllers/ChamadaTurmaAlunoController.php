@@ -41,27 +41,22 @@ class ChamadaTurmaAlunoController extends Controller
     }
     
     public function store(Request $request)
-    {
-        $situacao = $request->input("situacao");
+    {       
         $data_da_aula = Auxiliar::converterDataParaUSA($request->input("data"));
         $turma_id = $request->input("id_turma");
-        $aluno_id = $request->input("id_aluno");
+        $presentes = $request->input("presentes");
+        $faltosos = $request->input("faltosos");
         $usuario_cadastro = $request->input("id_usuario");
 
-        ChamadaTurmaAluno::where("data_da_aula", $data_da_aula)
-                            ->where("turma_id", $turma_id)
-                            ->where("aluno_id", $aluno_id)
-                            ->delete();
+        foreach($presentes as $aluno_id){
+            $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, "p", $usuario_cadastro);
+        }
 
-        $obj = new ChamadaTurmaAluno();
-        $obj->situacao = $situacao;
-        $obj->data_da_aula = $data_da_aula;
-        $obj->turma_id = $turma_id;
-        $obj->aluno_id = $aluno_id;
-        $obj->usuario_cadastro = $usuario_cadastro;
-        $obj->save();
+        foreach($faltosos as $aluno_id){
+            $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, 'F', $usuario_cadastro);
+        }
         
-        return json_encode($obj);
+        return http_response_code(200);
     }
 
     public function show($id)
@@ -82,5 +77,20 @@ class ChamadaTurmaAlunoController extends Controller
     public function destroy($id)
     {
         
+    }
+
+    private function registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, $situacao, $usuario_cadastro ){
+        ChamadaTurmaAluno::where("data_da_aula", $data_da_aula)
+                                ->where("turma_id", $turma_id)
+                                ->where("aluno_id", $aluno_id)
+                                ->delete();
+            
+            $obj = new ChamadaTurmaAluno();
+            $obj->situacao = $situacao;
+            $obj->data_da_aula = $data_da_aula;
+            $obj->turma_id = $turma_id;
+            $obj->aluno_id = $aluno_id;
+            $obj->usuario_cadastro = $usuario_cadastro;
+            $obj->save();
     }
 }
