@@ -66,5 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
   //  Route::get('/chamadas/presente/{id}', 'ChamadaTurmaAlunoController@presente')->name('presente');
   //   Route::get('/chamadas/falta/{id}', 'ChamadaTurmaAlunoController@falta')->name('falta'); 
 
+  /* Planejamento Semanal */
+  Route::get('/planejamentossemanais', 'PlanejamentoSemanalController@index')->name('planejamentossemanais');
+
   
 });

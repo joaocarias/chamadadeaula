@@ -85,8 +85,8 @@
                                     <i class="fas fa-book-reader"></i> &nbsp;
                                         {{ __('Chamada') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                    <i class="fas fa-wallet"></i> &nbsp;
+                                    <a class="dropdown-item" href="{{ route('planejamentossemanais') }}">
+                                    <i class="far fa-calendar-alt"></i> &nbsp;
                                         {{ __('Planejamento Semanal') }}
                                     </a>
                                 </div>
