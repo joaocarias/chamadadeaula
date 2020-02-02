@@ -34,7 +34,7 @@ class ChamadaTurmaAlunoController extends Controller
         $chamadaTurmaAluno = ChamadaTurmaAluno::where('turma_id', $turmaProfessor->turma_id)
                             ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))   
                             ->get();   
-
+      
         return view('chamada_turma_aluno.registro', 
             ['turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos
             , 'data' => $data, 'chamadaTurmaAluno' => $chamadaTurmaAluno ]);
@@ -48,35 +48,19 @@ class ChamadaTurmaAlunoController extends Controller
         $faltosos = $request->input("faltosos");
         $usuario_cadastro = $request->input("id_usuario");
 
-        foreach($presentes as $aluno_id){
-            $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, "p", $usuario_cadastro);
+        if(isset($presentes) && !is_null($presentes)){
+            foreach($presentes as $aluno_id){
+                $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, "P", $usuario_cadastro);
+            }
         }
 
-        foreach($faltosos as $aluno_id){
-            $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, 'F', $usuario_cadastro);
+        if(isset($faltosos) && !is_null($faltosos)){
+            foreach($faltosos as $aluno_id){
+                $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, 'F', $usuario_cadastro);
+            }
         }
         
         return http_response_code(200);
-    }
-
-    public function show($id)
-    {
-        
-    }
-
-    public function edit($id)
-    {
-        
-    }
-
-    public function update(Request $request, $id)
-    {
-        
-    }
-
-    public function destroy($id)
-    {
-        
     }
 
     private function registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, $situacao, $usuario_cadastro ){

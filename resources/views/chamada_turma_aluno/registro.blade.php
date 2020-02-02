@@ -90,19 +90,16 @@
                                         <?php
                                         $_botaoPresenca = "btn-outline-success";
                                         $_botaoFalta = "btn-outline-danger";
-                                        // $presente = $chamadaTurmaAluno->where('aluno_id', $item->aluno_id)
-                                        //                                 ->where('situacao', 'P')
-                                        //                                 ->get();
-                                        // if(count($presente) > 0){
-                                        //     $_botaoPresenca = "btn-success";
-                                        // }
+                                       
+                                        foreach($chamadaTurmaAluno as $chamada){
+                                            if( $item->aluno_id == $chamada->aluno_id && $chamada->situacao == 'P'){
+                                                $_botaoPresenca = "btn-success";      
+                                            }
 
-                                        // $falta = $chamadaTurmaAluno->where('aluno_id', $item->aluno_id)
-                                        //                                 ->where('situacao', 'F')
-                                        //                                 ->get();
-                                        // if(count($falta) > 0){
-                                        //     $_botaoFalta = "btn-danger";;
-                                        // }
+                                            if( $item->aluno_id == $chamada->aluno_id && $chamada->situacao == 'F'){
+                                                $_botaoFalta = "btn-danger";      
+                                            }
+                                        }
 
                                         ?>
                                         <a href="#" class="btn btn-sm {{ __($_botaoPresenca) }} btn-chamada btn-p btn-p-{{__($item->id)}}" id-btn="{{__($item->id)}}" situacao="P" data="{{ $data }}" id-turma="{{__($item->turma_id)}}" id-aluno="{{__($item->aluno_id)}}"><i class="fas fa-check-square"></i></a>
