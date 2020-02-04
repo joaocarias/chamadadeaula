@@ -23,6 +23,10 @@
     <!-- DatePicker -->
     <link href="{{ asset('lib/datepicker/css/bootstrap-datepicker.css') }}" rel="stylesheet">
 
+     <!-- Summernote -->
+     <link href="{{ asset('lib/summernote/summernote.min.css') }}" rel="stylesheet">
+
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/site.css') }}" rel="stylesheet">
@@ -148,7 +152,9 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>        
     <script src="{{ asset('lib/datepicker/js/bootstrap-datepicker.js') }}"></script>    
     <script src="{{ asset('lib/datepicker/locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>    
-           
+    <script src="{{ asset('lib/summernote/summernote.min.js') }}"></script>  
+    <script src="{{ asset('lib/summernote/lang/summernote-pt-BR.min.js') }}"></script>  
+        
     @hasSection('javascript')
         @yield('javascript')
     @endif

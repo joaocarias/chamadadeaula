@@ -2,78 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\PlanejamentoSemanal;
+use App\Profissional;
+use App\Turma;
 use Illuminate\Http\Request;
 
 class PlanejamentoSemanalController extends Controller
 {
     public function index()
     {
-        echo "index";
+        $list = PlanejamentoSemanal::orderBy('created_at','DESC')->get();
+        
+        return view('planejamento_semanal.index', ['planejamentos' => $list]); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $turmas = Turma::orderBy('nome', 'ASC')->get();
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+        return view('planejamento_semanal.create', ['planejamento' => null, 'turmas' => $turmas, 
+                    'professores' => $professores ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+
     }
 }

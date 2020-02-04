@@ -68,6 +68,6 @@ Route::group(['middleware' => 'auth'], function () {
 
   /* Planejamento Semanal */
   Route::get('/planejamentossemanais', 'PlanejamentoSemanalController@index')->name('planejamentossemanais');
-
+  Route::get('/planejamentossemanais/novo', 'PlanejamentoSemanalController@create')->name('novo_planejamento_semanal');
   
 });
