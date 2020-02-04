@@ -166,6 +166,36 @@ $_anos = ['2020', '2021', '2022', '2023'];
 
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+
+                                        <label for="metodologia" class="col-form-label">{{ __('* Metodologia') }}</label>
+                                        <textarea id="metodologia" class="summernote @error('metodologia') is-invalid @enderror" name="metodologia" value="{{ old('metodologia', $planejamento->metodologia ?? '') }}" autocomplete="metodologia" required></textarea>
+
+                                        @error('metodologia')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+
+                                        <label for="recursos_didaticos" class="col-form-label">{{ __('* Recursos Didaticos') }}</label>
+                                        <textarea id="recursos_didaticos" class="summernote @error('recursos_didaticos') is-invalid @enderror" name="recursos_didaticos" value="{{ old('recursos_didaticos', $planejamento->recursos_didaticos ?? '') }}" autocomplete="recursos_didaticos" required></textarea>
+
+                                        @error('recursos_didaticos')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
