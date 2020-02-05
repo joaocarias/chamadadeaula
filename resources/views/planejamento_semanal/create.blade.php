@@ -25,7 +25,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
     <div class="row">
         <div class="col-md-12">
 
-            <form method="POST" action="{{ route('cadastrar_professor') }}">
+            <form method="POST" action="{{ route('cadastrar_planejamento_semanal') }}">
                 @csrf
 
                 <div class="row justify-content-center">
@@ -107,12 +107,11 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-3">
                                         <label for="trimestre" class="col-form-label">{{ __('* Trimestre') }}</label>
 
-                                        <select id="trimestre" type="text" class="form-control @error('trimestre') is-invalid @enderror" name="turma_id" autocomplete="turma_id" required>
+                                        <select id="trimestre" type="text" class="form-control @error('trimestre') is-invalid @enderror" name="trimestre" autocomplete="trimestre" required>
                                             <option selected disabled>-- Selecione --</option>
                                             <option value="1" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('1º - Primeiro') }}</option>
                                             <option value="2" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('2º - Segundo') }}</option>
                                             <option value="3" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '3' ) {{ 'selected' }} @endif>{{ __('3º - Terceiro') }}</option>
-                                            <option value="4" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '4' ) {{ 'selected' }} @endif>{{ __('4º - Quarto') }}</option>
                                         </select>
 
                                         @error('trimestre')
@@ -123,10 +122,10 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="periodo_semana" class="col-form-label">{{ __('* Período/Semana') }}</label>
-                                        <input id="periodo_semana" type="text" class="form-control @error('periodo_semana') is-invalid @enderror" name="periodo_semana" value="{{ old('periodo_semana', $planejamento->periodo_semana ?? '') }}" autocomplete="periodo_semana" required maxlength="25">
+                                        <label for="periodo_semanal" class="col-form-label">{{ __('* Período/Semanal') }}</label>
+                                        <input id="periodo_semanal" type="text" class="form-control @error('periodo_semanal') is-invalid @enderror" name="periodo_semanal" value="{{ old('periodo_semanal', $planejamento->periodo_semanal ?? '') }}" autocomplete="periodo_semanal" required maxlength="25">
 
-                                        @error('periodo_semana')
+                                        @error('periodo_semanal')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -169,6 +168,56 @@ $_anos = ['2020', '2021', '2022', '2023'];
 
                                 <div class="form-group row">
                                     <div class="col-md-12">
+                                        <label for="conteudo_tema" class="col-form-label">{{ __('* Conteúdo/Tema') }}</label>
+                                        <input id="conteudo_tema" type="text" class="form-control @error('conteudo_tema') is-invalid @enderror" name="conteudo_tema" value="{{ old('conteudo_tema', $planejamento->conteudo_tema ?? '') }}" autocomplete="conteudo_tema" required maxlength="254">
+
+                                        @error('conteudo_tema')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="eu_o_outro_e_o_nos" value="1" name="eu_o_outro_e_o_nos">
+                                            <label class="form-check-label" for="eu_o_outro_e_o_nos">Eu, o outro e o nós;</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="corpo_gestos_e_movimentos" nama="corpo_gestos_e_movimentos" value="1">
+                                            <label class="form-check-label" for="corpo_gestos_e_movimentos">Corpo, gestos e movimentos;</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="tracos_sons_cores_e_formas" name="tracos_sons_cores_e_formas" value="1">
+                                            <label class="form-check-label" for="tracos_sons_cores_e_formas">Traços, sons, cores e formas;</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="escuta_fala_pensamento_e_imaginacao" name="escuta_fala_pensamento_e_imaginacao" value="1">
+                                            <label class="form-check-label" for="escuta_fala_pensamento_e_imaginacao">Escuta, fala, pensamentos e imaginação;</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="espaco_tempo_qunatidades_relacoes_e_transformacoes" name="espaco_tempo_qunatidades_relacoes_e_transformacoes" value="option1">
+                                            <label class="form-check-label" for="espaco_tempo_qunatidades_relacoes_e_transformacoes">Espaço, tempo, quantidades, relações e transformações;</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
 
                                         <label for="metodologia" class="col-form-label">{{ __('* Metodologia') }}</label>
                                         <textarea id="metodologia" class="summernote @error('metodologia') is-invalid @enderror" name="metodologia" value="{{ old('metodologia', $planejamento->metodologia ?? '') }}" autocomplete="metodologia" required></textarea>
@@ -185,10 +234,25 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                 <div class="form-group row">
                                     <div class="col-md-12">
 
-                                        <label for="recursos_didaticos" class="col-form-label">{{ __('* Recursos Didaticos') }}</label>
+                                        <label for="recursos_didaticos" class="col-form-label">{{ __('* Recursos Didáticos') }}</label>
                                         <textarea id="recursos_didaticos" class="summernote @error('recursos_didaticos') is-invalid @enderror" name="recursos_didaticos" value="{{ old('recursos_didaticos', $planejamento->recursos_didaticos ?? '') }}" autocomplete="recursos_didaticos" required></textarea>
 
                                         @error('recursos_didaticos')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+
+                                        <label for="como_sera_a_avaliacao" class="col-form-label">{{ __('* Como Será a Avaliação') }}</label>
+                                        <textarea id="como_sera_a_avaliacao" class="summernote @error('como_sera_a_avaliacao') is-invalid @enderror" name="como_sera_a_avaliacao" value="{{ old('como_sera_a_avaliacao', $planejamento->como_sera_a_avaliacao ?? '') }}" autocomplete="como_sera_a_avaliacao" required></textarea>
+
+                                        @error('como_sera_a_avaliacao')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -200,7 +264,6 @@ $_anos = ['2020', '2021', '2022', '2023'];
                         </div>
                     </div>
                 </div>
-        </div>
 
         <div class="form-group row">
             <div class="col-md-12">
