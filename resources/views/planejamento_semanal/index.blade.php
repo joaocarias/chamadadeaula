@@ -1,5 +1,8 @@
 <?php
+    use App\Enum\Trimestres;
+    
     $title = "Planejamento Semanal";
+
 ?>
 
 @extends('layouts.app')
@@ -55,22 +58,31 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>                                                        
-                                <th scope="col">#</th>                               
+                                <th scope="col">#</th>  
+                                <th scope="col">Ano</th> 
+                                <th scope="col">Trimestre</th>
+                                <th scope="col">Tema</th>    
+                                <th scope="col">turma</th> 
+                                <th scope="col">Período/Semana</th>                              
                                 <th scope="col"></th>
                             <tr>
                         </thead>
                         <tbody>
                             @foreach ($planejamentos as $item)
                             <tr>                                                              
-                                <td scope="row">{{ __($item->id) }}</td>                                
+                                <td scope="row">{{ __($item->id) }}</td>   
+                                <td>{{ __($item->ano) }}</td>                
+                                <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>                
+                                <td>{{ __($item->tema_do_projeto) }}</td>    
+                                <td>{{ __($item->turma->nome) }}</td>   
+                                <td>{{ __($item->periodo_semanal) }}</td>
                                 <td class="text-right">
-                                    <a href="{{ route('exibir_professor', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                    <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

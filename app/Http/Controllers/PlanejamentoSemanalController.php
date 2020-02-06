@@ -74,7 +74,8 @@ class PlanejamentoSemanalController extends Controller
 
     public function show($id)
     {
-        
+        $obj = PlanejamentoSemanal::find($id);
+        return view('planejamento_semanal.show', ['planejamento' => $obj]);
     }
 
     public function edit($id)

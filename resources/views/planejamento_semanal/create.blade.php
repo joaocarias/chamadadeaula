@@ -122,7 +122,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="periodo_semanal" class="col-form-label">{{ __('* Período/Semanal') }}</label>
+                                        <label for="periodo_semanal" class="col-form-label">{{ __('* Período/Semana') }}</label>
                                         <input id="periodo_semanal" type="text" class="form-control @error('periodo_semanal') is-invalid @enderror" name="periodo_semanal" value="{{ old('periodo_semanal', $planejamento->periodo_semanal ?? '') }}" autocomplete="periodo_semanal" required maxlength="25">
 
                                         @error('periodo_semanal')

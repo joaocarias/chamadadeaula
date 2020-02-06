@@ -70,5 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/planejamentossemanais', 'PlanejamentoSemanalController@index')->name('planejamentossemanais');
   Route::get('/planejamentossemanais/novo', 'PlanejamentoSemanalController@create')->name('novo_planejamento_semanal');
   Route::post('/planejamentossemanais/store', 'PlanejamentoSemanalController@store')->name('cadastrar_planejamento_semanal');
-  
+  Route::get('/planejamentossemanais/exibir/{id}', 'PlanejamentoSemanalController@show')->name('exibir_planejamento_semanal');
+
 });
