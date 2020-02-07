@@ -182,7 +182,7 @@ $title = "Planejamento Semanal";
 
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{ route('editar_profissional', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
+                            <a href="{{ route('editar_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
                             <a href="#" class="btn btn-danger btn-sm btn-excluir" id-planejamento="{{ $planejamento->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
                         </div>
                     </div>

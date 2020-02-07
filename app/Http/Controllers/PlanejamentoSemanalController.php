@@ -92,7 +92,13 @@ class PlanejamentoSemanalController extends Controller
 
     public function edit($id)
     {
-
+        $turmas = Turma::orderBy('nome', 'ASC')->get();
+        
+        $planejamento = PlanejamentoSemanal::find($id);       
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+       
+        return view('planejamento_semanal.edit', ['planejamento' => $planejamento, 'turmas' => $turmas, 
+                    'professores' => $professores ]);
     }
 
     public function update(Request $request, $id)

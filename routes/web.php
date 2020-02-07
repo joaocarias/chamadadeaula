@@ -62,9 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   /* Chamada Turma Aluno */
   Route::get('/chamadas', 'ChamadaTurmaAlunoController@index')->name('chamadas');
-  Route::get('/chamadas/registro/{id}', 'ChamadaTurmaAlunoController@registro')->name('registro_chamada');
-  //  Route::get('/chamadas/presente/{id}', 'ChamadaTurmaAlunoController@presente')->name('presente');
-  //   Route::get('/chamadas/falta/{id}', 'ChamadaTurmaAlunoController@falta')->name('falta'); 
+  Route::get('/chamadas/registro/{id}', 'ChamadaTurmaAlunoController@registro')->name('registro_chamada'); 
 
   /* Planejamento Semanal */
   Route::get('/planejamentossemanais', 'PlanejamentoSemanalController@index')->name('planejamentossemanais');
@@ -72,5 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/planejamentossemanais/store', 'PlanejamentoSemanalController@store')->name('cadastrar_planejamento_semanal');
   Route::get('/planejamentossemanais/exibir/{id}', 'PlanejamentoSemanalController@show')->name('exibir_planejamento_semanal');
   Route::get('/planejamentossemanais/excluir/{id}', 'PlanejamentoSemanalController@destroy')->name('excluir_planejamento_semanal');
-  
+  Route::get('/planejamentossemanais/editar/{id}', 'PlanejamentoSemanalController@edit')->name('editar_planejamento_semanal');
+  Route::put('/planejamentossemanais/update/{id}', 'PlanejamentoSemanalController@update')->name('update_planejamento_semanal');
+ 
 });
