@@ -14,23 +14,34 @@ class PlanejamentoSemanalController extends Controller
 {
     public function index()
     {
-        $list = PlanejamentoSemanal::orderBy('created_at','DESC')->get();
+        $professor = Profissional::where('tipo_profissional_id', '1')
+                                    ->where('user_id', Auth::user()->id)
+                                    ->first();
+        
+        $list = (isset($professor)) ? PlanejamentoSemanal::where('professor_id', $professor->id)
+                                            ->orderBy('created_at','DESC')->get()
+                                    : null;
         
         return view('planejamento_semanal.index', ['planejamentos' => $list]); 
     }
 
     public function create()
     {
-        $anoAtual = date("Y");
         $turmas = Turma::orderBy('nome', 'ASC')->get();
-        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+        $anoAtual = date("Y");
+        
         $planejamento = new PlanejamentoSemanal();
+        $planejamento->ano = $anoAtual;
+
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+       
         $professor = Profissional::where('user_id', Auth::user()->id)
                                     ->where('tipo_profissional_id', '1')
                                     ->first();
+                                    
         if(isset($professor) && !is_null($professor) ){
             $planejamento->professor_id = $professor->id;
-            $planejamento->ano = $anoAtual;
+            
         }
     
         return view('planejamento_semanal.create', ['planejamento' => $planejamento, 'turmas' => $turmas, 

@@ -1,6 +1,8 @@
 <?php
-    use App\Enum\Trimestres;
-    $title = "Planejamento Semanal";
+
+use App\Enum\Trimestres;
+
+$title = "Planejamento Semanal";
 ?>
 
 @extends('layouts.app')
@@ -51,10 +53,10 @@
                         <div class="col-md-2">
                             Ano: <strong>{{ __($planejamento->ano)  }}</strong>
                         </div>
-                        
+
                         <div class="col-md-4">
                             Turma: <strong>{{ __($planejamento->turma->nome)  }}</strong>
-                        </div> 
+                        </div>
 
                         <div class="col-md-6">
                             Professor (a): <strong>{{ __($planejamento->professor->nome)  }}</strong>
@@ -71,7 +73,7 @@
                         <div class="col-md-6">
                             Trimestre: <strong>{{ __(Trimestres::descricao($planejamento->trimestre))  }}</strong>
                         </div>
-                        
+
                         <div class="col-md-6">
                             Período/Semana: <strong>{{ __($planejamento->periodo_semanal)  }}</strong>
                         </div>
@@ -80,18 +82,97 @@
                     <div class="row">
                         <div class="col-md-12">
                             Idade/Faixa Etária:
-                                @if($planejamento->idade_faixa_etaria == 1)
-                                    <strong>( X ) Bebês (de zero a um ano e seis meses);</strong> 
-                                &emsp; 
-                                    ( &nbsp; ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).
-                                @else if($planejamento->idade_faixa_etaria == 2)
-                                    ( &nbsp; ) Bebês (de zero a um ano e seis meses);
-                                &emsp; 
-                                    <strong>( X ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).</strong>
-                                @endif
-                        </div>                        
+                            @if($planejamento->idade_faixa_etaria == 1)
+                            <strong>( X ) Bebês (de zero a um ano e seis meses);</strong>
+                            &emsp;
+                            ( &nbsp; ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).
+                            @elseif($planejamento->idade_faixa_etaria == 2)
+                            ( &nbsp; ) Bebês (de zero a um ano e seis meses);
+                            &emsp;
+                            <strong>( X ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).</strong>
+                            @endif
+                        </div>
                     </div>
-                    
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            Habilidades: {!! __($planejamento->habilidades) !!}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            Conteúdo/Tema: <strong> {!! __($planejamento->conteudo_tema) !!} </strong>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if($planejamento->eu_o_outro_e_o_nos == 1)
+                            <strong>( X ) Eu o outro e o Nós</strong>
+                            @else
+                            ( &nbsp; ) Eu o outro e o Nós
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if($planejamento->corpo_gestos_e_movimentos == 1)
+                            <strong>( X ) Corpo, gestos e movimentos</strong>
+                            @else
+                            ( &nbsp; ) Corpo, gestos e movimentos
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if($planejamento->tracos_sons_cores_e_formas == 1)
+                            <strong>( X ) Traços, sons, cores e formas</strong>
+                            @else
+                            ( &nbsp; ) Traços, sons, cores e formas
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if($planejamento->escuta_fala_pensamento_e_imaginacao == 1)
+                            <strong>( X ) Escuta, fala, pensamentos e imaginação</strong>
+                            @else
+                            ( &nbsp; ) Escuta, fala, pensamentos e imaginação
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if($planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes == 1)
+                            <strong>( X ) Espaço, tempo, quantidades, relações e transformações</strong>
+                            @else
+                            ( &nbsp; ) Espaço, tempo, quantidades, relações e transformações
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            Metodologia: {!! __($planejamento->metodologia) !!}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            Recursos Didáticos: {!! __($planejamento->recursos_didaticos) !!}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            Como será a avaliação: {!! __($planejamento->como_sera_a_avaliacao) !!}
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-12">

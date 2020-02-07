@@ -55,6 +55,7 @@
             <div class="card mb-3">
                 <div class="card-header">{{ __('Planejamentos') }}</div>
                 <div class="card-body">
+                    @if(isset($planejamentos))
                     <table class="table table-hover">
                         <thead>
                             <tr>                                                        
@@ -83,6 +84,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @else
+                        <p>Usuário não possui planejamentos!</p>
+                    @endif
                 </div>
             </div>
         </div>

@@ -189,7 +189,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
 
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="corpo_gestos_e_movimentos" nama="corpo_gestos_e_movimentos" value="1">
+                                            <input class="form-check-input" type="checkbox" id="corpo_gestos_e_movimentos" name="corpo_gestos_e_movimentos" value="1">
                                             <label class="form-check-label" for="corpo_gestos_e_movimentos">Corpo, gestos e movimentos;</label>
                                         </div>
                                     </div>
@@ -210,7 +210,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
 
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="espaco_tempo_qunatidades_relacoes_e_transformacoes" name="espaco_tempo_qunatidades_relacoes_e_transformacoes" value="option1">
+                                            <input class="form-check-input" type="checkbox" id="espaco_tempo_qunatidades_relacoes_e_transformacoes" name="espaco_tempo_qunatidades_relacoes_e_transformacoes" value="1">
                                             <label class="form-check-label" for="espaco_tempo_qunatidades_relacoes_e_transformacoes">Espaço, tempo, quantidades, relações e transformações;</label>
                                         </div>
                                     </div>
