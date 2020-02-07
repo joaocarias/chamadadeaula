@@ -222,7 +222,7 @@ $title = "Planejamento Semanal";
 <script type="text/javascript">
     $('.btn-excluir').on('click', function() {
         var id = $(this).attr('id-planejamento');
-        $('#url-modal-excluir').attr('href', '/profissionais/excluir/' + id);
+        $('#url-modal-excluir').attr('href', '/planejamentossemanais/excluir/' + id);
         $('#ModalExcluir').modal('show');
     });
 </script>

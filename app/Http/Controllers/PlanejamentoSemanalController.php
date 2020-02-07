@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\LogSistema;
 use App\PlanejamentoSemanal;
 use App\Profissional;
 use App\Turma;
@@ -101,7 +102,21 @@ class PlanejamentoSemanalController extends Controller
 
     public function destroy($id)
     {
-
+        $obj = PlanejamentoSemanal::find($id);
+      
+        if (isset($obj)) {
+            $obj->delete();
+            $log = new LogSistema();
+            $log->tabela = "planejamento_semanals";
+            $log->tabela_id = $id;
+            $log->acao = "EXCLUSAO";
+            $log->descricao = "EXCLUSAO";
+            $log->usuario_id = Auth::user()->id;
+            $log->save();
+            
+            return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Excluído com Sucesso!'));
+        }
+        return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Não Excluído!'));
     }
 
     private function validacao(Request $request){
