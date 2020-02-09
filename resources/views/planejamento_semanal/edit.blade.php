@@ -185,35 +185,45 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="eu_o_outro_e_o_nos" value="1" name="eu_o_outro_e_o_nos">
+                                            <input class="form-check-input" type="checkbox" id="eu_o_outro_e_o_nos" value="1" name="eu_o_outro_e_o_nos" 
+                                            {{ ($planejamento->eu_o_outro_e_o_nos == 1) ? "checked='checked'" : "" }}
+                                            >
                                             <label class="form-check-label" for="eu_o_outro_e_o_nos">Eu, o outro e o nós;</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="corpo_gestos_e_movimentos" name="corpo_gestos_e_movimentos" value="1">
+                                            <input class="form-check-input" type="checkbox" id="corpo_gestos_e_movimentos" name="corpo_gestos_e_movimentos" value="1"
+                                            {{ ($planejamento->corpo_gestos_e_movimentos == 1) ? "checked='checked'" : "" }}
+                                            >
                                             <label class="form-check-label" for="corpo_gestos_e_movimentos">Corpo, gestos e movimentos;</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="tracos_sons_cores_e_formas" name="tracos_sons_cores_e_formas" value="1">
+                                            <input class="form-check-input" type="checkbox" id="tracos_sons_cores_e_formas" name="tracos_sons_cores_e_formas" value="1"
+                                            {{ ($planejamento->tracos_sons_cores_e_formas == 1) ? "checked='checked'" : "" }}
+                                            >
                                             <label class="form-check-label" for="tracos_sons_cores_e_formas">Traços, sons, cores e formas;</label>
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="escuta_fala_pensamento_e_imaginacao" name="escuta_fala_pensamento_e_imaginacao" value="1">
+                                            <input class="form-check-input" type="checkbox" id="escuta_fala_pensamento_e_imaginacao" name="escuta_fala_pensamento_e_imaginacao" value="1"
+                                            {{ $planejamento->escuta_fala_pensamento_e_imaginacao == 1 ? "checked='checked'" : '' }} 
+                                            >
                                             <label class="form-check-label" for="escuta_fala_pensamento_e_imaginacao">Escuta, fala, pensamentos e imaginação;</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="espaco_tempo_qunatidades_relacoes_e_transformacoes" name="espaco_tempo_qunatidades_relacoes_e_transformacoes" value="1">
+                                            <input class="form-check-input" type="checkbox" id="espaco_tempo_qunatidades_relacoes_e_transformacoes" name="espaco_tempo_qunatidades_relacoes_e_transformacoes" value="1"
+                                            {{ ($planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes == 1) ? "checked='checked'" : "" }}
+                                            >
                                             <label class="form-check-label" for="espaco_tempo_qunatidades_relacoes_e_transformacoes">Espaço, tempo, quantidades, relações e transformações;</label>
                                         </div>
                                     </div>

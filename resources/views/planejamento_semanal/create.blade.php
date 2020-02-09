@@ -155,7 +155,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="habilidades" class="col-form-label">{{ __('* Habilidades') }}</label>
-                                        <textarea id="habilidades" class="summernote @error('habilidades') is-invalid @enderror" name="habilidades" value="{{ old('habilidades', $planejamento->habilidades ?? '') }}" autocomplete="habilidades" required></textarea>
+                                        <textarea id="habilidades" class="summernote @error('habilidades') is-invalid @enderror" name="habilidades" required>{{ old('habilidades', $planejamento->habilidades ?? '') }}</textarea>
 
                                         @error('habilidades')
                                         <span class="invalid-feedback" role="alert">
@@ -220,7 +220,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="metodologia" class="col-form-label">{{ __('* Metodologia') }}</label>
-                                        <textarea id="metodologia" class="summernote @error('metodologia') is-invalid @enderror" name="metodologia" value="{{ old('metodologia', $planejamento->metodologia ?? '') }}" autocomplete="metodologia" required></textarea>
+                                        <textarea id="metodologia" class="summernote @error('metodologia') is-invalid @enderror" name="metodologia" autocomplete="metodologia" required>{{ old('metodologia', $planejamento->metodologia ?? '') }}</textarea>
 
                                         @error('metodologia')
                                         <span class="invalid-feedback" role="alert">
@@ -235,7 +235,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="recursos_didaticos" class="col-form-label">{{ __('* Recursos Didáticos') }}</label>
-                                        <textarea id="recursos_didaticos" class="summernote @error('recursos_didaticos') is-invalid @enderror" name="recursos_didaticos" value="{{ old('recursos_didaticos', $planejamento->recursos_didaticos ?? '') }}" autocomplete="recursos_didaticos" required></textarea>
+                                        <textarea id="recursos_didaticos" class="summernote @error('recursos_didaticos') is-invalid @enderror" name="recursos_didaticos" autocomplete="recursos_didaticos" required>{{ old('recursos_didaticos', $planejamento->recursos_didaticos ?? '') }}</textarea>
 
                                         @error('recursos_didaticos')
                                         <span class="invalid-feedback" role="alert">
@@ -250,7 +250,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="como_sera_a_avaliacao" class="col-form-label">{{ __('* Como Será a Avaliação') }}</label>
-                                        <textarea id="como_sera_a_avaliacao" class="summernote @error('como_sera_a_avaliacao') is-invalid @enderror" name="como_sera_a_avaliacao" value="{{ old('como_sera_a_avaliacao', $planejamento->como_sera_a_avaliacao ?? '') }}" autocomplete="como_sera_a_avaliacao" required></textarea>
+                                        <textarea id="como_sera_a_avaliacao" class="summernote @error('como_sera_a_avaliacao') is-invalid @enderror" name="como_sera_a_avaliacao" required>{{ old('como_sera_a_avaliacao', $planejamento->como_sera_a_avaliacao ?? '') }}</textarea>
 
                                         @error('como_sera_a_avaliacao')
                                         <span class="invalid-feedback" role="alert">
