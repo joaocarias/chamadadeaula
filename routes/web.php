@@ -77,4 +77,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/relatos', 'RelatoController@index')->name('relatos');
   Route::get('/relatos/turma/{id}', 'RelatoController@turma')->name('relatos_de_turma');
   
+  Route::get('/usuarios', 'UsuarioController@index')->name('usuarios');
+
 });
