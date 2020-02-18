@@ -10,6 +10,7 @@ use App\TurmaAluno;
 use App\TurmaProfessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mpdf\Mpdf;
 
 class ChamadaTurmaAlunoController extends Controller
 {
@@ -76,5 +77,47 @@ class ChamadaTurmaAlunoController extends Controller
             $obj->aluno_id = $aluno_id;
             $obj->usuario_cadastro = $usuario_cadastro;
             $obj->save();
+    }
+
+    public function imprimir($id){
+        return view('chamada_turma_aluno.imprimir');
+    }
+
+    public function imprimirpdf(){
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            
+            'orientation' => 'L'
+        ]);
+        
+        $html = '
+
+        <html>
+        <head>
+        
+        </head>
+        <body>
+        <table width="100%">
+            <tr>
+               <td width="20%" style="text-align:left">Imagem</td>
+               <td width="60%" style="text-align:center">
+               PREFEITURA MUNICIPAL DE NATAL
+<br /> SECRETARIA MUNICIPAL DE EDUCAÇÃO
+<br /> CMEI NOSSA SENHORA DE LOURDES
+<br /> Rua João XXIII, 1.215, Mãe Luíza, CEP 59.014-000 – Natal, RN – Telefone: 3615-2901
+<br /> FREQUÊNCIA DO MÊS DE MARÇO – 2020
+<br /> TURMA: BERÇÁRIO II A 
+               
+               </td>
+               <td width="20%" style="text-align:right">Imagem</td>
+            </tr>
+        </table>
+        
+        </body>
+        </html>';
+        
+        $mpdf->WriteHTML($html);
+        
+        $mpdf->Output();
     }
 }

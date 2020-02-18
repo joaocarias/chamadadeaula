@@ -56,7 +56,8 @@
                                 <td scope="row">{{ __($item->turma_id) }}</td>                                                              
                                 <td>{{ __($item->turma->nome) }}</td>                                
                                 <td class="text-right">
-                                    <a href="{{ route('registro_chamada', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Registro de Chamada</a>
+                                    <a href="{{ route('registro_chamada', [$item->id]) }}" class="btn btn-primary btn-sm"><i class="fas fa-book-reader"></i> &nbsp; Chamada</a>
+                                    <a href="{{ route('imprimir_registro_chamada', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="fas fa-print"></i> &nbsp; Imprimir</a>
                                 </td>
                             </tr>
                             @endforeach

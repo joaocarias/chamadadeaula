@@ -63,6 +63,13 @@ Route::group(['middleware' => 'auth'], function () {
   /* Chamada Turma Aluno */
   Route::get('/chamadas', 'ChamadaTurmaAlunoController@index')->name('chamadas');
   Route::get('/chamadas/registro/{id}', 'ChamadaTurmaAlunoController@registro')->name('registro_chamada'); 
+  Route::get('/chamadas/imprimir/{id}', 'ChamadaTurmaAlunoController@imprimir')->name('imprimir_registro_chamada'); 
+  Route::get('/chamadas/imprimirpdf', 'ChamadaTurmaAlunoController@imprimirpdf')->name('imprimir_pdf'); 
+
+  
+
+
+  
 
   /* Planejamento Semanal */
   Route::get('/planejamentossemanais', 'PlanejamentoSemanalController@index')->name('planejamentossemanais');
