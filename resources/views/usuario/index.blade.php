@@ -50,8 +50,7 @@
                                 <th scope="col">#</th>                                                  
                                 <th scope="col">Nome</th> 
                                 <th scope="col">UserName</th>
-                                                             
-                                <th scope="col"></th>
+                                                     
                             <tr>
                         </thead>
                         <tbody>
@@ -60,9 +59,7 @@
                                 <td scope="row">{{ __($item->id) }}</td>                                                                   
                                 <td>{{ __($item->name) }}</td>                                
                                 <td>{{ __($item->username) }}</td>                                
-                                <td class="text-right">
-                                    <a href="{{ route('exibir_profissional', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
-                                </td>
+                                
                             </tr>
                             @endforeach
                         </tbody>

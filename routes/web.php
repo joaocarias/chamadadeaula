@@ -64,11 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/chamadas', 'ChamadaTurmaAlunoController@index')->name('chamadas');
   Route::get('/chamadas/registro/{id}', 'ChamadaTurmaAlunoController@registro')->name('registro_chamada'); 
   Route::get('/chamadas/imprimir/{id}', 'ChamadaTurmaAlunoController@imprimir')->name('imprimir_registro_chamada'); 
-  Route::get('/chamadas/imprimirpdf', 'ChamadaTurmaAlunoController@imprimirpdf')->name('imprimir_pdf'); 
-
-  
-
-
+  Route::get('/chamadas/imprimirpdf', 'ChamadaTurmaAlunoController@imprimirpdf')->name('imprimir_pdf');
   
 
   /* Planejamento Semanal */
@@ -79,7 +75,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/planejamentossemanais/excluir/{id}', 'PlanejamentoSemanalController@destroy')->name('excluir_planejamento_semanal');
   Route::get('/planejamentossemanais/editar/{id}', 'PlanejamentoSemanalController@edit')->name('editar_planejamento_semanal');
   Route::put('/planejamentossemanais/update/{id}', 'PlanejamentoSemanalController@update')->name('update_planejamento_semanal');
- 
+  Route::get('/planejamentossemanais/imprimir/{id}', 'PlanejamentoSemanalController@imprimir')->name('imprimir_planejamento_semanal');
+
+
   /* Relatos */
   Route::get('/relatos', 'RelatoController@index')->name('relatos');
   Route::get('/relatos/turma/{id}', 'RelatoController@turma')->name('relatos_de_turma');

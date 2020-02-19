@@ -96,92 +96,14 @@ $title = "Planejamento Semanal";
 
                     <div class="row">
                         <div class="col-md-12">
-                            Habilidades: {!! __($planejamento->habilidades) !!}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            Conteúdo/Tema: <strong> {!! __($planejamento->conteudo_tema) !!} </strong>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            @if($planejamento->eu_o_outro_e_o_nos == 1)
-                            <strong>( X ) Eu o outro e o Nós</strong>
-                            @else
-                            ( &nbsp; ) Eu o outro e o Nós
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            @if($planejamento->corpo_gestos_e_movimentos == 1)
-                            <strong>( X ) Corpo, gestos e movimentos</strong>
-                            @else
-                            ( &nbsp; ) Corpo, gestos e movimentos
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            @if($planejamento->tracos_sons_cores_e_formas == 1)
-                            <strong>( X ) Traços, sons, cores e formas</strong>
-                            @else
-                            ( &nbsp; ) Traços, sons, cores e formas
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            @if($planejamento->escuta_fala_pensamento_e_imaginacao == 1)
-                            <strong>( X ) Escuta, fala, pensamentos e imaginação</strong>
-                            @else
-                            ( &nbsp; ) Escuta, fala, pensamentos e imaginação
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            @if($planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes == 1)
-                            <strong>( X ) Espaço, tempo, quantidades, relações e transformações</strong>
-                            @else
-                            ( &nbsp; ) Espaço, tempo, quantidades, relações e transformações
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            Metodologia: {!! __($planejamento->metodologia) !!}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            Recursos Didáticos: {!! __($planejamento->recursos_didaticos) !!}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            Como será a avaliação: {!! __($planejamento->como_sera_a_avaliacao) !!}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
                             <hr />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
+                            <a href="{{ route('imprimir_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
+                            
                             <a href="{{ route('editar_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
                             <a href="#" class="btn btn-danger btn-sm btn-excluir" id-planejamento="{{ $planejamento->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
                         </div>

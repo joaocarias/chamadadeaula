@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use League\Flysystem\Plugin\PluginNotFoundException;
+use Mpdf\Mpdf;
+use App\Enum\Trimestres;
 
 class PlanejamentoSemanalController extends Controller
 {
@@ -82,6 +84,219 @@ class PlanejamentoSemanalController extends Controller
 
         $obj->save();
         return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Realizado com Sucesso!'));
+    }
+
+    public function imprimir($id){
+        $obj = PlanejamentoSemanal::find($id);
+
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+        ]);
+        
+        $html = '
+
+        <html>
+        <head>
+        
+        </head>
+        <body style="font-family: serif; font-size: 11pt;">
+        <table width="100%">
+            <tr>
+               <td width="15%" style="text-align:left"> <img src="/imgs/cmei.jfif" width="100"> </td>
+               <td width="85%" style="text-align:center">
+                    <strong> PREFEITURA MUNICIPAL DO NATAL
+                    <br />SECRETARIA MUNICIPAL DE EDUCAÇÃO
+                    <br />CMEI NOSSA SENHORA DE LOURDES </strong>               
+               </td>
+            </tr>
+        </table>
+        
+        <div style="text-align:center; margin-top: 30px">
+            <u>PLANEJAMENTO SEMANAL</u>
+        </div>
+
+        <div style="margin-top: 20px">
+            <table width="100%">
+                <tr>
+                    <td width="15%">ANO: '. $obj->ano .' </td>
+                    <td width="30%">TURMA: '. $obj->turma->nome .' </td>
+                    <td >PROFESSOR(A): '. $obj->professor->nome .' </td>
+                </tr>
+                <tr>
+                    <td colspan="3">TEMA DO PROJETO: '.$obj->tema_do_projeto . '</td>
+                </tr>                
+            </table>
+            
+            <table width="100%">
+                <tr>
+                    <td width="40%">'. Trimestres::descricao($obj->trimestre) .' </td>
+                   
+                    <td >PERÍODO/SEMANA: '. $obj->periodo_semanal .' </td>
+                </tr>                              
+            </table>            
+            
+            <table width="100%" style="margin-top: 15px;">
+                <tr>
+                    <td width="100%" style="text-align:justify">
+                    <u>DIREITOS DE APRENDIZAGEM E DESENVOLVIMENTO</u>: Conviver; Brincar; Participar; Explorar; Expressar e Conhecer-se.
+                    </td>
+                </tr>                          
+            </table>  
+
+            <table width="100%" style="margin-top: 15px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    <u>IDADE/FAIXA ETÁRIA:</u> ';
+                    
+    $faixaEtaria = ($obj->idade_faixa_etaria == 1)
+                            ? " ( X ) Bebês (de zero a um ano e seis meses);
+                            &emsp;
+                            ( &nbsp; ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses)."
+                            : 
+                            "( &nbsp; ) Bebês (de zero a um ano e seis meses);
+                            &emsp;
+                            ( X ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).";
+
+    $html = $html . $faixaEtaria 
+            . '
+                </td>
+            </tr>                          
+        </table>  
+
+        <table width="100%" style="margin-top: 15px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    <u>HABILIDADES</u> correspondentes a todos os campos de experiências a serem trabalhados durante o período (objetivos procedimentais/específicos)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    ' . $obj->habilidades . '
+                </td>
+            </tr>                          
+        </table>  
+
+        <table width="100%" style="margin-top: 15px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    <u>CONTEÚDOS/TEMA:</u> '. $obj->conteudo_tema .'
+                </td>
+            </tr>                                     
+        </table> 
+
+        <table width="100%" style="margin-top: 15px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    ';
+                    $eu_o_outro_e_o_nos = ($obj->eu_o_outro_e_o_nos == 1)
+                            ? ' ( X ) ' : '( &nbsp; )';
+                    $html = $html . $eu_o_outro_e_o_nos .'
+                    <u>EU, O OUTRO E O NÓS:</u>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    ';
+                    $corpo_gestos_e_movimentos = ($obj->corpo_gestos_e_movimentos == 1)
+                            ? ' ( X ) ' : '( &nbsp; )';
+                    $html = $html . $corpo_gestos_e_movimentos .'
+                    <u>CORPO, GESTOS E MOVIMENTOS:</u>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    ';
+                    $tracos_sons_cores_e_formas = ($obj->tracos_sons_cores_e_formas == 1)
+                            ? ' ( X ) ' : '( &nbsp; )';
+                    $html = $html . $tracos_sons_cores_e_formas .'
+                    <u>TRAÇOS, SONS, CORES E FORMAS:</u>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    ';
+                    $escuta_fala_pensamento_e_imaginacao = ($obj->escuta_fala_pensamento_e_imaginacao == 1)
+                            ? ' ( X ) ' : '( &nbsp; )';
+                    $html = $html . $escuta_fala_pensamento_e_imaginacao .'
+                    <u>ESCUTA, FALA, PENSAMENTO E IMAGINAÇÃO:</u>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    ';
+                    $espaco_tempo_qunatidades_relacoes_e_transformacoes = ($obj->espaco_tempo_qunatidades_relacoes_e_transformacoes == 1)
+                            ? ' ( X ) ' : '( &nbsp; )';
+                    $html = $html . $espaco_tempo_qunatidades_relacoes_e_transformacoes .'
+                    <u>ESPAÇO, TEMPO, QUANTIDADES, RELAÇÕES E TRANSFORMAÇÕES:</u>
+                </td>
+            </tr>                                     
+        </table> 
+
+        <table width="100%" style="margin-top: 15px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    <u>METODOLOGIA</u> (procedimentos/atividade) 
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    ' . $obj->metodologia . '
+                </td>
+            </tr>                          
+        </table>  
+
+        <table width="100%" style="margin-top: 15px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    <u>RECURSOS DIDÁTICOS</u> 
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    ' . $obj->recursos_didaticos . '
+                </td>
+            </tr>                          
+        </table>  
+
+        <table width="100%" style="margin-top: 15px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    <u>COMO SERÁ A AVALIAÇÃO</u>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    ' . $obj->como_sera_a_avaliacao . '
+                </td>
+            </tr>                          
+        </table> 
+        
+        <table width="100%" style="margin-top: 30px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    Coordenação Pedagógica: 
+                </td>
+            </tr>                                    
+        </table> 
+        
+        <table width="100%" style="margin-top: 30px;">
+            <tr>
+                <td width="100%" style="text-align:justify">
+                    Data do recebimento:  &emsp;  /  &emsp; /
+                </td>
+            </tr>                                    
+        </table> 
+           
+            
+        </div>
+
+        </body>
+        </html>';
+        
+        $mpdf->WriteHTML($html);        
+        $mpdf->Output();
+
     }
 
     public function show($id)
