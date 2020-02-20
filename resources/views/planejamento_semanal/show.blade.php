@@ -81,21 +81,6 @@ $title = "Planejamento Semanal";
 
                     <div class="row">
                         <div class="col-md-12">
-                            Idade/Faixa Etária:
-                            @if($planejamento->idade_faixa_etaria == 1)
-                            <strong>( X ) Bebês (de zero a um ano e seis meses);</strong>
-                            &emsp;
-                            ( &nbsp; ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).
-                            @elseif($planejamento->idade_faixa_etaria == 2)
-                            ( &nbsp; ) Bebês (de zero a um ano e seis meses);
-                            &emsp;
-                            <strong>( X ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).</strong>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
                             <hr />
                         </div>
                     </div>
