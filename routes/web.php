@@ -59,7 +59,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/turmas/removerprofessor/{id}', 'TurmaController@removerprofessor')->name('removerturmaprofessor');
   Route::post('/turmas/associaraluno', 'TurmaController@associaraluno')->name('associarturmaaluno');
   Route::get('/turmas/removeraluno/{id}', 'TurmaController@removeraluno')->name('removerturmaaluno');
-
+  Route::get('/turmas/excluir/{id}', 'TurmaController@destroy')->name('excluir_turma');
+  
+  
   /* Chamada Turma Aluno */
   Route::get('/chamadas', 'ChamadaTurmaAlunoController@index')->name('chamadas');
   Route::get('/chamadas/registro/{id}', 'ChamadaTurmaAlunoController@registro')->name('registro_chamada'); 

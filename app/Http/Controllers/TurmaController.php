@@ -106,6 +106,7 @@ class TurmaController extends Controller
       
         if (isset($obj)) {
             $obj->delete();
+        
             $log = new LogSistema();
             $log->tabela = "turmas";
             $log->tabela_id = $id;
@@ -113,9 +114,10 @@ class TurmaController extends Controller
             $log->descricao = "EXCLUSAO";
             $log->usuario_id = Auth::user()->id;
             $log->save();
-            
+          
             return redirect()->route('turmas')->withStatus(__('Cadastro Excluído com Sucesso!'));
         }
+        
         return redirect()->route('turmas')->withStatus(__('Cadastro Não Excluído!'));
     }
 
