@@ -99,7 +99,7 @@
                                 @foreach ($turmaProfessor as $item)
                                 <tr>
                                     <td scope="row">{{ __($item->professor_id) }}</td>
-                                    <td>{{ __($item->professor->nome) }}</td>
+                                    <td>{{ __(isset($item->professor->nome) ? $item->professor->nome : '') }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('removerturmaprofessor', [$item->id]) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> &nbsp; Remover</a>
                                     </td>
@@ -152,7 +152,7 @@
                                 @foreach ($turmaAluno as $item)
                                 <tr>
                                     <td scope="row">{{ __($item->aluno_id) }}</td>
-                                    <td>{{ __($item->aluno->nome) }}</td>
+                                    <td>{{ __((isset($item->aluno->nome)) ? $item->aluno->nome : '' ) }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('removerturmaaluno', [$item->id]) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> &nbsp; Remover</a>
                                     </td>
