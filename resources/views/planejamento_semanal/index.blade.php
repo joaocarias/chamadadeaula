@@ -46,7 +46,7 @@
                         Cadastrar
                     </a>
 
-                    <a href="{{ route('novo_planejamento_semanal') }}" class="btn btn-success">
+                    <a href="{{ route('upload_planejamento_semanal') }}" class="btn btn-success">
                     <i class="fas fa-file-upload"></i> &nbsp;
                         Importar Arquivo 
                     </a>

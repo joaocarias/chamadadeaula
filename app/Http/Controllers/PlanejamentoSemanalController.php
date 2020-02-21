@@ -52,6 +52,29 @@ class PlanejamentoSemanalController extends Controller
         ]);
     }
 
+    public function uploadarquivo(){
+        $turmas = Turma::orderBy('nome', 'ASC')->get();
+        $anoAtual = date("Y");
+
+        $planejamento = new PlanejamentoSemanal();
+        $planejamento->ano = $anoAtual;
+
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+
+        $professor = Profissional::where('user_id', Auth::user()->id)
+            ->where('tipo_profissional_id', '1')
+            ->first();
+
+        if (isset($professor) && !is_null($professor)) {
+            $planejamento->professor_id = $professor->id;
+        }
+
+        return view('planejamento_semanal.upload_arquivo', [
+            'planejamento' => $planejamento, 'turmas' => $turmas,
+            'professores' => $professores
+        ]);
+    }
+
     public function store(Request $request)
     {
         $this->validacao($request);
@@ -84,6 +107,49 @@ class PlanejamentoSemanalController extends Controller
 
         $obj->save();
         return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Realizado com Sucesso!'));
+    }
+
+    public function store_upload(Request $request)
+    {
+        //$this->validacao($request);
+
+        $obj = new PlanejamentoSemanal();
+        $obj->ano = $request->input('ano');
+        $obj->turma_id = $request->input('turma_id');
+        $obj->tema_do_projeto = $request->input('tema_do_projeto');
+        $obj->professor_id = $request->input('professor_id');
+
+        $obj->trimestre = $request->input('trimestre');
+        $obj->periodo_semanal = $request->input('periodo_semanal');
+        $obj->idade_faixa_etaria = $request->input('idade_faixa_etaria');
+
+        if ($request->hasFile('arquivo') && $request->file('arquivo')->isValid()) {
+         
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));
+     
+            // Recupera a extensão do arquivo
+            $extension = $request->arquivo->extension();
+     
+            // Define finalmente o nome
+            $obj->arquivo = "{$name}.{$extension}";
+     
+            // Faz o upload:
+            $upload = $request->arquivo->storeAs('planejamentos', $obj->arquivo);
+            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+     
+            // Verifica se NÃO deu certo o upload (Redireciona de volta)
+            if ( !$upload )
+                return redirect()
+                            ->back()
+                            ->with('error', 'Falha ao fazer upload')
+                            ->withInput();
+     
+        }
+
+        echo '<pre>';
+        var_dump($obj);
+        echo '</pre>';
     }
 
     public function imprimir($id){
@@ -483,4 +549,6 @@ class PlanejamentoSemanalController extends Controller
 
         $request->validate($regras, $messagens);
     }
+
+   
 }

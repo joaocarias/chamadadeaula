@@ -19,3 +19,5 @@ php artisan db:seed
 vendor\laravel\framework\src\Illuminate\Foundation\Auth\AuthenticatesUsers.php 
 
 public function username()
+
+php artisan storage:link

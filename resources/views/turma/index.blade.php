@@ -48,6 +48,7 @@
             <div class="card mb-3">
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
+                    @if(isset($turmas))
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -72,7 +73,9 @@
                             @endforeach
                         </tbody>
                     </table>
-
+                    @else
+                        <p>Não existe Turma cadastrada!</p>
+                    @endif
                 </div>
             </div>
         </div>
