@@ -123,28 +123,8 @@ class PlanejamentoSemanalController extends Controller
         $obj->periodo_semanal = $request->input('periodo_semanal');
         $obj->idade_faixa_etaria = $request->input('idade_faixa_etaria');
 
-        if ($request->hasFile('arquivo') && $request->file('arquivo')->isValid()) {
-         
-            // Define um aleatório para o arquivo baseado no timestamps atual
-            $name = uniqid(date('HisYmd'));
-     
-            // Recupera a extensão do arquivo
-            $extension = $request->arquivo->extension();
-     
-            // Define finalmente o nome
-            $obj->arquivo = "{$name}.{$extension}";
-     
-            // Faz o upload:
-            $upload = $request->arquivo->storeAs('planejamentos', $obj->arquivo);
-            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
-     
-            // Verifica se NÃO deu certo o upload (Redireciona de volta)
-            if ( !$upload )
-                return redirect()
-                            ->back()
-                            ->with('error', 'Falha ao fazer upload')
-                            ->withInput();
-     
+        if ($request->hasFile('arquivo') && $request->file('arquivo')->isValid()) {         
+            $obj->arquivo = $request->file('arquivo')->store('planejamento_semanal');            
         }
 
         echo '<pre>';
