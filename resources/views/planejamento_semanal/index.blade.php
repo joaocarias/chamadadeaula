@@ -80,7 +80,7 @@
                                 <td>{{ __($item->ano) }}</td>                
                                 <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>                
                                 <td>{{ __($item->tema_do_projeto) }}</td>    
-                                <td>{{ __($item->turma->nome) }}</td>   
+                                <td>{{ __(isset($item->turma) ? $item->turma->nome : '' ) }}</td>   
                                 <td>{{ __($item->periodo_semanal) }}</td>
                                 <td class="text-right">
                                     <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>

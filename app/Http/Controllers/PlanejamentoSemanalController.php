@@ -120,7 +120,11 @@ class PlanejamentoSemanalController extends Controller
             <table width="100%">
                 <tr>
                     <td width="15%">ANO: '. $obj->ano .' </td>
-                    <td width="30%">TURMA: '. $obj->turma->nome .' </td>
+                    <td width="30%">TURMA: ';
+                                        
+                    $nomeTurma = isset($obj->turma) ? $obj->turma->nome : ' ';
+                    
+            $html = $html . $nomeTurma .' </td>
                     <td >PROFESSOR(A): '. $obj->professor->nome .' </td>
                 </tr>
                 <tr>

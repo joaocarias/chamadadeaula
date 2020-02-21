@@ -55,7 +55,7 @@ $title = "Planejamento Semanal";
                         </div>
 
                         <div class="col-md-4">
-                            Turma: <strong>{{ __($planejamento->turma->nome)  }}</strong>
+                            Turma: <strong>{{ __(isset($planejamento->turma) ? $planejamento->turma->nome : '' )  }}</strong>
                         </div>
 
                         <div class="col-md-6">
