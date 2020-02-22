@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;
 use League\Flysystem\Plugin\PluginNotFoundException;
 use Mpdf\Mpdf;
 use App\Enum\Trimestres;
+use Facade\FlareClient\Http\Response;
+use Facade\FlareClient\Stacktrace\File;
+use Illuminate\Support\Facades\Storage;
 
 class PlanejamentoSemanalController extends Controller
 {
@@ -111,7 +114,25 @@ class PlanejamentoSemanalController extends Controller
 
     public function store_upload(Request $request)
     {
-        //$this->validacao($request);
+        $regras = [
+            'ano' => 'required',
+            'turma_id' => 'required',
+            'tema_do_projeto' => 'required|min:3|max:254',
+            'periodo_semanal' => 'required',      
+            'arquivo' => 'required',     
+        ];
+
+        $messagens = [
+            'required' => 'Campo Obrigatório!',
+            'ano.required' => 'Campo Obrigatório!',
+            'turma_id' => 'Campo Obrigatório!',
+            'tema_do_projeto.required' => 'Campo Obrigatório!',
+            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
+            'periodo_semanal.required' => 'Campo Obrigatório!',
+            'arquivo.required' => 'Campo Obrigatório',            
+        ];
+
+        $request->validate($regras, $messagens);
 
         $obj = new PlanejamentoSemanal();
         $obj->ano = $request->input('ano');
@@ -127,15 +148,18 @@ class PlanejamentoSemanalController extends Controller
             $obj->arquivo = $request->file('arquivo')->store('planejamento_semanal');            
         }
 
-        echo '<pre>';
-        var_dump($obj);
-        echo '</pre>';
+        $obj->tipo_documento = 'DIGITAL';
+
+        $obj->usuario_cadastro = Auth::user()->id;
+
+        $obj->save();
+        return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Realizado com Sucesso!'));
+
     }
 
     public function imprimir($id){
         $obj = PlanejamentoSemanal::find($id);
-
-
+        
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
         ]);
@@ -352,6 +376,12 @@ class PlanejamentoSemanalController extends Controller
     public function show($id)
     {
         $obj = PlanejamentoSemanal::find($id);
+        if(isset($obj)){
+            if($obj->tipo_documento == 'DIGITAL'){
+                $obj->url_arquivo = Storage::url($obj->arquivo);
+            }
+        }
+            
         return view('planejamento_semanal.show', ['planejamento' => $obj]);
     }
 

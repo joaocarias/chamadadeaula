@@ -87,10 +87,16 @@ $title = "Planejamento Semanal";
 
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{ route('imprimir_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
+                            @if($planejamento->tipo_documento == 'DIGITAL')
+                              <a href="{{ __($planejamento->url_arquivo) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
+                            @else
+                                <a href="{{ route('imprimir_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
+                            @endif
+
                             
                             <a href="{{ route('editar_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
                             <a href="#" class="btn btn-danger btn-sm btn-excluir" id-planejamento="{{ $planejamento->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
+                            
                         </div>
                     </div>
                 </div>
