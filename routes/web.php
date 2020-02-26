@@ -80,7 +80,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/planejamentossemanais/imprimir/{id}', 'PlanejamentoSemanalController@imprimir')->name('imprimir_planejamento_semanal');
   Route::get('/planejamentossemanais/upload', 'PlanejamentoSemanalController@uploadarquivo')->name('upload_planejamento_semanal');
   Route::post('/planejamentossemanais/storeupload', 'PlanejamentoSemanalController@store_upload')->name('cadastrar_upload_planejamento_semanal');
+  Route::put('/planejamentossemanais/updateuploadarquivo/{id}', 'PlanejamentoSemanalController@update_upload_arquivo')->name('update_upload_arquivo');
+  Route::get('/planejamentossemanais/editarupload/{id}', 'PlanejamentoSemanalController@edit_upload')->name('editar_upload_planejamento_semanal');
   
+  
+  //edit_upload
 
   /* Relatos */
   Route::get('/relatos', 'RelatoController@index')->name('relatos');

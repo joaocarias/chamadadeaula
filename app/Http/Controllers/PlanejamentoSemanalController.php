@@ -398,6 +398,93 @@ class PlanejamentoSemanalController extends Controller
         ]);
     }
 
+    public function edit_upload($id)
+    {
+        $turmas = Turma::orderBy('nome', 'ASC')->get();
+
+        $planejamento = PlanejamentoSemanal::find($id);
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+
+        return view('planejamento_semanal.edit_upload_arquivo', [
+            'planejamento' => $planejamento, 'turmas' => $turmas,
+            'professores' => $professores
+        ]);
+    }
+
+    public function update_upload_arquivo(Request $request, $id)
+    {
+        $regras = [
+            'ano' => 'required',
+            'turma_id' => 'required',
+            'tema_do_projeto' => 'required|min:3|max:254',
+            'periodo_semanal' => 'required',  
+        ];
+
+        $messagens = [
+            'required' => 'Campo Obrigatório!',
+            'ano.required' => 'Campo Obrigatório!',
+            'turma_id' => 'Campo Obrigatório!',
+            'tema_do_projeto.required' => 'Campo Obrigatório!',
+            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
+            'periodo_semanal.required' => 'Campo Obrigatório!',
+        ];
+
+        $request->validate($regras, $messagens);
+
+        $planejamento = PlanejamentoSemanal::find($id);
+        if (isset($planejamento)) {
+            $stringLog = "";
+
+            if ($planejamento->ano != $request->input('ano')) {
+                $stringLog = $stringLog . " - ano: " . $planejamento->ano;
+                $planejamento->ano = $request->input('ano');
+            }
+
+            if ($planejamento->turma_id != $request->input('turma_id')) {
+                $stringLog = $stringLog . " - turma_id: " . $planejamento->turma_id;
+                $planejamento->turma_id = $request->input('turma_id');
+            }
+
+            if ($planejamento->tema_do_projeto != $request->input('tema_do_projeto')) {
+                $stringLog = $stringLog . " - tema_do_projeto: " . $planejamento->tema_do_projeto;
+                $planejamento->tema_do_projeto = $request->input('tema_do_projeto');
+            }
+
+            if ($planejamento->professor_id != $request->input('professor_id')) {
+                $stringLog = $stringLog . " - professor_id: " . $planejamento->professor_id;
+                $planejamento->professor_id = $request->input('professor_id');
+            }
+
+            if ($planejamento->trimestre != $request->input('trimestre')) {
+                $stringLog = $stringLog . " - trimestre: " . $planejamento->trimestre;
+                $planejamento->trimestre = $request->input('trimestre');
+            }
+
+            if ($planejamento->periodo_semanal != $request->input('periodo_semanal')) {
+                $stringLog = $stringLog . " - periodo_semanal: " . $planejamento->periodo_semanal;
+                $planejamento->periodo_semanal = $request->input('periodo_semanal');
+            }
+
+            if ($planejamento->idade_faixa_etaria != $request->input('idade_faixa_etaria')) {
+                $stringLog = $stringLog . " - idade_faixa_etaria: " . $planejamento->idade_faixa_etaria;
+                $planejamento->idade_faixa_etaria = $request->input('idade_faixa_etaria');
+            }
+            
+            $planejamento->save();
+            if ($stringLog != "") {
+                $log = new LogSistema();
+                $log->tabela = "planejamento_semanals";
+                $log->tabela_id = $planejamento->id;
+                $log->acao = "EDICAO";
+                $log->descricao = $stringLog;
+                $log->usuario_id = Auth::user()->id;
+                $log->save();
+            }
+            return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Atualizado com Sucesso!'));
+        }
+        return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Não Atualizado!'));
+    }
+
     public function update(Request $request, $id)
     {
         $this->validacao($request);
