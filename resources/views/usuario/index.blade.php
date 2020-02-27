@@ -50,7 +50,7 @@
                                 <th scope="col">#</th>                                                  
                                 <th scope="col">Nome</th> 
                                 <th scope="col">UserName</th>
-                                                     
+                                <th scope="col">Tipo Profissional</th>
                             <tr>
                         </thead>
                         <tbody>
@@ -58,7 +58,8 @@
                             <tr>                           
                                 <td scope="row">{{ __($item->id) }}</td>                                                                   
                                 <td>{{ __($item->name) }}</td>                                
-                                <td>{{ __($item->username) }}</td>                                
+                                <td>{{ __($item->username) }}</td>   
+                                <td>{{ __(isset($item->profissional) && isset($item->profissional->tipoProfissional) ? $item->profissional->tipoProfissional->nome : '' ) }}                             
                                 
                             </tr>
                             @endforeach
