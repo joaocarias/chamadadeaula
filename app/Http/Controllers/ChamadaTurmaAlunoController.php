@@ -31,7 +31,8 @@ class ChamadaTurmaAlunoController extends Controller
             $data = date("d/m/Y");
         }         
         $turmaProfessor = TurmaProfessor::find($id);
-        $turmaAlunos = TurmaAluno::where('turma_id', $turmaProfessor->turma_id)->get();
+        $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turmaProfessor->turma_id)->where('alunos.deleted_at',null)->get();
+
         $chamadaTurmaAluno = ChamadaTurmaAluno::where('turma_id', $turmaProfessor->turma_id)
                             ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))   
                             ->get();   
