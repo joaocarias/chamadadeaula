@@ -14,8 +14,10 @@ class CreateRegrasTable extends Migration
     public function up()
     {
         Schema::create('regras', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            
+            $table->string('nome');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

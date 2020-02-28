@@ -130,7 +130,48 @@
         </div>
     </div>
 
+    @if(isset($usuario) && ($usuario->id > 0) )
 
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">{{ __('Permissões de Acesso') }}</div>
+                <div class="card-body">
+                    
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>       
+                                <th scope="col">#</th>                                                  
+                                <th scope="col">Permissão</th>                                                                
+                                <th scope="col"></th>
+                            <tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                              <td scope="row"></td>
+                              <td></td>
+                              <td></td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="#" class="btn btn-dark btn-sm btn-inserir-permissao"> <i class="far fa-edit"></i> Inserir Permissão </a>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @endif
 
 </div>
 
