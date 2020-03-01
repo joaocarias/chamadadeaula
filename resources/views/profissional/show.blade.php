@@ -196,6 +196,40 @@
     </div>
 </div>
 
+<!-- Modal Associar Permissao -->
+<div class="modal fade" id="ModalInserirPermissao" tabindex="-1" role="dialog" aria-labelledby="TituloModalInserirPermissao" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TituloModalInserirPermissao"><i class="fas fa-exclamation-circle"></i> Inserir Permissão!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('inserir_regra_usuario') }}" class="form-inserir-permissao">
+                    @csrf
+
+                    <input type="hidden" name="profissional_id" id="profissional_id" value="{{ __($profissional->id) }}">
+                    
+                    <input type="hidden" name="user_id" id="user_id" value="{{ __($profissional->user_id) }}">
+                    <select id="regra_id" type="text" class="select2 form-control @error('regra_id') is-invalid @enderror" name="regra_id" required>
+                        <option selected disabled>-- Selecione --</option>
+
+                        @foreach($regras as $regra)
+                        <option value="{{ __($regra->id) }}">{{ __($regra->nome) }}</option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button href="#" class="btn btn-primary url-modal-submit-form-permisao"> <i class="far fa-save"></i> Inserir Permissão</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"> <i class="fas fa-ban"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('javascript')
@@ -204,6 +238,14 @@
         var id = $(this).attr('id-profissional');
         $('#url-modal-excluir').attr('href', '/profissionais/excluir/' + id);
         $('#ModalExcluir').modal('show');
+    });
+
+    $('.btn-inserir-permissao').on('click', function() {
+        $('#ModalInserirPermissao').modal('show');
+    });
+
+    $('.url-modal-submit-form-permisao').on('click', function() {
+        $('.form-inserir-permissao').submit();
     });
 </script>
 @endsection

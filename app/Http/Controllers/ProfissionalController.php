@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\LogSistema;
 use App\Profissional;
+use App\Regra;
+use App\RegraUser;
 use App\TipoProfissional;
 use App\User;
+use App\UserRegra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -70,12 +73,34 @@ class ProfissionalController extends Controller
     {
         $obj = Profissional::find($id);
         $usuario = null;
-        
+        $permissoes = null;
+        $regras = Regra::all(); 
+
         if(isset($obj)){
              $usuario = User::find($obj->user_id);
+             
+             if(isset($obj) && isset($obj->user_id) && !is_null($obj->user_id) && $obj->user_id > 0){
+                 $permissoes = UserRegra::join('users', 'user_id', '=', 'users.id')
+                                             ->join('regras', 'regra_id', '=', 'regras.id')
+                                             ->where('user_id', $obj->user_id)
+                                             ->where('users.deleted_at', null)
+                                             ->where('regras.deleted_at', null)
+                                             ->get();
+             }             
         }
         
-         return view('profissional.show', ['profissional' => $obj , 'usuario' => $usuario]);
+        return view('profissional.show', ['profissional' => $obj , 'usuario' => $usuario,
+                    'premissoes' => $permissoes, 'regras' => $regras]);
+    }
+
+    public function inserirregrauser(Request $request){
+        $obj = new UserRegra();
+        $obj->user_id = $request->input('user_id');
+        $obj->regra_id = $request->input('regra_id');           
+        $obj->usuario_cadastro = Auth::user()->id;
+        $obj->save();
+        
+        return redirect()->route('exibir_profissional', ['id' =>  $request->input('profissional_id') ])->withStatus(__('Cadastro Realizado com Sucesso!'));
     }
 
     public function edit($id)
