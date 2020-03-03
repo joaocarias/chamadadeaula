@@ -137,7 +137,7 @@
             <div class="card mb-3">
                 <div class="card-header">{{ __('Permissões de Acesso') }}</div>
                 <div class="card-body">
-                    
+                    @if(!is_null($permissoes))
                     <table class="table table-hover">
                         <thead>
                             <tr>       
@@ -147,14 +147,20 @@
                             <tr>
                         </thead>
                         <tbody>
-                          <tr>
-                              <td scope="row"></td>
-                              <td></td>
-                              <td></td>
-                          </tr>
+                        @foreach($permissoes as $p)
+                            <tr>
+                                <td scope="row">{{ __($p->regra_id) }}</td>
+                                <td>{{ __((isset($p->nome)) ? $p->nome : '' ) }}</td>
+                                    <td class="text-right">
+                                    <a href="{{ route('remover_regra_user', [ 'idregra' => $p->id, 'iduser' => $p->user_id]) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> &nbsp; Remover</a>
+                                    </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
-
+                    @else
+                    <p>Usuário sem permissões cadastradas.</p>
+                    @endif
                     <div class="row">
                         <div class="col-md-12">
                             <hr />

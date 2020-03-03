@@ -6,6 +6,7 @@ use App\LogSistema;
 use App\Profissional;
 use App\Regra;
 use App\RegraUser;
+use App\RegraUsers;
 use App\TipoProfissional;
 use App\User;
 use App\UserRegra;
@@ -74,7 +75,8 @@ class ProfissionalController extends Controller
         $obj = Profissional::find($id);
         $usuario = null;
         $permissoes = null;
-        $regras = Regra::all(); 
+        $regrasDoUser = UserRegra::select('regra_id')->where('user_id', $obj->user_id)->get();
+        $regras = Regra::whereNotIn('id', $regrasDoUser)->get(); 
 
         if(isset($obj)){
              $usuario = User::find($obj->user_id);
@@ -85,12 +87,12 @@ class ProfissionalController extends Controller
                                              ->where('user_id', $obj->user_id)
                                              ->where('users.deleted_at', null)
                                              ->where('regras.deleted_at', null)
-                                             ->get();
+                                             ->get();                                    
              }             
         }
         
-        return view('profissional.show', ['profissional' => $obj , 'usuario' => $usuario,
-                    'premissoes' => $permissoes, 'regras' => $regras]);
+          return view('profissional.show', ['profissional' => $obj , 'usuario' => $usuario,
+                      'permissoes' => $permissoes, 'regras' => $regras]);
     }
 
     public function inserirregrauser(Request $request){
@@ -101,6 +103,27 @@ class ProfissionalController extends Controller
         $obj->save();
         
         return redirect()->route('exibir_profissional', ['id' =>  $request->input('profissional_id') ])->withStatus(__('Cadastro Realizado com Sucesso!'));
+    }
+
+    public function removerregrauser(Request $request){
+        $regrasDoUser = UserRegra::where('regra_id', $request->input('idregra'))
+                                ->where('user_id', $request->input('iduser'))
+                                ->get();
+        
+        $profissional = Profissional::where("user_id", $request->input('iduser'))->get();
+
+        foreach($regrasDoUser as $r){            
+            $log = new LogSistema();
+            $log->tabela = "regra_user";
+            $log->tabela_id = $r->regra_id;
+            $log->acao = "user_id = " . $r->user_id . ", regra_id = " . $r->regra_id;
+            $log->descricao = "EXCLUSAO";
+            $log->usuario_id = Auth::user()->id;
+            $log->save();
+            $r->delete();
+        }
+        
+        return redirect()->route('exibir_profissional', ['id' => $profissional->id]);        
     }
 
     public function edit($id)
@@ -212,7 +235,6 @@ class ProfissionalController extends Controller
             $usuario = User::find($obj->user_id);
             if(isset($usuario)){
                 $usuario->delete();
-               // $usuario->save();
                 $log = new LogSistema();
                 $log->tabela = "users";
                 $log->tabela_id = $usuario->id;
