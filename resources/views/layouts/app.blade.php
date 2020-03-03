@@ -93,7 +93,7 @@
                         </li>
                         @endif
 
-                        @if(isset(Auth::user()->profissional->tipoProfissional->id) && in_array("ADMINISTRADOR", $permissoes) && Auth::user()->profissional->tipoProfissional->id == 1)
+                        @if(isset(Auth::user()->profissional->tipoProfissional->id) && Auth::user()->profissional->tipoProfissional->id == 1 && in_array("ADMINISTRADOR", $permissoes) )
 
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
