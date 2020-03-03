@@ -1,10 +1,10 @@
 <?php
-    // $permissoes = Array();
-    // if(isset(Auth::user()->regras)){
-    //     foreach(Auth::user()->regras as $regra){
-    //         array_push($permissoes, $regra->nome);
-    //     }
-    // }    
+    $permissoes = Array();
+    if(isset(Auth::user()->regras)){
+        foreach(Auth::user()->regras as $regra){
+            array_push($permissoes, $regra->nome);
+        }
+    }    
 ?>
 
 <!doctype html>
@@ -58,7 +58,7 @@
                     <ul class="navbar-nav mr-auto">
                         @Auth
 
-                        <!-- if(in_array("ADMINISTRADOR", $permissoes)) -->
+                        @if(in_array("ADMINISTRADOR", $permissoes))
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ __('Cadastro') }} <span class="caret"></span>
@@ -91,9 +91,9 @@
                                 </a>
                             </div>
                         </li>
-                        <!-- endif
+                        @endif
 
-                        if(isset(Auth::user()->profissional->tipoProfissional->id) && Auth::user()->profissional->tipoProfissional->id == 1) -->
+                        @if(isset(Auth::user()->profissional->tipoProfissional->id) && Auth::user()->profissional->tipoProfissional->id == 1)
 
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -115,9 +115,9 @@
                                 </a>
                             </div>
                         </li>
-                        <!-- endif
+                        @endif
 
-                        if(in_array("ADMINISTRADOR", $permissoes)) -->
+                        @if(in_array("ADMINISTRADOR", $permissoes))
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ __('Sistema') }} <span class="caret"></span>
@@ -130,7 +130,7 @@
                                 </a>
                             </div>
                         </li>
-                        <!-- endif -->
+                        @endif
                         @endauth
                     </ul>
 
