@@ -137,7 +137,7 @@
             <div class="card mb-3">
                 <div class="card-header">{{ __('Permissões de Acesso') }}</div>
                 <div class="card-body">
-                    @if(!is_null($permissoes))
+                    @if(!is_null($permissoes) && count($permissoes))
                     <table class="table table-hover">
                         <thead>
                             <tr>       
@@ -149,7 +149,7 @@
                         <tbody>
                         @foreach($permissoes as $p)
                             <tr>
-                                <td scope="row">{{ __($p->regra_id) }}</td>
+                                <td scope="row">{{ __($p->id) }}</td>
                                 <td>{{ __((isset($p->nome)) ? $p->nome : '' ) }}</td>
                                     <td class="text-right">
                                     <a href="{{ route('remover_regra_user', [ 'idregra' => $p->id, 'iduser' => $p->user_id]) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> &nbsp; Remover</a>

@@ -110,7 +110,7 @@ class ProfissionalController extends Controller
                                 ->where('user_id', $request->input('iduser'))
                                 ->get();
         
-        $profissional = Profissional::where("user_id", $request->input('iduser'))->get();
+        $profissional = Profissional::where("user_id", $request->input('iduser'))->first();
 
         foreach($regrasDoUser as $r){            
             $log = new LogSistema();
@@ -122,7 +122,7 @@ class ProfissionalController extends Controller
             $log->save();
             $r->delete();
         }
-        
+              
         return redirect()->route('exibir_profissional', ['id' => $profissional->id]);        
     }
 

@@ -11,6 +11,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(EscolaTableSeeder::class);
         // $this->call(TipoProfissionalTable::class);
         // $this->call(TurnoTable::class);
-        $this->call(RegrasTableSeeder::class);
+        $this->call(RegrasTable::class);
     }
 }
