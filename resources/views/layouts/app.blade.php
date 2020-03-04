@@ -174,6 +174,10 @@
             @yield('content')
         </main>
 
+        <div class="footer">
+            <p>Versão 1.0 ©2020 - Desenvolvido por João Carias de França </p>
+        </div>
+
     </div>
 
     <!-- Scripts -->

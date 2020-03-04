@@ -81,10 +81,11 @@ class ChamadaTurmaAlunoController extends Controller
     }
 
     public function imprimir($id){
-        return view('chamada_turma_aluno.imprimir');
+        $turma = TurmaAluno::find($id);
+        return view('chamada_turma_aluno.imprimir', ['turma' => $turma]);
     }
 
-    public function imprimirpdf(){
+    public function imprimirpdf($id){
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
             
