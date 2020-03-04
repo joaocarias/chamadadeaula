@@ -42,7 +42,7 @@
     <link href="{{ asset('css/site.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body class="body-style-for-footer">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -174,8 +174,8 @@
             @yield('content')
         </main>
 
-        <div class="footer">
-            <p>Versão 1.0 ©2020 - Desenvolvido por João Carias de França </p>
+        <div class="main-footer">
+            <p>Versão 1.0 ©2020 - Desenvolvido por João Carias de França</p>
         </div>
 
     </div>
