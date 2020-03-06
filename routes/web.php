@@ -69,8 +69,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/chamadas/registro/{id}', 'ChamadaTurmaAlunoController@registro')->name('registro_chamada'); 
   Route::get('/chamadas/imprimir/{id}', 'ChamadaTurmaAlunoController@imprimir')->name('imprimir_registro_chamada'); 
   Route::get('/chamadas/imprimirpdf/{id}', 'ChamadaTurmaAlunoController@imprimirpdf')->name('imprimir_pdf');
+  Route::get('/chamadas/justificar/{id}', 'ChamadaTurmaAlunoController@justificar')->name('justificar'); 
+  Route::get('/chamadas/excluirjustificativa/{id}', 'ChamadaTurmaAlunoController@excluirjustificativa')->name('excluirjustificativa'); 
   
-
+  
   /* Planejamento Semanal */
   Route::get('/planejamentossemanais', 'PlanejamentoSemanalController@index')->name('planejamentossemanais');
   Route::get('/planejamentossemanais/novo', 'PlanejamentoSemanalController@create')->name('novo_planejamento_semanal');
