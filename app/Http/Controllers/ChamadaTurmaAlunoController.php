@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ChamadaTurmaAluno;
+use App\Escola;
 use App\Justificativa;
 use App\Lib\Auxiliar;
 use App\LogSistema;
@@ -13,45 +14,51 @@ use App\TurmaProfessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mpdf\Mpdf;
+use App\Lib\Meses;
 
 class ChamadaTurmaAlunoController extends Controller
 {
     public function index()
-    {       
+    {
         $profissional = Profissional::where('user_id', Auth::user()->id)->first();
         $turmas = null;
-        if(isset($profissional)){
+        if (isset($profissional)) {
             $turmas = TurmaProfessor::where('professor_id', $profissional->id)->get();
         }
 
         return view('chamada_turma_aluno.index', ['turmas' => $turmas]);
     }
 
-    public function registro(Request $request, $id){
+    public function registro(Request $request, $id)
+    {
         $data = $request->input('data');
-        if(!isset($data)){
+        if (!isset($data)) {
             $data = date("d/m/Y");
-        }         
+        }
         $turmaProfessor = TurmaProfessor::find($id);
-        $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turmaProfessor->turma_id)->where('alunos.deleted_at',null)->get();
+        $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turmaProfessor->turma_id)->where('alunos.deleted_at', null)->get();
 
         $chamadaTurmaAluno = ChamadaTurmaAluno::where('turma_id', $turmaProfessor->turma_id)
-                            ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))   
-                            ->get();   
+            ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))
+            ->get();
 
         $justificativaTurma = Justificativa::where('turma_id', $turmaProfessor->turma_id)
-                                ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))   
-                                ->get();   
-      
-        return view('chamada_turma_aluno.registro', 
-            ['turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos
-            , 'data' => $data, 'chamadaTurmaAluno' => $chamadaTurmaAluno, 
-            'justificativaTurma' => $justificativaTurma ]);
+            ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))
+            ->get();
+
+        return view(
+            'chamada_turma_aluno.registro',
+            [
+                'turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos, 'data' => $data, 'chamadaTurmaAluno' => $chamadaTurmaAluno,
+                'justificativaTurma' => $justificativaTurma
+            ]
+        );
     }
 
-    public function excluirjustificativa(Request $request, $id){
+    public function excluirjustificativa(Request $request, $id)
+    {
         $justicativa = Justificativa::find($id);
-        if($justicativa){
+        if ($justicativa) {
             $justicativa->delete();
             $log = new LogSistema();
             $log->tabela = "justificativa";
@@ -62,48 +69,50 @@ class ChamadaTurmaAlunoController extends Controller
             $log->save();
         }
 
-        return redirect()->route('registro_chamada', [ 'id' => $request->input('idturma') ])->withStatus(__('Cadastro Excluído com Sucesso!'));
+        return redirect()->route('registro_chamada', ['id' => $request->input('idturma')])->withStatus(__('Cadastro Excluído com Sucesso!'));
     }
-    
+
     public function store(Request $request)
-    {       
+    {
         $data_da_aula = Auxiliar::converterDataParaUSA($request->input("data"));
         $turma_id = $request->input("id_turma");
         $presentes = $request->input("presentes");
         $faltosos = $request->input("faltosos");
         $usuario_cadastro = $request->input("id_usuario");
 
-        if(isset($presentes) && !is_null($presentes)){
-            foreach($presentes as $aluno_id){
+        if (isset($presentes) && !is_null($presentes)) {
+            foreach ($presentes as $aluno_id) {
                 $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, "P", $usuario_cadastro);
             }
         }
 
-        if(isset($faltosos) && !is_null($faltosos)){
-            foreach($faltosos as $aluno_id){
+        if (isset($faltosos) && !is_null($faltosos)) {
+            foreach ($faltosos as $aluno_id) {
                 $this->registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, 'F', $usuario_cadastro);
             }
         }
-        
+
         return http_response_code(200);
     }
 
-    private function registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, $situacao, $usuario_cadastro ){
+    private function registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, $situacao, $usuario_cadastro)
+    {
         ChamadaTurmaAluno::where("data_da_aula", $data_da_aula)
-                                ->where("turma_id", $turma_id)
-                                ->where("aluno_id", $aluno_id)
-                                ->delete();
-            
-            $obj = new ChamadaTurmaAluno();
-            $obj->situacao = $situacao;
-            $obj->data_da_aula = $data_da_aula;
-            $obj->turma_id = $turma_id;
-            $obj->aluno_id = $aluno_id;
-            $obj->usuario_cadastro = $usuario_cadastro;
-            $obj->save();
+            ->where("turma_id", $turma_id)
+            ->where("aluno_id", $aluno_id)
+            ->delete();
+
+        $obj = new ChamadaTurmaAluno();
+        $obj->situacao = $situacao;
+        $obj->data_da_aula = $data_da_aula;
+        $obj->turma_id = $turma_id;
+        $obj->aluno_id = $aluno_id;
+        $obj->usuario_cadastro = $usuario_cadastro;
+        $obj->save();
     }
 
-    public function justificar(Request $request, $id){
+    public function justificar(Request $request, $id)
+    {
         $turmaProfessor = TurmaProfessor::find($id);
         $obj = new Justificativa();
         $obj->justificativa = $request->input("justificativa");
@@ -112,51 +121,173 @@ class ChamadaTurmaAlunoController extends Controller
         $obj->usuario_cadastro = Auth::user()->id;
         $obj->save();
 
-        return redirect()->route('registro_chamada', [ 'id' => $turmaProfessor->id ])->withStatus(__('Cadastro realizado com Sucesso!'));
+        return redirect()->route('registro_chamada', ['id' => $turmaProfessor->id])->withStatus(__('Cadastro realizado com Sucesso!'));
     }
 
-    public function imprimir($id){
-        $turma = TurmaAluno::find($id);        
-        $de = "01/" . date('m') . "/" . date('Y');;
-        $ate = date("t") ."/" . date('m') . "/" . date('Y');
-        return view('chamada_turma_aluno.imprimir', ['turma' => $turma, 'de' => $de, 'ate' => $ate]);
+    public function imprimir($id)
+    {
+        $turmaProfessor = TurmaProfessor::find($id);
+        $turmaAluno = TurmaAluno::where('turma_id', $turmaProfessor->turma_id)->first();
+        $mes = date('m');
+        $ano =  date('Y');
+
+        return view('chamada_turma_aluno.imprimir', ['turma' => $turmaAluno, 'mes' => $mes, 'ano' => $ano]);
     }
 
-    public function imprimirpdf($id){
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
+    public function imprimirpdf(Request $request, $id)
+    {
+        $corBranca = "#FFFFFF";
+        $corCinza = "#848484";
+        $turmaAluno = TurmaAluno::find($id);
+                
+        $mes = $request->input('mes');
+        $ano = $request->input('ano');
+        $escola = Escola::first();
+
+        if (isset($turmaAluno)) {
+            $primeiroDia = 1;
+
+            $data_incio = mktime(0, 0, 0, $mes , 1 , $ano);
+            $ultimoDia = date('t',$data_incio);
+  
+            $turma = Turma::find($turmaAluno->turma_id);
+            $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turma->id)->where('alunos.deleted_at', null)->get();
+            $mpdf = new Mpdf([
+                'mode' => 'utf-8',
+                'orientation' => 'L'
+            ]);
+
+            $cabecalhoTabela = 
+                '<th class="bordasimples">Nº</th>
+                <th class="bordasimples">Aluno</th>';
             
-            'orientation' => 'L'
-        ]);
-        
-        $html = '
+            for($j = $primeiroDia; $j <= $ultimoDia; $j++){
+                $dia = mktime(0, 0, 0, $mes , $j , $ano);
+                $diaDaSemana = date('w', $dia);
+                $corCelula = $corBranca;
+                if($diaDaSemana == 0 || $diaDaSemana == 6)
+                    $corCelula = $corCinza;
+
+                $cabecalhoTabela = $cabecalhoTabela 
+                    . '<th class="bordasimples" style="background-color:'.$corCelula.'">'. $j .'</th>';
+            }
+
+            $cabecalhoTabela = $cabecalhoTabela 
+                    . '<th class="bordasimples">T.F.</th>';
+
+            
+            $i = 1;
+            $corpoTabela = "";
+            foreach($turmaAlunos as $t){
+                $totalDeFaltas = 0;
+                $corpoLinha = '';
+                for($j = $primeiroDia; $j <= $ultimoDia; $j++){
+                    $dia = mktime(0, 0, 0, $mes , $j , $ano);
+                    $diaDaSemana = date('w', $dia);
+                    $corCelula = $corBranca;
+                    if($diaDaSemana == 0 || $diaDaSemana == 6)
+                        $corCelula = $corCinza;
+                        
+                    $dataDaAula = "$ano-$mes-$j";
+
+                    $justificativa = Justificativa::
+                                where('turma_id', $turmaAluno->turma_id)
+                                ->where('data_da_aula', $dataDaAula )                                
+                                ->first();
+
+                    $presenca = "";
+                    if(!isset($justificativa)){
+                        $chamada = ChamadaTurmaAluno::
+                            where('turma_id', $turmaAluno->turma_id)
+                            ->where('aluno_id', $t->aluno_id)
+                            ->where('data_da_aula', $dataDaAula )                                
+                            ->first();
+                        
+                        if(isset($chamada)){
+                            if($chamada->situacao == "F"){
+                                $totalDeFaltas++;
+                                $presenca = "X";
+                            }else if($chamada->situacao == "P"){
+                                $presenca = "P";
+                            }   
+                        }  
+                    }
+
+                    $corpoLinha = $corpoLinha 
+                        . '<td class="bordasimples" style="background-color:'.$corCelula.'" > '. $presenca .' </td>';
+                            
+                }
+
+                $corpoTabela = $corpoTabela
+                    .'<tr class="bordasimples">
+                        <td class="bordasimples">' .$i.'</td>
+                        <td class="bordasimples">' . $t->aluno->nome . '</td>
+                        '.$corpoLinha.
+                        '<td class="bordasimples"> '.$totalDeFaltas.'</td>';  
+                    '</tr>';
+                
+                $i++;
+            }
+            
+            $html = '
 
         <html>
         <head>
         
+        <style>
+            .bordasimples {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }   
+        </style>
+
         </head>
-        <body>
+        <body style="font-family: serif; font-size: 11pt;">
         <table width="100%">
             <tr>
-               <td width="20%" style="text-align:left">Imagem</td>
-               <td width="60%" style="text-align:center">
-               PREFEITURA MUNICIPAL DE NATAL
-<br /> SECRETARIA MUNICIPAL DE EDUCAÇÃO
-<br /> CMEI NOSSA SENHORA DE LOURDES
-<br /> Rua João XXIII, 1.215, Mãe Luíza, CEP 59.014-000 – Natal, RN – Telefone: 3615-2901
-<br /> FREQUÊNCIA DO MÊS DE MARÇO – 2020
-<br /> TURMA: BERÇÁRIO II A 
-               
+                <td width="15%" style="text-align:left"> <img src="/imgs/brasao.jpg" width="140"> </td>
+               <td width="70%" style="text-align:center">
+               ' . mb_strtoupper($escola->prefeitura, "utf-8") . '
+                    <br /> ' . mb_strtoupper($escola->secretaria, "utf-8") . '
+                    <br /> <b>' . mb_strtoupper($escola->escola, "utf-8") . '</b>
+                    <br /> ' . $escola->endereco->logradouro . ', ' . $escola->endereco->numero . ', ' . $escola->endereco->bairro . ', CEP ' . $escola->endereco->cep . ' – ' . $escola->endereco->cidade . ', ' . $escola->endereco->uf . ' – Telefone: ' . $escola->telefone . '
+                    <br /> FREQUÊNCIA DO MÊS DE <b>' . mb_strtoupper(Meses::getMes($mes), "utf-8") . ' – ' . $ano . '</b>
+                    <br /> <b>TURMA: ' . mb_strtoupper( $turma->nome , "utf-8") . '</b>                
                </td>
-               <td width="20%" style="text-align:right">Imagem</td>
+               <td width="15%" style="text-align:right"> <img src="/imgs/cmei.jfif" width="140"> </td>
             </tr>
         </table>
         
+        <table width="100%" class="bordasimples" style="font-family: serif; font-size: 10pt;">
+            <tr class="bordasimples">
+                '.$cabecalhoTabela.'
+            </tr>       
+            '.$corpoTabela.'     
+        </table>
+
+        <table width="100%" style="font-family: serif; font-size: 10pt; text-align:right ">
+            <tr>
+                <td>"X" = FALTAS DAS CRIANÇAS</td>
+            </tr>
+            <tr>
+                <td>"P" = PRESENÇAS DAS CRIANÇAS </td>
+            </tr>
+        </table>
+
+        <br />
+       
+        <table width="100%" style="font-family: serif; font-size: 10pt; text-align:right ">
+            <tr>
+                <td>PROFESSOR(A): _____________________________________________________________________ </td>
+            </tr>            
+        </table>
+
         </body>
         </html>';
-        
-        $mpdf->WriteHTML($html);
-        
-        $mpdf->Output();
+
+            $mpdf->WriteHTML($html);
+
+            $mpdf->Output();
+        }
     }
 }

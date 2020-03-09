@@ -12,7 +12,7 @@ class TurmaAluno extends Model
 
     public function turma()
     {
-        return $this->belongsToMany('App\Turma', 'turma_id', 'id');
+        return $this->belongsTo('App\Turma', 'turma_id', 'id');
     }
 
     public function aluno()
