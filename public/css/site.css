@@ -18,7 +18,8 @@ html {
   left: 0;
   padding: 1rem;
   text-align: center;
-  /*background-color: #efefef;*/
+  background-color: #c63f40;
+  color: #ffffff;
 }
 
 .main-footer-login {
@@ -27,4 +28,8 @@ html {
 
 .background-transparente {
   background: transparent !important;
+}
+
+.bg-vermelho-cmei {   
+  background-color: #c63f40;
 }
