@@ -23,7 +23,10 @@ class ChamadaTurmaAlunoController extends Controller
         $profissional = Profissional::where('user_id', Auth::user()->id)->first();
         $turmas = null;
         if (isset($profissional)) {
-            $turmas = TurmaProfessor::where('professor_id', $profissional->id)->get();
+            $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
+                                ->where('professor_id', $profissional->id)
+                                ->orderby('turmas.nome', 'ASC')
+                                ->get();
         }
 
         return view('chamada_turma_aluno.index', ['turmas' => $turmas]);
@@ -36,7 +39,7 @@ class ChamadaTurmaAlunoController extends Controller
             $data = date("d/m/Y");
         }
         $turmaProfessor = TurmaProfessor::find($id);
-        $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turmaProfessor->turma_id)->where('alunos.deleted_at', null)->get();
+        $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turmaProfessor->turma_id)->where('alunos.deleted_at', null)->orderby('alunos.nome')->get();
 
         $chamadaTurmaAluno = ChamadaTurmaAluno::where('turma_id', $turmaProfessor->turma_id)
             ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))
@@ -151,7 +154,7 @@ class ChamadaTurmaAlunoController extends Controller
             $ultimoDia = date('t',$data_incio);
   
             $turma = Turma::find($turmaAluno->turma_id);
-            $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turma->id)->where('alunos.deleted_at', null)->get();
+            $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turma->id)->where('alunos.deleted_at', null)->orderby('alunos.nome', 'asc')->get();
             $mpdf = new Mpdf([
                 'mode' => 'utf-8',
                 'orientation' => 'L'
@@ -174,7 +177,6 @@ class ChamadaTurmaAlunoController extends Controller
 
             $cabecalhoTabela = $cabecalhoTabela 
                     . '<th class="bordasimples">T.F.</th>';
-
             
             $i = 1;
             $corpoTabela = "";
@@ -194,7 +196,7 @@ class ChamadaTurmaAlunoController extends Controller
                                 where('turma_id', $turmaAluno->turma_id)
                                 ->where('data_da_aula', $dataDaAula )                                
                                 ->first();
-
+                               
                     $presenca = "";
                     if(!isset($justificativa)){
                         $chamada = ChamadaTurmaAluno::
@@ -211,10 +213,12 @@ class ChamadaTurmaAlunoController extends Controller
                                 $presenca = "P";
                             }   
                         }  
+                    }else{
+                        $presenca = " | ";
                     }
 
                     $corpoLinha = $corpoLinha 
-                        . '<td class="bordasimples" style="background-color:'.$corCelula.'" > '. $presenca .' </td>';
+                        . '<td class="bordasimples" style="background-color:'.$corCelula.'; text-align:center;" > '. $presenca .' </td>';
                             
                 }
 
@@ -223,12 +227,19 @@ class ChamadaTurmaAlunoController extends Controller
                         <td class="bordasimples">' .$i.'</td>
                         <td class="bordasimples">' . $t->aluno->nome . '</td>
                         '.$corpoLinha.
-                        '<td class="bordasimples"> '.$totalDeFaltas.'</td>';  
+                        '<td class="bordasimples" style="text-align:center;" > '.$totalDeFaltas.'</td>';  
                     '</tr>';
                 
                 $i++;
             }
             
+            $justificativas = Justificativa::where('turma_id', $turmaAluno->turma_id)->orderby('data_da_aula')->get();
+            $textoJustificativas = "";
+            foreach($justificativas as $item){
+                $textoJustificativas = $textoJustificativas 
+                    . Auxiliar::converterDataParaBR($item->data_da_aula) . " - " . $item->justificativa . '<br />';
+            }
+
             $html = '
 
         <html>
@@ -242,10 +253,10 @@ class ChamadaTurmaAlunoController extends Controller
         </style>
 
         </head>
-        <body style="font-family: serif; font-size: 11pt;">
+        <body style="font-family: serif; font-size: 10pt;">
         <table width="100%">
             <tr>
-                <td width="15%" style="text-align:left"> <img src="/imgs/brasao.jpg" width="140"> </td>
+                <td width="15%" style="text-align:left"> <img src="/imgs/brasao.jpg" width="110"> </td>
                <td width="70%" style="text-align:center">
                ' . mb_strtoupper($escola->prefeitura, "utf-8") . '
                     <br /> ' . mb_strtoupper($escola->secretaria, "utf-8") . '
@@ -254,7 +265,7 @@ class ChamadaTurmaAlunoController extends Controller
                     <br /> FREQUÊNCIA DO MÊS DE <b>' . mb_strtoupper(Meses::getMes($mes), "utf-8") . ' – ' . $ano . '</b>
                     <br /> <b>TURMA: ' . mb_strtoupper( $turma->nome , "utf-8") . '</b>                
                </td>
-               <td width="15%" style="text-align:right"> <img src="/imgs/cmei.jfif" width="140"> </td>
+               <td width="15%" style="text-align:right"> <img src="/imgs/cmei.jfif" width="110"> </td>
             </tr>
         </table>
         
@@ -265,7 +276,7 @@ class ChamadaTurmaAlunoController extends Controller
             '.$corpoTabela.'     
         </table>
 
-        <table width="100%" style="font-family: serif; font-size: 10pt; text-align:right ">
+        <table width="100%" style="font-family: serif; font-size: 9pt; text-align:right ">
             <tr>
                 <td>"X" = FALTAS DAS CRIANÇAS</td>
             </tr>
@@ -274,6 +285,8 @@ class ChamadaTurmaAlunoController extends Controller
             </tr>
         </table>
 
+        '.$textoJustificativas.' 
+        
         <br />
        
         <table width="100%" style="font-family: serif; font-size: 10pt; text-align:right ">

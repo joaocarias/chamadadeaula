@@ -33,3 +33,44 @@ html {
 .bg-vermelho-cmei {   
   background-color: #c63f40;
 }
+
+.btn-vermelho-cmei {
+  color: #fff;
+  background-color: #971011;
+  border-color: #971011;
+}
+
+.btn-vermelho-cmei:hover {
+  color: #fff;
+  background-color: #971011;
+  border-color: #971011;
+}
+
+.btn-vermelho-cmei:focus,
+.btn-vermelho-cmei.focus {
+  color: #fff;
+  background-color: #971011;
+  border-color: #971011;
+  box-shadow: 0 0 0 0.2rem rgba(247, 8, 8, 0.5);
+}
+
+.btn-vermelho-cmei.disabled,
+.btn-vermelho-cmei:disabled {
+  color: #fff;
+  background-color: #971011;
+  border-color: #971011;
+}
+
+.btn-vermelho-cmei:not(:disabled):not(.disabled):active,
+.btn-vermelho-cmei:not(:disabled):not(.disabled).active,
+.show > .btn-vermelho-cmei.dropdown-toggle {
+  color: #fff;
+  background-color: #971011;
+  border-color: #971011;
+}
+
+.btn-vermelho-cmei:not(:disabled):not(.disabled):active:focus,
+.btn-vermelho-cmei:not(:disabled):not(.disabled).active:focus,
+.show > .btn-vermelho-cmei.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(247, 8, 8, 0.5);
+}
