@@ -22,11 +22,23 @@ class ChamadaTurmaAlunoController extends Controller
     {
         $profissional = Profissional::where('user_id', Auth::user()->id)->first();
         $turmas = null;
-        if (isset($profissional)) {
+        
+        $permissoes = Array();        
+        if(isset(Auth::user()->regras)){
+            foreach(Auth::user()->regras as $regra){
+                array_push($permissoes, $regra->nome);
+            }        
+        }
+
+        if(in_array("ADMINISTRADOR", $permissoes)){
+            $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
+                                ->orderby('turmas.nome', 'ASC')
+                                ->get('turma_professors.*');
+        }else if (isset($profissional)) {
             $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
                                 ->where('professor_id', $profissional->id)
                                 ->orderby('turmas.nome', 'ASC')
-                                ->get();
+                                ->get('turma_professors.*');
         }
 
         return view('chamada_turma_aluno.index', ['turmas' => $turmas]);
