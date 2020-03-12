@@ -32,11 +32,13 @@ class ChamadaTurmaAlunoController extends Controller
 
         if(in_array("ADMINISTRADOR", $permissoes)){
             $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
+                                ->where('turmas.deleted_at', null)
                                 ->orderby('turmas.nome', 'ASC')
                                 ->get('turma_professors.*');
         }else if (isset($profissional)) {
             $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
                                 ->where('professor_id', $profissional->id)
+                                ->where('turmas.deleted_at', null)
                                 ->orderby('turmas.nome', 'ASC')
                                 ->get('turma_professors.*');
         }
