@@ -49,8 +49,8 @@ class TurmaController extends Controller
         $professores = Profissional::where('tipo_profissional_id', 1)->whereNotIn('id', $professoresDaTurma)->orderBy('nome', 'asc')->get();  
         $alunos = Aluno::whereNotIn('id', $alunosDaTurma)->orderBy('nome', 'asc')->get();
 
-        $turmaProfessor = TurmaProfessor::join('profissionals', 'turma_professors.professor_id', '=', 'profissionals.id')->where('turma_id', $id)->where('profissionals.deleted_at',null)->get();
-        $turmaAluno = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $id)->where('alunos.deleted_at',null)->get();
+        $turmaProfessor = TurmaProfessor::join('profissionals', 'turma_professors.professor_id', '=', 'profissionals.id')->where('turma_id', $id)->where('profissionals.deleted_at',null)->get('turma_professors.*');
+        $turmaAluno = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $id)->where('alunos.deleted_at',null)->get('turma_alunos.*');
 
         return view('turma.show', ['turma' => $turma, 'professores' => $professores
                     , 'turmaProfessor' => $turmaProfessor, 'alunos' => $alunos, 'turmaAluno' => $turmaAluno]);

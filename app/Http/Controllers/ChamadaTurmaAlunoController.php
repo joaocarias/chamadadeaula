@@ -152,6 +152,7 @@ class ChamadaTurmaAlunoController extends Controller
 
             $data_incio = mktime(0, 0, 0, $mes , 1 , $ano);
             $ultimoDia = date('t',$data_incio);
+            $data_final = mktime(0, 0, 0, $mes , $ultimoDia , $ano);
   
             $turma = Turma::find($turmaAluno->turma_id);
             $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turma->id)->where('alunos.deleted_at', null)->orderby('alunos.nome', 'asc')->get();
@@ -233,7 +234,10 @@ class ChamadaTurmaAlunoController extends Controller
                 $i++;
             }
             
-            $justificativas = Justificativa::where('turma_id', $turmaAluno->turma_id)->orderby('data_da_aula')->get();
+            $justificativas = Justificativa::where('turma_id', $turmaAluno->turma_id)
+                                ->whereBetween('data_da_aula', [date('Y-m-d', $data_incio), date('Y-m-d', $data_final)])
+                                ->orderby('data_da_aula')->get();
+
             $textoJustificativas = "";
             foreach($justificativas as $item){
                 $textoJustificativas = $textoJustificativas 
