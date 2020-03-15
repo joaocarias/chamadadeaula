@@ -243,14 +243,14 @@
         </div>
     </div>
 </div>
-
-
     @endsection
 
     @section('javascript')
     <script type="text/javascript">
         var presentes = [];
         var faltosos = [];
+        var removerPresentes = [];
+        var removerFaltosos = [];
         var data = "{{ $data }}";
         var id_turma = "{{ $turmaProfessor->turma_id }}";
 
@@ -263,7 +263,6 @@
                 todayHighlight: true,
             });
 
-
             $('.btn-chamada').on('click', function() {
                 event.preventDefault();
 
@@ -271,35 +270,78 @@
                 var id_aluno = $(this).attr('id-aluno');
 
                 if ($(this).hasClass("btn-p")) {
-                    $(this).removeClass("btn-outline-success").addClass("btn-success");
-                    $('.btn-f-' + id_btn).removeClass("btn-danger").addClass("btn-outline-danger");
+                    console.log("btn-p");
+                    if($(this).hasClass("btn-outline-success")){
+                        $(this).removeClass("btn-outline-success").addClass("btn-success");
+                    
+                        $('.btn-f-' + id_btn).removeClass("btn-danger").addClass("btn-outline-danger");
 
-                    if (presentes.indexOf(id_aluno) < 0) {
-                        presentes.push(id_aluno);
-                    }
+                        if (presentes.indexOf(id_aluno) < 0) {
+                            presentes.push(id_aluno);
+                        }
 
-                    if (faltosos.indexOf(id_aluno) >= 0) {
-                        faltosos.splice(faltosos.indexOf(id_aluno), 1);
+                        if (faltosos.indexOf(id_aluno) >= 0) {
+                            faltosos.splice(faltosos.indexOf(id_aluno), 1);
+                        }         
+
+                        if (removerPresentes.indexOf(id_aluno) >= 0) {
+                            removerPresentes.splice(removerPresentes.indexOf(id_aluno), 1);
+                        }           
+                    }else if($(this).hasClass("btn-success")){
+                        $(this).removeClass("btn-success").addClass("btn-outline-success");
+                    
+                        if (presentes.indexOf(id_aluno) >= 0) {
+                            presentes.splice(presentes.indexOf(id_aluno), 1);
+                        } 
+
+                        if (removerPresentes.indexOf(id_aluno) < 0) {
+                            removerPresentes.push(id_aluno);
+                        }
                     }
+                    console.log(presentes);
+                    console.log(faltosos);
+                    console.log(removerPresentes);
+                    console.log(removerFaltosos);                    
                 }
 
-                if ($(this).hasClass("btn-f")) {
-                    $(this).removeClass("btn-outline-danger").addClass("btn-danger");
-                    $('.btn-p-' + id_btn).removeClass("btn-success").addClass("btn-outline-success");
+                if ($(this).hasClass("btn-f")) {                   
 
-                    if (faltosos.indexOf(id_aluno) < 0) {
-                        faltosos.push(id_aluno);
-                    }
+                    if($(this).hasClass("btn-outline-danger")){
+                        $(this).removeClass("btn-outline-danger").addClass("btn-danger");
+                        $('.btn-p-' + id_btn).removeClass("btn-success").addClass("btn-outline-success");
 
-                    if (presentes.indexOf(id_aluno) >= 0) {
-                        presentes.splice(presentes.indexOf(id_aluno), 1);
+                        if (faltosos.indexOf(id_aluno) < 0) {
+                            faltosos.push(id_aluno);
+                        }
+
+                        if (presentes.indexOf(id_aluno) >= 0) {
+                            presentes.splice(presentes.indexOf(id_aluno), 1);
+                        }
+
+                        if (removerFaltosos.indexOf(id_aluno) >= 0) {
+                            removerFaltosos.splice(removerFaltosos.indexOf(id_aluno), 1);
+                        }
+                    }else if($(this).hasClass("btn-danger")){
+                        $(this).removeClass("btn-danger").addClass("btn-outline-danger");
+                    
+                        if (faltosos.indexOf(id_aluno) >= 0) {
+                            faltosos.splice(faltosos.indexOf(id_aluno), 1);
+                        }
+
+                        if (removerFaltosos.indexOf(id_aluno) < 0) {
+                            removerFaltosos.push(id_aluno);
+                        }                         
                     }
+                    console.log(presentes);
+                    console.log(faltosos);
+                    console.log(removerPresentes);
+                    console.log(removerFaltosos);
                 }
             });
 
             $('.btn-salvar-chamada').on('click', function() {
                 $('#modal-salvar').modal('show');
-                if (presentes.length <= 0 && faltosos <= 0) {
+                if (presentes.length <= 0 && faltosos.length <= 0 && removerPresentes.length <= 0 && removerFaltosos.length <= 0) {
                     $('#pergunta-salvar-chamada').addClass("d-none");
                     $('#msg-chamada-nao-realizada').removeClass("d-none");
                     $('#error-registro').addClass("d-none");
@@ -325,7 +367,9 @@
                         data: data,
                         id_turma: id_turma,
                         presentes: presentes,
+                        remover_presentes: removerPresentes,
                         faltosos: faltosos,
+                        remover_faltosos: removerFaltosos,
                         id_usuario: "{{ Auth::user()->id }}",
                     })
                     .done(function(data) {

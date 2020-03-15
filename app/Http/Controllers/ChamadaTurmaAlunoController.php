@@ -94,8 +94,22 @@ class ChamadaTurmaAlunoController extends Controller
         $data_da_aula = Auxiliar::converterDataParaUSA($request->input("data"));
         $turma_id = $request->input("id_turma");
         $presentes = $request->input("presentes");
+        $removerPresentes = $request->input("remover_presentes");
         $faltosos = $request->input("faltosos");
+        $removerFaltosos = $request->input("remover_faltosos");
         $usuario_cadastro = $request->input("id_usuario");
+
+        if(isset($removerPresentes) && !is_null($removerPresentes)){
+            foreach($removerPresentes as $aluno_id){
+                $this->removerChamdaBD($data_da_aula, $turma_id, $aluno_id);
+            }
+        }
+
+        if(isset($removerFaltosos) && !is_null($removerFaltosos)){
+            foreach($removerFaltosos as $aluno_id){
+                $this->removerChamdaBD($data_da_aula, $turma_id, $aluno_id);
+            }
+        }
 
         if (isset($presentes) && !is_null($presentes)) {
             foreach ($presentes as $aluno_id) {
@@ -112,12 +126,19 @@ class ChamadaTurmaAlunoController extends Controller
         return http_response_code(200);
     }
 
+    private function removerChamdaBD($data_da_aula, $turma_id, $aluno_id){
+        ChamadaTurmaAluno::where("data_da_aula", $data_da_aula)
+                            ->where("turma_id", $turma_id)
+                            ->where("aluno_id", $aluno_id)
+                            ->delete();
+    }
+
     private function registrarChamadaBD($data_da_aula, $turma_id, $aluno_id, $situacao, $usuario_cadastro)
     {
         ChamadaTurmaAluno::where("data_da_aula", $data_da_aula)
-            ->where("turma_id", $turma_id)
-            ->where("aluno_id", $aluno_id)
-            ->delete();
+                            ->where("turma_id", $turma_id)
+                            ->where("aluno_id", $aluno_id)
+                            ->delete();
 
         $obj = new ChamadaTurmaAluno();
         $obj->situacao = $situacao;
