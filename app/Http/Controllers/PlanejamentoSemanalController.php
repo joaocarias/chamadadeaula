@@ -20,13 +20,24 @@ class PlanejamentoSemanalController extends Controller
 {
     public function index()
     {
-        $professor = Profissional::where('tipo_profissional_id', '1')
-            ->where('user_id', Auth::user()->id)
-            ->first();
+        $permissoes = Array();        
+        if(isset(Auth::user()->regras)){
+            foreach(Auth::user()->regras as $regra){
+                array_push($permissoes, $regra->nome);
+            }        
+        }
 
-        $list = (isset($professor)) ? PlanejamentoSemanal::where('professor_id', $professor->id)
-            ->orderBy('created_at', 'DESC')->get()
-            : null;
+        if(in_array("ADMINISTRADOR", $permissoes)){
+            $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
+        }else {
+            $professor = Profissional::where('tipo_profissional_id', '1')
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            $list = (isset($professor)) ? PlanejamentoSemanal::where('professor_id', $professor->id)
+                ->orderBy('created_at', 'DESC')->get()
+                : null;
+        }
 
         return view('planejamento_semanal.index', ['planejamentos' => $list]);
     }
@@ -106,6 +117,12 @@ class PlanejamentoSemanalController extends Controller
 
         $obj->como_sera_a_avaliacao = $request->input('como_sera_a_avaliacao');
 
+        $obj->conteudo_eu_o_outro_e_o_nos = $request->input('conteudo_eu_o_outro_e_o_nos');
+        $obj->conteudo_corpo_gestos_e_movimentos = $request->input('conteudo_corpo_gestos_e_movimentos');
+        $obj->conteudo_tracos_sons_cores_e_formas = $request->input('conteudo_tracos_sons_cores_e_formas');
+        $obj->conteudo_escuta_fala_pensamento_e_imaginacao = $request->input('conteudo_escuta_fala_pensamento_e_imaginacao');
+        $obj->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes = $request->input('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes');
+
         $obj->usuario_cadastro = Auth::user()->id;
 
         $obj->save();
@@ -182,7 +199,7 @@ class PlanejamentoSemanalController extends Controller
             </tr>
         </table>
         
-        <div style="text-align:center; margin-top: 30px">
+        <div style="text-align:center; margin-top: 20px">
             <u>PLANEJAMENTO SEMANAL</u>
         </div>
 
@@ -266,7 +283,7 @@ class PlanejamentoSemanalController extends Controller
                     $eu_o_outro_e_o_nos = ($obj->eu_o_outro_e_o_nos == 1)
                             ? ' ( X ) ' : '( &nbsp; )';
                     $html = $html . $eu_o_outro_e_o_nos .'
-                    <u>EU, O OUTRO E O NÓS:</u>
+                    <u>EU, O OUTRO E O NÓS:</u> '.$obj->conteudo_eu_o_outro_e_o_nos.'
                 </td>
             </tr>
             <tr>
@@ -275,7 +292,7 @@ class PlanejamentoSemanalController extends Controller
                     $corpo_gestos_e_movimentos = ($obj->corpo_gestos_e_movimentos == 1)
                             ? ' ( X ) ' : '( &nbsp; )';
                     $html = $html . $corpo_gestos_e_movimentos .'
-                    <u>CORPO, GESTOS E MOVIMENTOS:</u>
+                    <u>CORPO, GESTOS E MOVIMENTOS:</u> '.$obj->conteudo_corpo_gestos_e_movimentos.'
                 </td>
             </tr>
             <tr>
@@ -284,7 +301,7 @@ class PlanejamentoSemanalController extends Controller
                     $tracos_sons_cores_e_formas = ($obj->tracos_sons_cores_e_formas == 1)
                             ? ' ( X ) ' : '( &nbsp; )';
                     $html = $html . $tracos_sons_cores_e_formas .'
-                    <u>TRAÇOS, SONS, CORES E FORMAS:</u>
+                    <u>TRAÇOS, SONS, CORES E FORMAS:</u> '.$obj->conteudo_tracos_sons_cores_e_formas.'
                 </td>
             </tr>
             <tr>
@@ -293,7 +310,7 @@ class PlanejamentoSemanalController extends Controller
                     $escuta_fala_pensamento_e_imaginacao = ($obj->escuta_fala_pensamento_e_imaginacao == 1)
                             ? ' ( X ) ' : '( &nbsp; )';
                     $html = $html . $escuta_fala_pensamento_e_imaginacao .'
-                    <u>ESCUTA, FALA, PENSAMENTO E IMAGINAÇÃO:</u>
+                    <u>ESCUTA, FALA, PENSAMENTO E IMAGINAÇÃO:</u> '.$obj->conteudo_escuta_fala_pensamento_e_imaginacao.'
                 </td>
             </tr>
             <tr>
@@ -302,7 +319,7 @@ class PlanejamentoSemanalController extends Controller
                     $espaco_tempo_qunatidades_relacoes_e_transformacoes = ($obj->espaco_tempo_qunatidades_relacoes_e_transformacoes == 1)
                             ? ' ( X ) ' : '( &nbsp; )';
                     $html = $html . $espaco_tempo_qunatidades_relacoes_e_transformacoes .'
-                    <u>ESPAÇO, TEMPO, QUANTIDADES, RELAÇÕES E TRANSFORMAÇÕES:</u>
+                    <u>ESPAÇO, TEMPO, QUANTIDADES, RELAÇÕES E TRANSFORMAÇÕES:</u> '.$obj->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes.'
                 </td>
             </tr>                                     
         </table> 
@@ -560,6 +577,31 @@ class PlanejamentoSemanalController extends Controller
             if ($planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes != (!is_null($request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes')) ? $request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes') : 0)) {
                 $stringLog = $stringLog . " - espaco_tempo_qunatidades_relacoes_e_transformacoes: " . !is_null($request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes')) ? $request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes') : 0;
                 $planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes = !is_null($request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes')) ? $request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes') : 0;
+            }
+
+            if ($planejamento->conteudo_eu_o_outro_e_o_nos != $request->input('conteudo_eu_o_outro_e_o_nos'))  {
+                $stringLog = $stringLog . " - conteudo_eu_o_outro_e_o_nos: " . $request->input('conteudo_eu_o_outro_e_o_nos') ;
+                $planejamento->conteudo_eu_o_outro_e_o_nos = $request->input('conteudo_eu_o_outro_e_o_nos') ;
+            }
+
+            if ($planejamento->conteudo_corpo_gestos_e_movimentos != $request->input('conteudo_corpo_gestos_e_movimentos')) {
+                $stringLog = $stringLog . " - conteudo_corpo_gestos_e_movimentos: " . $request->input('conteudo_corpo_gestos_e_movimentos');
+                $planejamento->conteudo_corpo_gestos_e_movimentos = $request->input('conteudo_corpo_gestos_e_movimentos');
+            }
+
+            if ($planejamento->conteudo_tracos_sons_cores_e_formas != $request->input('conteudo_tracos_sons_cores_e_formas')) {
+                $stringLog = $stringLog . " - conteudo_tracos_sons_cores_e_formas: " . $request->input('conteudo_tracos_sons_cores_e_formas') ;
+                $planejamento->conteudo_tracos_sons_cores_e_formas = $request->input('conteudo_tracos_sons_cores_e_formas');
+            }
+
+            if ($planejamento->conteudo_escuta_fala_pensamento_e_imaginacao != $request->input('conteudo_escuta_fala_pensamento_e_imaginacao')) {
+                $stringLog = $stringLog . " - conteudo_escuta_fala_pensamento_e_imaginacao: " . $request->input('conteudo_escuta_fala_pensamento_e_imaginacao') ;
+                $planejamento->conteudo_escuta_fala_pensamento_e_imaginacao = $request->input('conteudo_escuta_fala_pensamento_e_imaginacao');
+            }
+
+            if ($planejamento->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes != $request->input('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes')) {
+                $stringLog = $stringLog . " - conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes: " . $request->input('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes');
+                $planejamento->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes = $request->input('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes');
             }
 
             if ($planejamento->metodologia != $request->input('metodologia')) {

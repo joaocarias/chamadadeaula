@@ -1,10 +1,14 @@
 <?php
+
+use App\Enum\Trimestres;
+
 $permissoes = array();
 if (isset(Auth::user()->regras)) {
     foreach (Auth::user()->regras as $regra) {
         array_push($permissoes, $regra->nome);
     }
 }
+
 ?>
 
 @extends('layouts.app')
@@ -39,16 +43,16 @@ if (isset(Auth::user()->regras)) {
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>                                                        
-                                <th scope="col">Turma</th>                               
+                                <th scope="col">#</th>
+                                <th scope="col">Turma</th>
                                 <th scope="col"></th>
                             <tr>
                         </thead>
                         <tbody>
                             @foreach ($turmas as $item)
                             <tr>
-                                <td scope="row">{{ __($item->turma_id) }}</td>                                                              
-                                <td>{{ __($item->turma->nome) }}</td>                                
+                                <td scope="row">{{ __($item->turma_id) }}</td>
+                                <td>{{ __($item->turma->nome) }}</td>
                                 <td class="text-right">
                                     <a href="{{ route('registro_chamada', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="fas fa-book-reader"></i> &nbsp; Chamada</a>
                                     <a href="{{ route('imprimir_registro_chamada', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="fas fa-print"></i> &nbsp; Imprimir</a>
@@ -59,7 +63,7 @@ if (isset(Auth::user()->regras)) {
                     </table>
 
                     @else
-                        <p>Não foi possível encontrar turma cadastrada!</p>
+                    <p>Não foi possível encontrar turma cadastrada!</p>
                     @endif
 
                 </div>
@@ -89,6 +93,47 @@ if (isset(Auth::user()->regras)) {
                                 <td>{{ __($item->nome) }}</td>
                                 <td class="text-right">
                                     <a href="{{ route('exibir_aluno', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if(isset($planejamentos))
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">{{ __('Últimos Planejamentos Cadastrados') }}</div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Ano</th>
+                                <th scope="col">Trimestre</th>
+                                <th scope="col">Conteúdo Tema</th>
+                                <th scope="col">turma</th>
+                                <th scope="col">Professor</th>
+                                <th scope="col">Período/Semana</th>
+                                <th scope="col"></th>
+                            <tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($planejamentos as $item)
+                            <tr>
+                                <td>{{ __($item->ano) }}</td>
+                                <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>
+                                <td>{{ __($item->tema_do_projeto) }}</td>
+                                <td>{{ __(isset($item->turma) ? $item->turma->nome : '' ) }}</td>
+                                <td>{{ __(isset($item->professor) ? $item->professor->nome : '' ) }}</td>
+                                <td>{{ __($item->periodo_semanal) }}</td>
+                                <td class="text-right">
+                                    <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>
                             </tr>
                             @endforeach

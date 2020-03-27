@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Aluno;
+use App\PlanejamentoSemanal;
 use App\Profissional;
 use App\TurmaProfessor;
 use Illuminate\Http\Request;
@@ -28,6 +29,23 @@ class HomeController extends Controller
                                     ->get();
         }
 
-        return view('home', ['alunos' => $alunos, 'turmas' => $turmas]);
+        $permissoes = Array();        
+        if(isset(Auth::user()->regras)){
+            foreach(Auth::user()->regras as $regra){
+                array_push($permissoes, $regra->nome);
+            }        
+        }
+
+        if(in_array("ADMINISTRADOR", $permissoes)){
+            $planejamentos = PlanejamentoSemanal::orderBy('created_at', 'DESC')->take(5)->get();
+        }else if (isset($profissional)){            
+            $planejamentos = (isset($profissional)) ? PlanejamentoSemanal::where('professor_id', $profissional->id)
+                ->orderBy('created_at', 'DESC')->take(5)->get()
+                : null;
+        }else{
+            $planejamentos = null;
+        }
+
+        return view('home', ['alunos' => $alunos, 'turmas' => $turmas, 'planejamentos' => $planejamentos]);
     }
 }
