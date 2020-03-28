@@ -6,7 +6,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row text-center">
         <div class="col-md-12">
             <h1>{{ __($title) }}</h1>

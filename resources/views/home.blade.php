@@ -14,7 +14,7 @@ if (isset(Auth::user()->regras)) {
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
             @if (session('status'))
@@ -114,24 +114,33 @@ if (isset(Auth::user()->regras)) {
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th scope="col"></th>
                                 <th scope="col">Ano</th>
                                 <th scope="col">Trimestre</th>
-                                <th scope="col">Conteúdo Tema</th>
+                                <th scope="col">Tema do Projeto</th>
                                 <th scope="col">turma</th>
                                 <th scope="col">Professor</th>
                                 <th scope="col">Período/Semana</th>
+                                <th scope="col">Conteúdo/Tema</th>
                                 <th scope="col"></th>
                             <tr>
                         </thead>
                         <tbody>
                             @foreach ($planejamentos as $item)
                             <tr>
+                                <td>@if($item->tipo_documento == 'DIGITAL')
+                                        <i class="fas fa-upload" data-toggle="tooltip" data-placement="top" title="Planejamento Importado"></i>
+                                    @else
+                                        <i class="far fa-file" data-toggle="tooltip" data-placement="top" title="Planejamento Cadastrado no Sistema"> </i>
+                                    @endif                                    
+                                </td>
                                 <td>{{ __($item->ano) }}</td>
                                 <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>
                                 <td>{{ __($item->tema_do_projeto) }}</td>
                                 <td>{{ __(isset($item->turma) ? $item->turma->nome : '' ) }}</td>
                                 <td>{{ __(isset($item->professor) ? $item->professor->nome : '' ) }}</td>
                                 <td>{{ __($item->periodo_semanal) }}</td>
+                                <td>{{ __($item->conteudo_tema) }}</td>
                                 <td class="text-right">
                                     <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>

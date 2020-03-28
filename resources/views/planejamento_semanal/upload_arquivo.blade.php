@@ -6,7 +6,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row text-center">
         <div class="col-md-12">
             <h1>{{ __($title) }}</h1>
@@ -149,8 +149,21 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         </span>
                                         @enderror                                        
                                     </div>
-
+                                    
                                     <div class="col-md-6">
+                                        <label for="conteudo_tema" class="col-form-label">{{ __('* Conteúdo/Tema') }}</label>
+                                        <input id="conteudo_tema" type="text" class="form-control @error('conteudo_tema') is-invalid @enderror" name="conteudo_tema" value="{{ old('conteudo_tema', $planejamento->conteudo_tema ?? '') }}" autocomplete="conteudo_tema" required maxlength="254">
+
+                                        @error('conteudo_tema')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
                                         <label for="arquivo" class="col-form-label">{{ __('* Arquivo') }}</label>
                                         <input id="arquivo" type="file" class="form-control @error('arquivo') is-invalid @enderror" name="arquivo" value="{{ old('arquivo', $planejamento->arquivo ?? '') }}" autocomplete="arquivo" required maxlength="254">
 

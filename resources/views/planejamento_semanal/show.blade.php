@@ -8,7 +8,7 @@ $title = "Planejamento Semanal";
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row text-center">
         <div class="col-md-12">
             <h1>{{ __($title) }}</h1>
@@ -81,6 +81,12 @@ $title = "Planejamento Semanal";
 
                     <div class="row">
                         <div class="col-md-12">
+                            Conteúdo/Tema: <strong>{{ __($planejamento->conteudo_tema)  }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
                             <hr />
                         </div>
                     </div>
@@ -88,7 +94,7 @@ $title = "Planejamento Semanal";
                     <div class="row">
                         <div class="col-md-12">
                             @if($planejamento->tipo_documento == 'DIGITAL')
-                              <a href="{{ __($planejamento->url_arquivo) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
+                              <a href="{{ __('../../armazenamento/'.$planejamento->arquivo) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
                               <a href="{{ route('editar_upload_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
                             @else
                                 <a href="{{ route('imprimir_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>

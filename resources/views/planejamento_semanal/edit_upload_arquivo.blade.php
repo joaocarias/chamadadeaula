@@ -6,7 +6,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row text-center">
         <div class="col-md-12">
             <h1>{{ __($title) }}</h1>
@@ -151,7 +151,16 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         @enderror
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <label for="conteudo_tema" class="col-form-label">{{ __('* Conteúdo/Tema') }}</label>
+                                        <input id="conteudo_tema" type="text" class="form-control @error('conteudo_tema') is-invalid @enderror" name="conteudo_tema" value="{{ old('conteudo_tema', $planejamento->conteudo_tema ?? '') }}" autocomplete="conteudo_tema" required maxlength="254">
 
+                                        @error('conteudo_tema')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <div class="row">

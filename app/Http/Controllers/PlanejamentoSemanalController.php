@@ -20,16 +20,16 @@ class PlanejamentoSemanalController extends Controller
 {
     public function index()
     {
-        $permissoes = Array();        
-        if(isset(Auth::user()->regras)){
-            foreach(Auth::user()->regras as $regra){
+        $permissoes = array();
+        if (isset(Auth::user()->regras)) {
+            foreach (Auth::user()->regras as $regra) {
                 array_push($permissoes, $regra->nome);
-            }        
+            }
         }
 
-        if(in_array("ADMINISTRADOR", $permissoes)){
+        if (in_array("ADMINISTRADOR", $permissoes)) {
             $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
-        }else {
+        } else {
             $professor = Profissional::where('tipo_profissional_id', '1')
                 ->where('user_id', Auth::user()->id)
                 ->first();
@@ -66,7 +66,8 @@ class PlanejamentoSemanalController extends Controller
         ]);
     }
 
-    public function uploadarquivo(){
+    public function uploadarquivo()
+    {
         $turmas = Turma::orderBy('nome', 'ASC')->get();
         $anoAtual = date("Y");
 
@@ -135,8 +136,8 @@ class PlanejamentoSemanalController extends Controller
             'ano' => 'required',
             'turma_id' => 'required',
             'tema_do_projeto' => 'required|min:3|max:254',
-            'periodo_semanal' => 'required',      
-            'arquivo' => 'required',     
+            'periodo_semanal' => 'required',
+            'arquivo' => 'required',
         ];
 
         $messagens = [
@@ -146,7 +147,7 @@ class PlanejamentoSemanalController extends Controller
             'tema_do_projeto.required' => 'Campo Obrigatório!',
             'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
             'periodo_semanal.required' => 'Campo Obrigatório!',
-            'arquivo.required' => 'Campo Obrigatório',            
+            'arquivo.required' => 'Campo Obrigatório',
         ];
 
         $request->validate($regras, $messagens);
@@ -161,8 +162,12 @@ class PlanejamentoSemanalController extends Controller
         $obj->periodo_semanal = $request->input('periodo_semanal');
         $obj->idade_faixa_etaria = $request->input('idade_faixa_etaria');
 
-        if ($request->hasFile('arquivo') && $request->file('arquivo')->isValid()) {         
-            $obj->arquivo = $request->file('arquivo')->store('planejamento_semanal');            
+        $obj->conteudo_tema = $request->input('conteudo_tema');
+
+        if ($request->hasFile('arquivo') && $request->file('arquivo')->isValid()) {
+            $obj->arquivo = $request->file('arquivo')->store('planejamento_semanal');
+            $name = basename($obj->arquivo);  
+            move_uploaded_file($request->file('arquivo'), 'armazenamento/planejamento_semanal/'.$name);            
         }
 
         $obj->tipo_documento = 'DIGITAL';
@@ -171,16 +176,16 @@ class PlanejamentoSemanalController extends Controller
 
         $obj->save();
         return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Realizado com Sucesso!'));
-
     }
 
-    public function imprimir($id){
+    public function imprimir($id)
+    {
         $obj = PlanejamentoSemanal::find($id);
-        
+
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
         ]);
-        
+
         $html = '
 
         <html>
@@ -206,24 +211,24 @@ class PlanejamentoSemanalController extends Controller
         <div style="margin-top: 20px">
             <table width="100%">
                 <tr>
-                    <td width="15%">ANO: '. $obj->ano .' </td>
+                    <td width="15%">ANO: ' . $obj->ano . ' </td>
                     <td width="30%">TURMA: ';
-                                        
-                    $nomeTurma = isset($obj->turma) ? $obj->turma->nome : ' ';
-                    
-            $html = $html . $nomeTurma .' </td>
-                    <td >PROFESSOR(A): '. $obj->professor->nome .' </td>
+
+        $nomeTurma = isset($obj->turma) ? $obj->turma->nome : ' ';
+
+        $html = $html . $nomeTurma . ' </td>
+                    <td >PROFESSOR(A): ' . $obj->professor->nome . ' </td>
                 </tr>
                 <tr>
-                    <td colspan="3">TEMA DO PROJETO: '.$obj->tema_do_projeto . '</td>
+                    <td colspan="3">TEMA DO PROJETO: ' . $obj->tema_do_projeto . '</td>
                 </tr>                
             </table>
             
             <table width="100%">
                 <tr>
-                    <td width="40%">'. Trimestres::descricao($obj->trimestre) .' </td>
+                    <td width="40%">' . Trimestres::descricao($obj->trimestre) . ' </td>
                    
-                    <td >PERÍODO/SEMANA: '. $obj->periodo_semanal .' </td>
+                    <td >PERÍODO/SEMANA: ' . $obj->periodo_semanal . ' </td>
                 </tr>                              
             </table>            
             
@@ -239,17 +244,17 @@ class PlanejamentoSemanalController extends Controller
             <tr>
                 <td width="100%" style="text-align:justify">
                     <u>IDADE/FAIXA ETÁRIA:</u> ';
-                    
-    $faixaEtaria = ($obj->idade_faixa_etaria == 1)
-                            ? " ( X ) Bebês (de zero a um ano e seis meses);
+
+        $faixaEtaria = ($obj->idade_faixa_etaria == 1)
+            ? " ( X ) Bebês (de zero a um ano e seis meses);
                             &emsp;
                             ( &nbsp; ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses)."
-                            : 
-                            "( &nbsp; ) Bebês (de zero a um ano e seis meses);
+            :
+            "( &nbsp; ) Bebês (de zero a um ano e seis meses);
                             &emsp;
                             ( X ) Crianças bem pequenas (um ano e sete meses a três anos e onze meses).";
 
-    $html = $html . $faixaEtaria 
+        $html = $html . $faixaEtaria
             . '
                 </td>
             </tr>                          
@@ -271,7 +276,7 @@ class PlanejamentoSemanalController extends Controller
         <table width="100%" style="margin-top: 15px;">
             <tr>
                 <td width="100%" style="text-align:justify">
-                    <u>CONTEÚDOS/TEMA:</u> '. $obj->conteudo_tema .'
+                    <u>CONTEÚDOS/TEMA:</u> ' . $obj->conteudo_tema . '
                 </td>
             </tr>                                     
         </table> 
@@ -280,46 +285,46 @@ class PlanejamentoSemanalController extends Controller
             <tr>
                 <td width="100%" style="text-align:justify">
                     ';
-                    $eu_o_outro_e_o_nos = ($obj->eu_o_outro_e_o_nos == 1)
-                            ? ' ( X ) ' : '( &nbsp; )';
-                    $html = $html . $eu_o_outro_e_o_nos .'
-                    <u>EU, O OUTRO E O NÓS:</u> '.$obj->conteudo_eu_o_outro_e_o_nos.'
+        $eu_o_outro_e_o_nos = ($obj->eu_o_outro_e_o_nos == 1)
+            ? ' ( X ) ' : '( &nbsp; )';
+        $html = $html . $eu_o_outro_e_o_nos . '
+                    <u>EU, O OUTRO E O NÓS:</u> ' . $obj->conteudo_eu_o_outro_e_o_nos . '
                 </td>
             </tr>
             <tr>
                 <td width="100%" style="text-align:justify">
                     ';
-                    $corpo_gestos_e_movimentos = ($obj->corpo_gestos_e_movimentos == 1)
-                            ? ' ( X ) ' : '( &nbsp; )';
-                    $html = $html . $corpo_gestos_e_movimentos .'
-                    <u>CORPO, GESTOS E MOVIMENTOS:</u> '.$obj->conteudo_corpo_gestos_e_movimentos.'
+        $corpo_gestos_e_movimentos = ($obj->corpo_gestos_e_movimentos == 1)
+            ? ' ( X ) ' : '( &nbsp; )';
+        $html = $html . $corpo_gestos_e_movimentos . '
+                    <u>CORPO, GESTOS E MOVIMENTOS:</u> ' . $obj->conteudo_corpo_gestos_e_movimentos . '
                 </td>
             </tr>
             <tr>
                 <td width="100%" style="text-align:justify">
                     ';
-                    $tracos_sons_cores_e_formas = ($obj->tracos_sons_cores_e_formas == 1)
-                            ? ' ( X ) ' : '( &nbsp; )';
-                    $html = $html . $tracos_sons_cores_e_formas .'
-                    <u>TRAÇOS, SONS, CORES E FORMAS:</u> '.$obj->conteudo_tracos_sons_cores_e_formas.'
+        $tracos_sons_cores_e_formas = ($obj->tracos_sons_cores_e_formas == 1)
+            ? ' ( X ) ' : '( &nbsp; )';
+        $html = $html . $tracos_sons_cores_e_formas . '
+                    <u>TRAÇOS, SONS, CORES E FORMAS:</u> ' . $obj->conteudo_tracos_sons_cores_e_formas . '
                 </td>
             </tr>
             <tr>
                 <td width="100%" style="text-align:justify">
                     ';
-                    $escuta_fala_pensamento_e_imaginacao = ($obj->escuta_fala_pensamento_e_imaginacao == 1)
-                            ? ' ( X ) ' : '( &nbsp; )';
-                    $html = $html . $escuta_fala_pensamento_e_imaginacao .'
-                    <u>ESCUTA, FALA, PENSAMENTO E IMAGINAÇÃO:</u> '.$obj->conteudo_escuta_fala_pensamento_e_imaginacao.'
+        $escuta_fala_pensamento_e_imaginacao = ($obj->escuta_fala_pensamento_e_imaginacao == 1)
+            ? ' ( X ) ' : '( &nbsp; )';
+        $html = $html . $escuta_fala_pensamento_e_imaginacao . '
+                    <u>ESCUTA, FALA, PENSAMENTO E IMAGINAÇÃO:</u> ' . $obj->conteudo_escuta_fala_pensamento_e_imaginacao . '
                 </td>
             </tr>
             <tr>
                 <td width="100%" style="text-align:justify">
                     ';
-                    $espaco_tempo_qunatidades_relacoes_e_transformacoes = ($obj->espaco_tempo_qunatidades_relacoes_e_transformacoes == 1)
-                            ? ' ( X ) ' : '( &nbsp; )';
-                    $html = $html . $espaco_tempo_qunatidades_relacoes_e_transformacoes .'
-                    <u>ESPAÇO, TEMPO, QUANTIDADES, RELAÇÕES E TRANSFORMAÇÕES:</u> '.$obj->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes.'
+        $espaco_tempo_qunatidades_relacoes_e_transformacoes = ($obj->espaco_tempo_qunatidades_relacoes_e_transformacoes == 1)
+            ? ' ( X ) ' : '( &nbsp; )';
+        $html = $html . $espaco_tempo_qunatidades_relacoes_e_transformacoes . '
+                    <u>ESPAÇO, TEMPO, QUANTIDADES, RELAÇÕES E TRANSFORMAÇÕES:</u> ' . $obj->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes . '
                 </td>
             </tr>                                     
         </table> 
@@ -384,21 +389,20 @@ class PlanejamentoSemanalController extends Controller
 
         </body>
         </html>';
-        
-        $mpdf->WriteHTML($html);        
-        $mpdf->Output();
 
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
     }
 
     public function show($id)
     {
         $obj = PlanejamentoSemanal::find($id);
-        if(isset($obj)){
-            if($obj->tipo_documento == 'DIGITAL'){
+        if (isset($obj)) {
+            if ($obj->tipo_documento == 'DIGITAL') {
                 $obj->url_arquivo = Storage::url($obj->arquivo);
             }
         }
-            
+
         return view('planejamento_semanal.show', ['planejamento' => $obj]);
     }
 
@@ -434,7 +438,8 @@ class PlanejamentoSemanalController extends Controller
             'ano' => 'required',
             'turma_id' => 'required',
             'tema_do_projeto' => 'required|min:3|max:254',
-            'periodo_semanal' => 'required',  
+            'periodo_semanal' => 'required',
+            'conteudo_tema' => 'required|min:3',
         ];
 
         $messagens = [
@@ -444,6 +449,8 @@ class PlanejamentoSemanalController extends Controller
             'tema_do_projeto.required' => 'Campo Obrigatório!',
             'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
             'periodo_semanal.required' => 'Campo Obrigatório!',
+            'conteudo_tema' => 'Campo Obrigatório!',
+            'conteudo_tema.min' => 'É necessário no mínimo 3 caracteres!',
         ];
 
         $request->validate($regras, $messagens);
@@ -486,7 +493,12 @@ class PlanejamentoSemanalController extends Controller
                 $stringLog = $stringLog . " - idade_faixa_etaria: " . $planejamento->idade_faixa_etaria;
                 $planejamento->idade_faixa_etaria = $request->input('idade_faixa_etaria');
             }
-            
+
+            if ($planejamento->conteudo_tema != $request->input('conteudo_tema')) {
+                $stringLog = $stringLog . " - conteudo_tema: " . $planejamento->conteudo_tema;
+                $planejamento->conteudo_tema = $request->input('conteudo_tema');
+            }
+
             $planejamento->save();
             if ($stringLog != "") {
                 $log = new LogSistema();
@@ -579,9 +591,9 @@ class PlanejamentoSemanalController extends Controller
                 $planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes = !is_null($request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes')) ? $request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes') : 0;
             }
 
-            if ($planejamento->conteudo_eu_o_outro_e_o_nos != $request->input('conteudo_eu_o_outro_e_o_nos'))  {
-                $stringLog = $stringLog . " - conteudo_eu_o_outro_e_o_nos: " . $request->input('conteudo_eu_o_outro_e_o_nos') ;
-                $planejamento->conteudo_eu_o_outro_e_o_nos = $request->input('conteudo_eu_o_outro_e_o_nos') ;
+            if ($planejamento->conteudo_eu_o_outro_e_o_nos != $request->input('conteudo_eu_o_outro_e_o_nos')) {
+                $stringLog = $stringLog . " - conteudo_eu_o_outro_e_o_nos: " . $request->input('conteudo_eu_o_outro_e_o_nos');
+                $planejamento->conteudo_eu_o_outro_e_o_nos = $request->input('conteudo_eu_o_outro_e_o_nos');
             }
 
             if ($planejamento->conteudo_corpo_gestos_e_movimentos != $request->input('conteudo_corpo_gestos_e_movimentos')) {
@@ -590,12 +602,12 @@ class PlanejamentoSemanalController extends Controller
             }
 
             if ($planejamento->conteudo_tracos_sons_cores_e_formas != $request->input('conteudo_tracos_sons_cores_e_formas')) {
-                $stringLog = $stringLog . " - conteudo_tracos_sons_cores_e_formas: " . $request->input('conteudo_tracos_sons_cores_e_formas') ;
+                $stringLog = $stringLog . " - conteudo_tracos_sons_cores_e_formas: " . $request->input('conteudo_tracos_sons_cores_e_formas');
                 $planejamento->conteudo_tracos_sons_cores_e_formas = $request->input('conteudo_tracos_sons_cores_e_formas');
             }
 
             if ($planejamento->conteudo_escuta_fala_pensamento_e_imaginacao != $request->input('conteudo_escuta_fala_pensamento_e_imaginacao')) {
-                $stringLog = $stringLog . " - conteudo_escuta_fala_pensamento_e_imaginacao: " . $request->input('conteudo_escuta_fala_pensamento_e_imaginacao') ;
+                $stringLog = $stringLog . " - conteudo_escuta_fala_pensamento_e_imaginacao: " . $request->input('conteudo_escuta_fala_pensamento_e_imaginacao');
                 $planejamento->conteudo_escuta_fala_pensamento_e_imaginacao = $request->input('conteudo_escuta_fala_pensamento_e_imaginacao');
             }
 
@@ -688,6 +700,4 @@ class PlanejamentoSemanalController extends Controller
 
         $request->validate($regras, $messagens);
     }
-
-   
 }
