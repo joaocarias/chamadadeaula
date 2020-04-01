@@ -86,7 +86,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/planejamentossemanais/storeupload', 'PlanejamentoSemanalController@store_upload')->name('cadastrar_upload_planejamento_semanal');
   Route::put('/planejamentossemanais/updateuploadarquivo/{id}', 'PlanejamentoSemanalController@update_upload_arquivo')->name('update_upload_arquivo');
   Route::get('/planejamentossemanais/editarupload/{id}', 'PlanejamentoSemanalController@edit_upload')->name('editar_upload_planejamento_semanal');
+  Route::get('/planejamentossemanais/revisar/{id}', 'PlanejamentoSemanalController@edit_revisar')->name('editar_revisar_planejamento_semanal');
+  Route::put('/planejamentossemanais/update_revisar/{id}', 'PlanejamentoSemanalController@update_revisar')->name('revisar_planejamento_semanal');
   
+
+  //revisar_planejamento_semanal
   
   //edit_upload
 

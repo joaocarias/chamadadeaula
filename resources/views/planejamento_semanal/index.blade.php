@@ -71,7 +71,8 @@
                                 <th scope="col">Turma</th> 
                                 <th scope="col">Professor</th>
                                 <th scope="col">Período/Semana</th>  
-                                <th scope="col">Conteúdo/Tema</th>                            
+                                <th scope="col">Conteúdo/Tema</th>      
+                                <td scope="col">Revisão</th>                      
                                 <th scope="col"></th>
                             <tr>
                         </thead>
@@ -91,6 +92,13 @@
                                 <td>{{ __(isset($item->professor) ? $item->professor->nome : '' ) }}</td>   
                                 <td>{{ __($item->periodo_semanal) }}</td>
                                 <td>{{ __($item->conteudo_tema) }}</td>
+                                <td> 
+                                        @if($item->revisado)
+                                            <span class="badge badge-success">Revisado</span>
+                                        @else
+                                            <span class="badge badge-danger">Não Revisado</span>
+                                        @endif
+                                </td>
                                 <td class="text-right">
                                     <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>

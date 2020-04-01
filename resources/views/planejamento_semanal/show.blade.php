@@ -3,6 +3,14 @@
 use App\Enum\Trimestres;
 
 $title = "Planejamento Semanal";
+
+$permissoes = array();
+if (isset(Auth::user()->regras)) {
+    foreach (Auth::user()->regras as $regra) {
+        array_push($permissoes, $regra->nome);
+    }
+}
+
 ?>
 
 @extends('layouts.app')
@@ -49,6 +57,15 @@ $title = "Planejamento Semanal";
                 <div class="card-header">{{ __('Detalhes') }}</div>
 
                 <div class="card-body">
+                    @if($planejamento->tipo_documento == 'DIGITAL')
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <strong>Informação!</strong> Esse planejamento foi cadastrado através de importação de arquivo.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @endif
+
                     <div class="row">
                         <div class="col-md-2">
                             Ano: <strong>{{ __($planejamento->ano)  }}</strong>
@@ -93,12 +110,41 @@ $title = "Planejamento Semanal";
 
                     <div class="row">
                         <div class="col-md-12">
-                            @if($planejamento->tipo_documento == 'DIGITAL')
-                              <a href="{{ __('../../armazenamento/'.$planejamento->arquivo) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
-                              <a href="{{ route('editar_upload_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
+                            @if($planejamento->revisado)
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Reviado Por: <strong>{{ __($planejamento->revisor->name)  }}</strong>
+                                </div>
+
+                                <div class="col-md-6">
+                                    Data da Revisão: <strong>{{ __($planejamento->data_da_revisao)  }}</strong>
+                                </div>
+                            </div>
                             @else
-                                <a href="{{ route('imprimir_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-dark btn-sm" target="_blank" ><i class="fas fa-print"></i> Visualizar </a>
-                                <a href="{{ route('editar_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>                            
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Planejamento Semanal não Revisado.</strong>
+                                @if(in_array("ADMINISTRADOR", $permissoes))
+                                <a href="{{ route('editar_revisar_planejamento_semanal', ['id' => $planejamento->id ]) }}" >Clique aqui para realizar a revisão.</a>
+                                @endif
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if($planejamento->tipo_documento == 'DIGITAL')
+                            <a href="{{ __('../../armazenamento/'.$planejamento->arquivo) }}" class="btn btn-dark btn-sm" target="_blank"><i class="fas fa-print"></i> Visualizar </a>
+                            <a href="{{ route('editar_upload_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
+                            @else
+                            <a href="{{ route('imprimir_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-dark btn-sm" target="_blank"><i class="fas fa-print"></i> Visualizar </a>
+                            <a href="{{ route('editar_planejamento_semanal', ['id' => $planejamento->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
                             @endif
 
                             <a href="#" class="btn btn-danger btn-sm btn-excluir" id-planejamento="{{ $planejamento->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>

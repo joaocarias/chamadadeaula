@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use League\Flysystem\Plugin\PluginNotFoundException;
 use Mpdf\Mpdf;
 use App\Enum\Trimestres;
+use App\Lib\Auxiliar;
 use Facade\FlareClient\Http\Response;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Support\Facades\Storage;
@@ -403,6 +404,10 @@ class PlanejamentoSemanalController extends Controller
             }
         }
 
+        if(isset($obj) && !is_null($obj) && isset($obj->data_da_revisao) && !is_null($obj->data_da_revisao) ){
+            $obj->data_da_revisao = Auxiliar::converterDataTimeBR($obj->data_da_revisao);
+        }
+
         return view('planejamento_semanal.show', ['planejamento' => $obj]);
     }
 
@@ -414,6 +419,19 @@ class PlanejamentoSemanalController extends Controller
         $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
 
         return view('planejamento_semanal.edit', [
+            'planejamento' => $planejamento, 'turmas' => $turmas,
+            'professores' => $professores
+        ]);
+    }
+
+    public function edit_revisar($id)
+    {
+        $turmas = Turma::orderBy('nome', 'ASC')->get();
+
+        $planejamento = PlanejamentoSemanal::find($id);
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+
+        return view('planejamento_semanal.edit_revisar', [
             'planejamento' => $planejamento, 'turmas' => $turmas,
             'professores' => $professores
         ]);
@@ -498,6 +516,141 @@ class PlanejamentoSemanalController extends Controller
                 $stringLog = $stringLog . " - conteudo_tema: " . $planejamento->conteudo_tema;
                 $planejamento->conteudo_tema = $request->input('conteudo_tema');
             }
+
+            $planejamento->save();
+            if ($stringLog != "") {
+                $log = new LogSistema();
+                $log->tabela = "planejamento_semanals";
+                $log->tabela_id = $planejamento->id;
+                $log->acao = "EDICAO";
+                $log->descricao = $stringLog;
+                $log->usuario_id = Auth::user()->id;
+                $log->save();
+            }
+            return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Atualizado com Sucesso!'));
+        }
+        return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Não Atualizado!'));
+    }
+
+    public function update_revisar(Request $request, $id){
+        $this->validacao($request);
+        $planejamento = PlanejamentoSemanal::find($id);
+        if (isset($planejamento)) {
+            $stringLog = "";
+
+            if ($planejamento->ano != $request->input('ano')) {
+                $stringLog = $stringLog . " - ano: " . $planejamento->ano;
+                $planejamento->ano = $request->input('ano');
+            }
+
+            if ($planejamento->turma_id != $request->input('turma_id')) {
+                $stringLog = $stringLog . " - turma_id: " . $planejamento->turma_id;
+                $planejamento->turma_id = $request->input('turma_id');
+            }
+
+            if ($planejamento->tema_do_projeto != $request->input('tema_do_projeto')) {
+                $stringLog = $stringLog . " - tema_do_projeto: " . $planejamento->tema_do_projeto;
+                $planejamento->tema_do_projeto = $request->input('tema_do_projeto');
+            }
+
+            if ($planejamento->professor_id != $request->input('professor_id')) {
+                $stringLog = $stringLog . " - professor_id: " . $planejamento->professor_id;
+                $planejamento->professor_id = $request->input('professor_id');
+            }
+
+            if ($planejamento->trimestre != $request->input('trimestre')) {
+                $stringLog = $stringLog . " - trimestre: " . $planejamento->trimestre;
+                $planejamento->trimestre = $request->input('trimestre');
+            }
+
+            if ($planejamento->periodo_semanal != $request->input('periodo_semanal')) {
+                $stringLog = $stringLog . " - periodo_semanal: " . $planejamento->periodo_semanal;
+                $planejamento->periodo_semanal = $request->input('periodo_semanal');
+            }
+
+            if ($planejamento->idade_faixa_etaria != $request->input('idade_faixa_etaria')) {
+                $stringLog = $stringLog . " - idade_faixa_etaria: " . $planejamento->idade_faixa_etaria;
+                $planejamento->idade_faixa_etaria = $request->input('idade_faixa_etaria');
+            }
+
+            if ($planejamento->conteudo_tema != $request->input('conteudo_tema')) {
+                $stringLog = $stringLog . " - conteudo_tema: " . $planejamento->conteudo_tema;
+                $planejamento->conteudo_tema = $request->input('conteudo_tema');
+            }
+
+            if ($planejamento->periodo_semanal != $request->input('periodo_semanal')) {
+                $stringLog = $stringLog . " - periodo_semanal: " . $planejamento->periodo_semanal;
+                $planejamento->periodo_semanal = $request->input('periodo_semanal');
+            }
+
+            if ($planejamento->eu_o_outro_e_o_nos != (!is_null($request->input('eu_o_outro_e_o_nos')) ? $request->input('eu_o_outro_e_o_nos') : 0)) {
+                $stringLog = $stringLog . " - eu_o_outro_e_o_nos: " . !is_null($request->input('eu_o_outro_e_o_nos')) ? $request->input('eu_o_outro_e_o_nos') : 0;
+                $planejamento->eu_o_outro_e_o_nos = !is_null($request->input('eu_o_outro_e_o_nos')) ? $request->input('eu_o_outro_e_o_nos') : 0;
+            }
+
+            if ($planejamento->corpo_gestos_e_movimentos != (!is_null($request->input('corpo_gestos_e_movimentos')) ? $request->input('corpo_gestos_e_movimentos') : 0)) {
+                $stringLog = $stringLog . " - corpo_gestos_e_movimentos: " . !is_null($request->input('corpo_gestos_e_movimentos')) ? $request->input('corpo_gestos_e_movimentos') : 0;
+                $planejamento->corpo_gestos_e_movimentos = !is_null($request->input('corpo_gestos_e_movimentos')) ? $request->input('corpo_gestos_e_movimentos') : 0;
+            }
+
+            if ($planejamento->tracos_sons_cores_e_formas != (!is_null($request->input('tracos_sons_cores_e_formas')) ? $request->input('tracos_sons_cores_e_formas') : 0)) {
+                $stringLog = $stringLog . " - tracos_sons_cores_e_formas: " . !is_null($request->input('tracos_sons_cores_e_formas')) ? $request->input('tracos_sons_cores_e_formas') : 0;
+                $planejamento->tracos_sons_cores_e_formas = !is_null($request->input('tracos_sons_cores_e_formas')) ? $request->input('tracos_sons_cores_e_formas') : 0;
+            }
+
+            if ($planejamento->escuta_fala_pensamento_e_imaginacao != (!is_null($request->input('escuta_fala_pensamento_e_imaginacao')) ? $request->input('escuta_fala_pensamento_e_imaginacao') : 0)) {
+                $stringLog = $stringLog . " - escuta_fala_pensamento_e_imaginacao: " . !is_null($request->input('escuta_fala_pensamento_e_imaginacao')) ? $request->input('escuta_fala_pensamento_e_imaginacao') : 0;
+                $planejamento->escuta_fala_pensamento_e_imaginacao = !is_null($request->input('escuta_fala_pensamento_e_imaginacao')) ? $request->input('escuta_fala_pensamento_e_imaginacao') : 0;
+            }
+
+            if ($planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes != (!is_null($request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes')) ? $request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes') : 0)) {
+                $stringLog = $stringLog . " - espaco_tempo_qunatidades_relacoes_e_transformacoes: " . !is_null($request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes')) ? $request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes') : 0;
+                $planejamento->espaco_tempo_qunatidades_relacoes_e_transformacoes = !is_null($request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes')) ? $request->input('espaco_tempo_qunatidades_relacoes_e_transformacoes') : 0;
+            }
+
+            if ($planejamento->conteudo_eu_o_outro_e_o_nos != $request->input('conteudo_eu_o_outro_e_o_nos')) {
+                $stringLog = $stringLog . " - conteudo_eu_o_outro_e_o_nos: " . $request->input('conteudo_eu_o_outro_e_o_nos');
+                $planejamento->conteudo_eu_o_outro_e_o_nos = $request->input('conteudo_eu_o_outro_e_o_nos');
+            }
+
+            if ($planejamento->conteudo_corpo_gestos_e_movimentos != $request->input('conteudo_corpo_gestos_e_movimentos')) {
+                $stringLog = $stringLog . " - conteudo_corpo_gestos_e_movimentos: " . $request->input('conteudo_corpo_gestos_e_movimentos');
+                $planejamento->conteudo_corpo_gestos_e_movimentos = $request->input('conteudo_corpo_gestos_e_movimentos');
+            }
+
+            if ($planejamento->conteudo_tracos_sons_cores_e_formas != $request->input('conteudo_tracos_sons_cores_e_formas')) {
+                $stringLog = $stringLog . " - conteudo_tracos_sons_cores_e_formas: " . $request->input('conteudo_tracos_sons_cores_e_formas');
+                $planejamento->conteudo_tracos_sons_cores_e_formas = $request->input('conteudo_tracos_sons_cores_e_formas');
+            }
+
+            if ($planejamento->conteudo_escuta_fala_pensamento_e_imaginacao != $request->input('conteudo_escuta_fala_pensamento_e_imaginacao')) {
+                $stringLog = $stringLog . " - conteudo_escuta_fala_pensamento_e_imaginacao: " . $request->input('conteudo_escuta_fala_pensamento_e_imaginacao');
+                $planejamento->conteudo_escuta_fala_pensamento_e_imaginacao = $request->input('conteudo_escuta_fala_pensamento_e_imaginacao');
+            }
+
+            if ($planejamento->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes != $request->input('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes')) {
+                $stringLog = $stringLog . " - conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes: " . $request->input('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes');
+                $planejamento->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes = $request->input('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes');
+            }
+
+            if ($planejamento->metodologia != $request->input('metodologia')) {
+                $stringLog = $stringLog . " - metodologia: " . $planejamento->metodologia;
+                $planejamento->metodologia = $request->input('metodologia');
+            }
+
+            if ($planejamento->recursos_didaticos != $request->input('recursos_didaticos')) {
+                $stringLog = $stringLog . " - recursos_didaticos: " . $planejamento->recursos_didaticos;
+                $planejamento->recursos_didaticos = $request->input('recursos_didaticos');
+            }
+
+            if ($planejamento->como_sera_a_avaliacao != $request->input('como_sera_a_avaliacao')) {
+                $stringLog = $stringLog . " - como_sera_a_avaliacao: " . $planejamento->como_sera_a_avaliacao;
+                $planejamento->como_sera_a_avaliacao = $request->input('como_sera_a_avaliacao');
+            }
+
+            $planejamento->usuario_revisor = Auth::user()->id;
+            $planejamento->data_da_revisao = date('Y-m-d H:i:s');
+            $planejamento->revisado = true;
 
             $planejamento->save();
             if ($stringLog != "") {

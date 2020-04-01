@@ -19,4 +19,9 @@ class PlanejamentoSemanal extends Model
     {
         return $this->belongsTo('App\Profissional', 'professor_id', 'id');
     }
+
+    public function revisor()
+    {
+        return $this->belongsTo('App\User', 'usuario_revisor', 'id');
+    }
 }

@@ -165,8 +165,16 @@ $_anos = ['2020', '2021', '2022', '2023'];
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p class="text-danger">* Para trocar o arquivo, é necessário remover o planejamento atual e inserir
-                                            o novo planejamento com o novo arquivo.</p>
+                                        @if($planejamento->tipo_documento == 'DIGITAL')
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>Atenção!</strong> * Para trocar o arquivo, é necessário remover o planejamento atual e inserir
+                                            o novo planejamento com o novo arquivo.
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        @endif
+                                        <p class="text-danger"></p>
                                     </div>
                                 </div>
                             </div>

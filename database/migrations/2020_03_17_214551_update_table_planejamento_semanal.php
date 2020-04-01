@@ -8,8 +8,7 @@ class UpdateTablePlanejamentoSemanal extends Migration
 {
     public function up()
     {
-        Schema::table('planejamento_semanals', function (Blueprint $table) {
-            
+        Schema::table('planejamento_semanals', function (Blueprint $table) {            
             $table->string('conteudo_eu_o_outro_e_o_nos', 255)->nullable();
             $table->string('conteudo_corpo_gestos_e_movimentos', 255)->nullable();
             $table->string('conteudo_tracos_sons_cores_e_formas', 255)->nullable();
