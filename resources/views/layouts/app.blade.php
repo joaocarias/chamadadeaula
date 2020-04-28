@@ -109,7 +109,7 @@
                                     <i class="far fa-calendar-alt"></i> &nbsp;
                                     {{ __('Planejamento Semanal') }}
                                 </a>
-                                <a class="dropdown-item" href="{{ route('relatos') }}">
+                                <a class="dropdown-item" href="{{ route('relatorios') }}">
                                     <i class="far fa-file-alt"></i> &nbsp;
                                     {{ __('Relatórios') }}
                                 </a>

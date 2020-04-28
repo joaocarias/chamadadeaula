@@ -89,14 +89,14 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/planejamentossemanais/revisar/{id}', 'PlanejamentoSemanalController@edit_revisar')->name('editar_revisar_planejamento_semanal');
   Route::put('/planejamentossemanais/update_revisar/{id}', 'PlanejamentoSemanalController@update_revisar')->name('revisar_planejamento_semanal');
   
-
-  //revisar_planejamento_semanal
-  
-  //edit_upload
-
   /* Relatos */
-  Route::get('/relatos', 'RelatoController@index')->name('relatos');
-  Route::get('/relatos/turma/{id}', 'RelatoController@turma')->name('relatos_de_turma');
+  Route::get('/relatorios', 'RelatoController@index')->name('relatorios');
+  Route::get('/relatorios/turma/{id}', 'RelatoController@turma')->name('relatorios_de_turma');
+  Route::get('/relatorios/novo/{id_turma}/{id_aluno}', 'RelatoController@create')->name('relatorio_novo');
+  Route::post('/relatorios/store', 'RelatoController@store')->name('cadastrar_relatorio');
+  Route::get('/relatorios/excluir/{id}', 'RelatoController@destroy')->name('excluir_relatorio');
+  Route::get('/relatorios/editar/{id}', 'RelatoController@edit')->name('editar_relatorio');
+  Route::put('/relatorios/update/{id}', 'RelatoController@update')->name('update_relatorio');
   
   Route::get('/usuarios', 'UsuarioController@index')->name('usuarios');
 

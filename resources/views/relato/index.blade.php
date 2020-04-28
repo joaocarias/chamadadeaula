@@ -1,12 +1,12 @@
 <?php
-    $title = "Relatos";
+    $title = "Relatórios";
 ?>
 
 
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row text-center">
         <div class="col-md-12">
             <h1>{{ __($title) }}</h1>
@@ -46,7 +46,7 @@
                                 <td>{{ __($item->turma->ano) }}</td>
                                 <td>{{ __($item->turma->turno->nome) }}</td>                                
                                 <td class="text-right">
-                                    <a href="{{ route('relatos_de_turma', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                    <a href="{{ route('relatorios_de_turma', [$item->turma->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>
                             </tr>
                             @endforeach
