@@ -130,6 +130,21 @@ $title = "Relatório";
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="card mt-3">
+                <div class="card-header"> <i class="fas fa-print"></i> {{ __('Impressão de Relatórios') }} </div>
+                <div class="card-body text-center">
+                    <a href="{{ route('imprimir_relatorio', ['turma_id' => $turma->id, 'trimestre' => 'I' ]) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print"></i> Imprimir 1º Trimestre</a>
+                    <a href="{{ route('imprimir_relatorio', ['turma_id' => $turma->id, 'trimestre' => 'II' ]) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print"></i> Imprimir 2º Trimestre</a>
+                    <a href="{{ route('imprimir_relatorio', ['turma_id' => $turma->id, 'trimestre' => 'III' ]) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print"></i> Imprimir 3º Trimestre</a>  
+                </div>
+            </div>
+        
+        </div>
+    </div>
+
 </div>
 
 <!-- Modal Excluir -->

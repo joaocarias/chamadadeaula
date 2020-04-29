@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/relatorios/excluir/{id}', 'RelatoController@destroy')->name('excluir_relatorio');
   Route::get('/relatorios/editar/{id}', 'RelatoController@edit')->name('editar_relatorio');
   Route::put('/relatorios/update/{id}', 'RelatoController@update')->name('update_relatorio');
+  Route::get('/relatorios/imprimir/{turma_id}/{trimestre}', 'RelatoController@imprimir')->name('imprimir_relatorio');
   
   Route::get('/usuarios', 'UsuarioController@index')->name('usuarios');
 
