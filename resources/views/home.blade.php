@@ -163,6 +163,53 @@ if (isset(Auth::user()->regras)) {
     </div>
     @endif
 
+    @if(isset($relatorios))
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">{{ __('Últimos Relatórios Cadastrados') }}</div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>                               
+                                <th scope="col">Ano</th>
+                                <th scope="col">Trimestre</th>
+                                <th scope="col">Turma</th>
+                                <th scope="col">Professor</th>
+                                <th scope="col">Aluno</th>
+                                <th scope="col">Revisão</th>
+                                <th scope="col"></th>
+                            <tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($relatorios as $item)
+                            <tr>
+                                <td>{{ __($item->turma->ano) }}</td>
+                                <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>                               
+                                <td>{{ __(isset($item->turma) ? $item->turma->nome : '' ) }}</td>
+                                <td>{{ __(isset($item->professor) ? $item->professor->nome : '' ) }}</td>                                
+                                <td>{{ __(isset($item->aluno) ? $item->aluno->nome : '' ) }}
+                                <td>                                      
+                                        @if($item->revisado)
+                                            <span class="badge badge-success">Revisado</span>
+                                        @else
+                                            <span class="badge badge-danger">Não Revisado</span>
+                                        @endif                                 
+                                </td>
+                                <td class="text-right">
+                                    <a href="{{ route('relatorios_de_turma', [$item->turma_id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
 </div>
 
 @endsection

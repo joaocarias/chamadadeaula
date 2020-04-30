@@ -1,5 +1,14 @@
 <?php
+
 $title = "Relatório";
+
+$permissoes = array();
+if (isset(Auth::user()->regras)) {
+    foreach (Auth::user()->regras as $regra) {
+        array_push($permissoes, $regra->nome);
+    }
+}
+
 ?>
 
 @extends('layouts.app')
@@ -81,20 +90,43 @@ $title = "Relatório";
                                 </div>
                                 <div class="col-md-2">
                                     <strong>Status</strong><br />
+                                    @if($relatorio->revisado)
+                                    <span class="badge badge-success">Revisado</span>
+                                    @else
                                     <span class="badge badge-danger">Não Revisado</span>
+                                    @endif
                                 </div>
                                 <div class="col-md-2">
                                     <strong>Relato</strong><br />
-                                    <a href="{{ route('editar_relatorio',  [ 'id' => $relatorio->id ] ) }}" >
-                                        Editar</a>,
+                                    <a href="{{ route('editar_relatorio',  [ 'id' => $relatorio->id ] ) }}">
+                                        Editar
+                                    </a>
                                     <a href="#" class="btn-excluir-relatorio" id-relatorio="{{  __($relatorio->id) }}">
-                                        Excluir
+                                        , Excluir
                                     </a>
                                 </div>
 
                                 <div class="col-md-12">
                                     {!! $relatorio->relato !!}
                                     <hr />
+
+                                    @if($relatorio->revisado)
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            Reviado Por: <strong>{{ __($relatorio->revisor->name)  }}</strong>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            Data da Revisão: <strong>{{ __(date_format( date_create($relatorio->data_da_revisao), 'd/m/Y H:i:s'))  }}</strong>
+                                        </div>
+                                    </div>
+                                    @elseif(in_array("ADMINISTRADOR", $permissoes))
+                                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                        <strong>Relatório não Revisado.</strong>
+                                        <a href="{{ route('editar_revisar_relatorio', ['id' => $relatorio->id ]) }}">Clique aqui para realizar a revisão.</a>
+                                    </div>
+                                    @endif
+
                                 </div>
                             </div>
                             @endforeach
@@ -103,7 +135,7 @@ $title = "Relatório";
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="alert alert-info" role="alert">
-                                        O aluno não possuí relatório cadastrado nessa turma!
+                                        O aluno não possui relatório cadastrado nessa turma!
                                     </div>
                                 </div>
                             </div>
@@ -138,10 +170,10 @@ $title = "Relatório";
                 <div class="card-body text-center">
                     <a href="{{ route('imprimir_relatorio', ['turma_id' => $turma->id, 'trimestre' => 'I' ]) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print"></i> Imprimir 1º Trimestre</a>
                     <a href="{{ route('imprimir_relatorio', ['turma_id' => $turma->id, 'trimestre' => 'II' ]) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print"></i> Imprimir 2º Trimestre</a>
-                    <a href="{{ route('imprimir_relatorio', ['turma_id' => $turma->id, 'trimestre' => 'III' ]) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print"></i> Imprimir 3º Trimestre</a>  
+                    <a href="{{ route('imprimir_relatorio', ['turma_id' => $turma->id, 'trimestre' => 'III' ]) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print"></i> Imprimir 3º Trimestre</a>
                 </div>
             </div>
-        
+
         </div>
     </div>
 

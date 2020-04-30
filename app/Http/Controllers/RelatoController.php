@@ -22,12 +22,24 @@ class RelatoController extends Controller
             ->where('user_id', Auth::user()->id)
             ->first();
 
-        $turmasProfessor = null;
-        if (isset($professor) && !is_null($professor)) {
-            $turmasProfessor = TurmaProfessor::where('professor_id', $professor->id)->get();
+        $turmas = null;
+        $permissoes = array();
+        if (isset(Auth::user()->regras)) {
+            foreach (Auth::user()->regras as $regra) {
+                array_push($permissoes, $regra->nome);
+            }
         }
 
-        return view('relato.index', ['turmasProfessor' => $turmasProfessor]);
+        if (in_array("ADMINISTRADOR", $permissoes)) {
+            $turmas = Turma::orderby('nome', 'asc')->get();
+        } else {
+            if (isset($professor) && !is_null($professor)) {                
+                $turmasProfessorIds = TurmaProfessor::where('professor_id', $professor->id)->select('turma_id')->distinct()->get();
+                $turmas = $turmasProfessorIds = Turma::whereIn('id', $turmasProfessorIds)->orderby('nome', 'asc')->get();
+            }
+        }
+
+        return view('relato.index', ['turmas' => $turmas]);
     }
 
     public function create($id_turma, $id_aluno)
@@ -249,5 +261,62 @@ class RelatoController extends Controller
         }
 
         $mpdf->Output();
+    }
+
+    public function edit_revisar($id)
+    {
+        $obj = Relato::find($id);
+        if (isset($obj)) {
+            $turma = Turma::find($obj->turma_id);
+            $aluno = Aluno::find($obj->aluno_id);
+            $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+
+            return view('relato.edit_revisar', [
+                'turma' => $turma, 'aluno' => $aluno, 'professores' => $professores,  'relatorio' => $obj
+            ]);
+        }
+        return view('relato.edit_revisar', [
+            'turma' => null, 'aluno' => null, 'professores' => null,  'relatorio' => null
+        ]);
+    }
+
+    public function update_revisar(Request $request, $id){
+        $obj = Relato::find($id);
+        if (isset($obj)) {
+            $stringLog = "";
+
+            if ($obj->professor_id != $request->input('professor_id')) {
+                $stringLog = $stringLog . " - professor_id: " . $obj->professor_id;
+                $obj->professor_id = $request->input('professor_id');
+            }
+
+            if ($obj->relato != $request->input('relato')) {
+                $stringLog = $stringLog . " - relato: " . $obj->relato;
+                $obj->relato = $request->input('relato');
+            }
+
+            if ($obj->trimestre != $request->input('trimestre')) {
+                $stringLog = $stringLog . " - trimestre: " . $obj->trimestre;
+                $obj->trimestre = $request->input('trimestre');
+            }
+
+            $obj->usuario_revisor = Auth::user()->id;
+            $obj->data_da_revisao = date('Y-m-d H:i:s');
+            $obj->revisado = true;
+
+            $obj->save();
+            if ($stringLog != "") {
+                $log = new LogSistema();
+                $log->tabela = "relatos";
+                $log->tabela_id = $obj->id;
+                $log->acao = "EDICAO";
+                $log->descricao = $stringLog;
+                $log->usuario_id = Auth::user()->id;
+                $log->save();
+            }
+            return redirect()->route('relatorios_de_turma', ['id' => $obj->turma_id])->withStatus(__('Cadastro Atualizado com Sucesso!'));
+        }
+
+        return redirect()->route('relatorios_de_turma', ['id' => $obj->turma_id])->withStatus(__('Cadastro não Atualizado!'));
     }
 }

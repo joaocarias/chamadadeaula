@@ -2,7 +2,6 @@
     $title = "Relatórios";
 ?>
 
-
 @extends('layouts.app')
 
 @section('content')
@@ -26,7 +25,7 @@
             <div class="card mb-3">
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
-                    @if(isset($turmasProfessor))
+                    @if(isset($turmas))
 
                     <table class="table table-hover">
                         <thead>
@@ -39,14 +38,14 @@
                             <tr>
                         </thead>
                         <tbody>
-                            @foreach ($turmasProfessor as $item)
+                            @foreach ($turmas as $item)
                             <tr>
-                                <td scope="row">{{ __($item->turma->id) }}</td>                                                              
-                                <td>{{ __($item->turma->nome) }}</td>
-                                <td>{{ __($item->turma->ano) }}</td>
-                                <td>{{ __($item->turma->turno->nome) }}</td>                                
+                                <td scope="row">{{ __($item->id) }}</td>                                                              
+                                <td>{{ __($item->nome) }}</td>
+                                <td>{{ __($item->ano) }}</td>
+                                <td>{{ __($item->turno->nome) }}</td>                                
                                 <td class="text-right">
-                                    <a href="{{ route('relatorios_de_turma', [$item->turma->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                    <a href="{{ route('relatorios_de_turma', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>
                             </tr>
                             @endforeach

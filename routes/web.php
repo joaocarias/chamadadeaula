@@ -98,6 +98,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/relatorios/editar/{id}', 'RelatoController@edit')->name('editar_relatorio');
   Route::put('/relatorios/update/{id}', 'RelatoController@update')->name('update_relatorio');
   Route::get('/relatorios/imprimir/{turma_id}/{trimestre}', 'RelatoController@imprimir')->name('imprimir_relatorio');
+  Route::get('/relatorios/revisar/{id}', 'RelatoController@edit_revisar')->name('editar_revisar_relatorio');
+  Route::put('/relatorios/update_revisar/{id}', 'RelatoController@update_revisar')->name('revisar_relatorio');
   
   Route::get('/usuarios', 'UsuarioController@index')->name('usuarios');
 

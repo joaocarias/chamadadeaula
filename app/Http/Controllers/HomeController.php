@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Aluno;
 use App\PlanejamentoSemanal;
 use App\Profissional;
+use App\Relato;
 use App\TurmaProfessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ class HomeController extends Controller
     public function index()
     {
         $alunos = Aluno::orderBy('created_at', 'desc')->take(5)->get();
+        $relatorios = null; 
 
         $profissional = Profissional::where('user_id', Auth::user()->id)->first();
         $turmas = null;
@@ -38,14 +40,19 @@ class HomeController extends Controller
 
         if(in_array("ADMINISTRADOR", $permissoes)){
             $planejamentos = PlanejamentoSemanal::orderBy('created_at', 'DESC')->take(5)->get();
+            $relatorios = Relato::orderBy('created_at', 'DESC')->take(5)->get();
         }else if (isset($profissional)){            
             $planejamentos = (isset($profissional)) ? PlanejamentoSemanal::where('professor_id', $profissional->id)
                 ->orderBy('created_at', 'DESC')->take(5)->get()
                 : null;
+
+            $relatorios = Relato::where('professor_id', $profissional->id)->orderBy('created_at', 'DESC')->take(5)->get();
         }else{
             $planejamentos = null;
         }
 
-        return view('home', ['alunos' => $alunos, 'turmas' => $turmas, 'planejamentos' => $planejamentos]);
+        return view('home', ['alunos' => $alunos, 'turmas' => $turmas, 'planejamentos' => $planejamentos
+                , 'relatorios' => $relatorios 
+            ]);
     }
 }
