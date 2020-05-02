@@ -58,6 +58,46 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
+                <div class="card-header">{{ __('Turmas') }}</div>
+                <div class="card-body">
+                    @if(isset($turmas))
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>                                                        
+                                <th scope="col">Nome</th>
+                                <th scope="col">Ano</th>             
+                                <th scope="col">Turno</th>                                                       
+                                <th scope="col"></th>
+                            <tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($turmas as $item)
+                            <tr>
+                                <td scope="row">{{ __($item->id) }}</td>                                                              
+                                <td>{{ __($item->nome) }}</td>
+                                <td>{{ __($item->ano) }}</td>
+                                <td>{{ __($item->turno->nome) }}</td>                                
+                                <td class="text-right">
+                                    <a href="{{ route('planejamento_semanal_de_turma', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    @else
+                        <p>Nenhuma turma encontrada para o usuário.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
                 <div class="card-header">{{ __('Planejamentos') }}</div>
                 <div class="card-body">
                     @if(isset($planejamentos))

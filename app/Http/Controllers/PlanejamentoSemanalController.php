@@ -13,6 +13,7 @@ use League\Flysystem\Plugin\PluginNotFoundException;
 use Mpdf\Mpdf;
 use App\Enum\Trimestres;
 use App\Lib\Auxiliar;
+use App\TurmaProfessor;
 use Facade\FlareClient\Http\Response;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Support\Facades\Storage;
@@ -21,6 +22,7 @@ class PlanejamentoSemanalController extends Controller
 {
     public function index()
     {
+        $turmas = null;
         $permissoes = array();
         if (isset(Auth::user()->regras)) {
             foreach (Auth::user()->regras as $regra) {
@@ -30,6 +32,7 @@ class PlanejamentoSemanalController extends Controller
 
         if (in_array("ADMINISTRADOR", $permissoes)) {
             $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
+            $turmas = Turma::orderby('nome', 'asc')->get();
         } else {
             $professor = Profissional::where('tipo_profissional_id', '1')
                 ->where('user_id', Auth::user()->id)
@@ -38,9 +41,14 @@ class PlanejamentoSemanalController extends Controller
             $list = (isset($professor)) ? PlanejamentoSemanal::where('professor_id', $professor->id)
                 ->orderBy('created_at', 'DESC')->get()
                 : null;
-        }
 
-        return view('planejamento_semanal.index', ['planejamentos' => $list]);
+            if (isset($professor) && !is_null($professor)) {                
+                $turmasProfessorIds = TurmaProfessor::where('professor_id', $professor->id)->select('turma_id')->distinct()->get();
+                $turmas = $turmasProfessorIds = Turma::whereIn('id', $turmasProfessorIds)->orderby('nome', 'asc')->get();
+            }
+        }
+        
+        return view('planejamento_semanal.index', ['planejamentos' => $list, 'turmas' => $turmas]);
     }
 
     public function create()
@@ -852,5 +860,31 @@ class PlanejamentoSemanalController extends Controller
         ];
 
         $request->validate($regras, $messagens);
+    }
+
+    public function turma($id){
+        $turma = Turma::find($id);
+
+        $permissoes = array();
+        if (isset(Auth::user()->regras)) {
+            foreach (Auth::user()->regras as $regra) {
+                array_push($permissoes, $regra->nome);
+            }
+        }
+
+        if (in_array("ADMINISTRADOR", $permissoes)) {
+            $list = PlanejamentoSemanal::where('turma_id', $turma->id)->orderBy('created_at', 'DESC')->get();
+        } else {
+            $professor = Profissional::where('tipo_profissional_id', '1')
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            $list = (isset($professor)) ? PlanejamentoSemanal::where('professor_id', $professor->id)
+                ->where('turma_id', $turma->id)
+                ->orderBy('created_at', 'DESC')->get()
+                : null;
+        }
+        
+        return view('planejamento_semanal.index_turma', ['planejamentos' => $list, 'turma' => $turma]);
     }
 }
