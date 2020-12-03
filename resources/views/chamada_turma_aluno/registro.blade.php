@@ -258,7 +258,7 @@
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'pt-BR',
-                endDate: '{{__(date("d/m/Y"))}}',
+               // endDate: '{{__(date("d/m/Y"))}}',
                 todayBtn: 'linked',
                 todayHighlight: true,
             });
