@@ -106,9 +106,9 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="trimestre" class="col-form-label">{{ __('* Trimestre') }}</label>
+                                        <label for="trimestre" class="col-form-label">{{ __('Trimestre') }}</label>
 
-                                        <select id="trimestre" type="text" class="form-control @error('trimestre') is-invalid @enderror" name="trimestre" autocomplete="trimestre" required>
+                                        <select id="trimestre" type="text" class="form-control @error('trimestre') is-invalid @enderror" name="trimestre" autocomplete="trimestre" >
                                             <option selected disabled>-- Selecione --</option>
                                             <option value="1" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('1º - Primeiro') }}</option>
                                             <option value="2" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('2º - Segundo') }}</option>
@@ -123,8 +123,8 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="periodo_semanal" class="col-form-label">{{ __('* Período/Semana') }}</label>
-                                        <input id="periodo_semanal" type="text" class="form-control @error('periodo_semanal') is-invalid @enderror" name="periodo_semanal" value="{{ old('periodo_semanal', $planejamento->periodo_semanal ?? '') }}" autocomplete="periodo_semanal" required maxlength="25">
+                                        <label for="periodo_semanal" class="col-form-label">{{ __('Período/Semana') }}</label>
+                                        <input id="periodo_semanal" type="text" class="form-control @error('periodo_semanal') is-invalid @enderror" name="periodo_semanal" value="{{ old('periodo_semanal', $planejamento->periodo_semanal ?? '') }}" autocomplete="periodo_semanal" maxlength="25">
 
                                         @error('periodo_semanal')
                                         <span class="invalid-feedback" role="alert">

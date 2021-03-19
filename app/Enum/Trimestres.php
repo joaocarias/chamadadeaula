@@ -16,7 +16,7 @@ class Trimestres {
                 $trimestre = "3º Trimestre";
                 break;
             default:
-                $trimestre = "Não Identificado";
+                $trimestre = "";
         }
 
         return $trimestre;

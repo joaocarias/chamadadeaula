@@ -17,7 +17,10 @@ use App\TurmaProfessor;
 use Facade\FlareClient\Http\Response;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Support\Facades\Storage;
-
+//ALTER TABLE planejamento_semanals
+//MODIFY COLUMN trimestre INT NULL;
+//ALTER TABLE planejamento_semanals
+//MODIFY COLUMN periodo_semanal VARChAR(255) NULL;
 class PlanejamentoSemanalController extends Controller
 {
     public function index()
@@ -145,7 +148,7 @@ class PlanejamentoSemanalController extends Controller
             'ano' => 'required',
             'turma_id' => 'required',
             'tema_do_projeto' => 'required|min:3|max:254',
-            'periodo_semanal' => 'required',
+            
             'arquivo' => 'required',
         ];
 
@@ -155,7 +158,7 @@ class PlanejamentoSemanalController extends Controller
             'turma_id' => 'Campo Obrigatório!',
             'tema_do_projeto.required' => 'Campo Obrigatório!',
             'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
-            'periodo_semanal.required' => 'Campo Obrigatório!',
+            
             'arquivo.required' => 'Campo Obrigatório',
         ];
 
@@ -463,8 +466,7 @@ class PlanejamentoSemanalController extends Controller
         $regras = [
             'ano' => 'required',
             'turma_id' => 'required',
-            'tema_do_projeto' => 'required|min:3|max:254',
-            'periodo_semanal' => 'required',
+            'tema_do_projeto' => 'required|min:3|max:254',           
             'conteudo_tema' => 'required|min:3',
         ];
 
@@ -473,8 +475,7 @@ class PlanejamentoSemanalController extends Controller
             'ano.required' => 'Campo Obrigatório!',
             'turma_id' => 'Campo Obrigatório!',
             'tema_do_projeto.required' => 'Campo Obrigatório!',
-            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
-            'periodo_semanal.required' => 'Campo Obrigatório!',
+            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',            
             'conteudo_tema' => 'Campo Obrigatório!',
             'conteudo_tema.min' => 'É necessário no mínimo 3 caracteres!',
         ];
@@ -832,7 +833,7 @@ class PlanejamentoSemanalController extends Controller
             'ano' => 'required',
             'turma_id' => 'required',
             'tema_do_projeto' => 'required|min:3|max:254',
-            'periodo_semanal' => 'required',
+            
             'habilidades' => 'required|min:3',
             'conteudo_tema' => 'required|min:3',
             'metodologia' => 'required|min:3',
@@ -846,7 +847,7 @@ class PlanejamentoSemanalController extends Controller
             'turma_id' => 'Campo Obrigatório!',
             'tema_do_projeto.required' => 'Campo Obrigatório!',
             'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
-            'periodo_semanal.required' => 'Campo Obrigatório!',
+            
             'habilidades' => 'Campo Obrigatório!',
             'habilidades.min' => 'É necessário no mínimo 3 caracteres!',
             'conteudo_tema' => 'Campo Obrigatório!',
