@@ -587,6 +587,11 @@ class PlanejamentoSemanalController extends Controller
                 $planejamento->conteudo_tema = $request->input('conteudo_tema');
             }
 
+            if ($planejamento->habilidades != $request->input('habilidades')) {
+                $stringLog = $stringLog . " - habilidades: " . $planejamento->habilidades;
+                $planejamento->habilidades = $request->input('habilidades');
+            }
+
             if ($planejamento->periodo_semanal != $request->input('periodo_semanal')) {
                 $stringLog = $stringLog . " - periodo_semanal: " . $planejamento->periodo_semanal;
                 $planejamento->periodo_semanal = $request->input('periodo_semanal');
@@ -716,6 +721,11 @@ class PlanejamentoSemanalController extends Controller
             if ($planejamento->idade_faixa_etaria != $request->input('idade_faixa_etaria')) {
                 $stringLog = $stringLog . " - idade_faixa_etaria: " . $planejamento->idade_faixa_etaria;
                 $planejamento->idade_faixa_etaria = $request->input('idade_faixa_etaria');
+            }
+
+            if ($planejamento->habilidades != $request->input('habilidades')) {
+                $stringLog = $stringLog . " - habilidades: " . $planejamento->habilidades;
+                $planejamento->habilidades = $request->input('habilidades');
             }
 
             if ($planejamento->conteudo_tema != $request->input('conteudo_tema')) {
