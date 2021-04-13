@@ -25,6 +25,7 @@ class PlanejamentoSemanalController extends Controller
 {
     public function index()
     {
+        
         $turmas = null;
         $permissoes = array();
         if (isset(Auth::user()->regras)) {
@@ -50,8 +51,14 @@ class PlanejamentoSemanalController extends Controller
                 $turmas = $turmasProfessorIds = Turma::whereIn('id', $turmasProfessorIds)->orderby('nome', 'asc')->get();
             }
         }
-        
-        return view('planejamento_semanal.index', ['planejamentos' => $list, 'turmas' => $turmas]);
+
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+
+        return view('planejamento_semanal.index'
+            , ['planejamentos' => $list
+            , 'turmas' => $turmas
+            , 'professores' => $professores
+            ]);
     }
 
     public function create()
@@ -62,11 +69,11 @@ class PlanejamentoSemanalController extends Controller
         $planejamento = new PlanejamentoSemanal();
         $planejamento->ano = $anoAtual;
 
-        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
-
         $professor = Profissional::where('user_id', Auth::user()->id)
             ->where('tipo_profissional_id', '1')
             ->first();
+
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
 
         if (isset($professor) && !is_null($professor)) {
             $planejamento->professor_id = $professor->id;
