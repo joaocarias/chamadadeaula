@@ -117,7 +117,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                             <option selected disabled>-- Selecione --</option>
 
                                             @foreach($_anos as $_ano)
-                                            <option value="{{ __($_ano) }}" @if ( old('ano', $planejamento->ano ?? '' ) == $_ano ) {{ 'selected' }} @endif>{{ __($_ano) }}</option>
+                                            <option value="{{ __($_ano) }}" @if ( old('ano', $filtro['ano'] ?? '' ) == $_ano ) {{ 'selected' }} @endif>{{ __($_ano) }}</option>
                                             @endforeach
 
                                         </select>
@@ -130,54 +130,13 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="turma_id" class="col-form-label">{{ __('Turma') }}</label>
-
-                                        <select id="turma_id" type="text" class="form-control @error('turma_id') is-invalid @enderror" name="turma_id" autocomplete="turma_id">
-                                            <option selected disabled>-- Selecione --</option>
-
-                                            @foreach($turmas as $turma)
-                                            <option value="{{ __($turma->id) }}" @if ( old('turma_id', $planejamento->turma_id ?? '' ) == $turma->id ) {{ 'selected' }} @endif>{{ __($turma->nome) }}</option>
-                                            @endforeach
-
-                                        </select>
-
-                                        @error('turma_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="professor_id" class="col-form-label">{{ __('Professor(a)') }}</label>
-
-                                        <select id="professor_id" type="text" class="form-control @error('professor_id') is-invalid @enderror" name="professor_id" autocomplete="professor_id">
-                                            <option selected disabled>-- Selecione --</option>
-
-                                            @foreach($professores as $professor)
-                                            <option value="{{ __($professor->id) }}" @if ( old('professor_id', $planejamento->professor_id ?? '' ) == $professor->id ) {{ 'selected' }} @endif>{{ __($professor->nome) }}</option>
-                                            @endforeach
-
-                                        </select>
-
-                                        @error('professor_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <div class="col-md-3">
                                         <label for="trimestre" class="col-form-label">{{ __('Trimestre') }}</label>
 
                                         <select id="trimestre" type="text" class="form-control @error('trimestre') is-invalid @enderror" name="trimestre" autocomplete="trimestre">
                                             <option selected disabled>-- Selecione --</option>
-                                            <option value="1" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('1º - Primeiro') }}</option>
-                                            <option value="2" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('2º - Segundo') }}</option>
-                                            <option value="3" @if ( old('trimestre', $planejamento->trimestre ?? '' ) == '3' ) {{ 'selected' }} @endif>{{ __('3º - Terceiro') }}</option>
+                                            <option value="1" @if ( old('trimestre', $filtro['trimestre'] ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('1º - Primeiro') }}</option>
+                                            <option value="2" @if ( old('trimestre', $filtro['trimestre'] ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('2º - Segundo') }}</option>
+                                            <option value="3" @if ( old('trimestre', $filtro['trimestre'] ?? '' ) == '3' ) {{ 'selected' }} @endif>{{ __('3º - Terceiro') }}</option>
                                         </select>
 
                                         @error('trimestre')
@@ -187,13 +146,13 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label for="idade_faixa_etaria" class="col-form-label">{{ __('Idade/Faixa Etária') }}</label>
 
                                         <select id="idade_faixa_etaria" type="text" class="form-control @error('idade_faixa_etaria') is-invalid @enderror" name="idade_faixa_etaria" autocomplete="idade_faixa_etaria">
                                             <option selected disabled>-- Selecione --</option>
-                                            <option value="1" @if ( old('idade_faixa_etaria', $planejamento->idade_faixa_etaria ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('Bebês (de zero a um ano e seis meses)') }}</option>
-                                            <option value="2" @if ( old('idade_faixa_etaria', $planejamento->idade_faixa_etaria ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('Crianças bem pequenas (um ano e sete meses a três anos e onze meses)') }}</option>
+                                            <option value="1" @if ( old('idade_faixa_etaria', $filtro['idade_faixa_etaria'] ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('Bebês (de zero a um ano e seis meses)') }}</option>
+                                            <option value="2" @if ( old('idade_faixa_etaria', $filtro['idade_faixa_etaria'] ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('Crianças bem pequenas (um ano e sete meses a três anos e onze meses)') }}</option>
                                         </select>
 
                                         @error('idade_faixa_etaria')
@@ -202,7 +161,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         </span>
                                         @enderror
                                     </div>
-
+                            
                                     <div class="col-md-3 d-flex ">
                                         <button type="submit" class="btn btn-primary mt-auto btn-block">
                                             <i class="fas fa-search"></i>

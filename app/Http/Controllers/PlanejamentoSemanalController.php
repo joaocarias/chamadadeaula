@@ -23,9 +23,17 @@ use Illuminate\Support\Facades\Storage;
 //MODIFY COLUMN periodo_semanal VARChAR(255) NULL;
 class PlanejamentoSemanalController extends Controller
 {
-    public function index()
-    {
-        
+    public function index(Request $request)
+    {           
+        $filtro_ano = $request->input('ano');        
+        $filtro_trimestre = $request->input('trimestre');
+        $filtro_idade_faixa_etaria = $request->input('idade_faixa_etaria');
+
+        $filtro = Array( 'ano' => $filtro_ano
+                        , 'trimestre' => $filtro_trimestre
+                        , 'idade_faixa_etaria' => $filtro_idade_faixa_etaria
+                    );
+
         $turmas = null;
         $permissoes = array();
         if (isset(Auth::user()->regras)) {
@@ -35,15 +43,40 @@ class PlanejamentoSemanalController extends Controller
         }
 
         if (in_array("ADMINISTRADOR", $permissoes)) {
-            $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
+           // $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
+            $list = DB::table('planejamento_semanals')
+                        ->when($filtro_ano, function ($query, $filtro) {
+                            return $query->where('ano', $filtro);
+                        })
+                        ->when($filtro_trimestre, function ($query, $filtro) {
+                            return $query->where('trimestre', $filtro);
+                        })
+                        ->when($filtro_idade_faixa_etaria, function ($query, $filtro) {
+                            return $query->where('idade_faixa_etaria', $filtro);
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->get();
+
             $turmas = Turma::orderby('nome', 'asc')->get();
         } else {
-            $professor = Profissional::where('tipo_profissional_id', '1')
+            $professor = Profissional::where('tipo_profissional_id', '1')                   
                 ->where('user_id', Auth::user()->id)
                 ->first();
 
-            $list = (isset($professor)) ? PlanejamentoSemanal::where('professor_id', $professor->id)
-                ->orderBy('created_at', 'DESC')->get()
+            $list = (isset($professor)) ?                         
+                        DB::table('planejamento_semanals')
+                        ->when($filtro_ano, function ($query, $filtro) {
+                            return $query->where('ano', $filtro);
+                        })
+                        ->when($filtro_trimestre, function ($query, $filtro) {
+                            return $query->where('trimestre', $filtro);
+                        })
+                        ->when($filtro_idade_faixa_etaria, function ($query, $filtro) {
+                            return $query->where('idade_faixa_etaria', $filtro);
+                        })
+                        ->where('professor_id', $professor->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->get()
                 : null;
 
             if (isset($professor) && !is_null($professor)) {                
@@ -52,12 +85,10 @@ class PlanejamentoSemanalController extends Controller
             }
         }
 
-        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
-
         return view('planejamento_semanal.index'
             , ['planejamentos' => $list
             , 'turmas' => $turmas
-            , 'professores' => $professores
+            , 'filtro' => $filtro
             ]);
     }
 
