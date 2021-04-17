@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Aluno;
+use App\Lib\Auxiliar;
 use App\LogSistema;
 use App\Profissional;
 use App\Relato;
@@ -16,8 +17,16 @@ use Mpdf\Mpdf;
 
 class RelatoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $filtro_ano = $request->input('ano');
+        if (!isset($filtro_ano) or is_null($filtro_ano))
+            $filtro_ano = date('Y');
+
+        $filtro = array(
+            'ano' => $filtro_ano
+        );
+
         $professor = Profissional::where('tipo_profissional_id', '1')
             ->where('user_id', Auth::user()->id)
             ->first();
@@ -31,15 +40,19 @@ class RelatoController extends Controller
         }
 
         if (in_array("ADMINISTRADOR", $permissoes)) {
-            $turmas = Turma::orderby('nome', 'asc')->get();
+            $turmas = Turma::when($filtro_ano, function ($query, $filtro) {
+                    return $query->where('ano', $filtro);
+                })->orderby('nome', 'asc')->get();
         } else {
-            if (isset($professor) && !is_null($professor)) {                
+            if (isset($professor) && !is_null($professor)) {
                 $turmasProfessorIds = TurmaProfessor::where('professor_id', $professor->id)->select('turma_id')->distinct()->get();
-                $turmas = $turmasProfessorIds = Turma::whereIn('id', $turmasProfessorIds)->orderby('nome', 'asc')->get();
+                $turmas = Turma::when($filtro_ano, function ($query, $filtro) {
+                        return $query->where('ano', $filtro);
+                    })->whereIn('id', $turmasProfessorIds)->orderby('nome', 'asc')->get();
             }
         }
 
-        return view('relato.index', ['turmas' => $turmas]);
+        return view('relato.index', ['turmas' => $turmas, 'filtro' => $filtro, '_anos' => Auxiliar::obterAnos()]);
     }
 
     public function create($id_turma, $id_aluno)
@@ -280,7 +293,8 @@ class RelatoController extends Controller
         ]);
     }
 
-    public function update_revisar(Request $request, $id){
+    public function update_revisar(Request $request, $id)
+    {
         $obj = Relato::find($id);
         if (isset($obj)) {
             $stringLog = "";
