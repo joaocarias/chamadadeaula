@@ -34,6 +34,21 @@
         
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">Filtrar por Ano</div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <form method="GET" class="form-inline" action="{{ route('chamadas') }}">
+                        @include('layouts.filtro_ano')
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="row">
         <div class="col-md-12">
@@ -46,7 +61,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>                                                        
-                                <th scope="col">Turma</th>                               
+                                <th scope="col">Turma</th>     
+                                <th scope="col">Ano</th>
+                                <th scope="col">Turno</th>  
                                 <th scope="col"></th>
                             <tr>
                         </thead>
@@ -54,7 +71,9 @@
                             @foreach ($turmas as $item)
                             <tr>
                                 <td scope="row">{{ __($item->turma_id) }}</td>                                                              
-                                <td>{{ __($item->turma->nome) }}</td>                                
+                                <td>{{ __($item->turma->nome) }}</td>  
+                                <td>{{ __($item->turma->ano) }}</td>
+                                <td>{{ __($item->turma->turno->nome) }}</td>                              
                                 <td class="text-right">
                                     <a href="{{ route('registro_chamada', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="fas fa-book-reader"></i> &nbsp; Chamada</a>
                                     <a href="{{ route('imprimir_registro_chamada', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="fas fa-print"></i> &nbsp; Imprimir</a>
@@ -65,7 +84,9 @@
                     </table>
 
                     @else
-                        <p>Não foi possível encontrar turma cadastrada!</p>
+                    <div class="alert alert-warning" role="alert">
+                        Nenhum registro encontrado!
+                    </div> 
                     @endif
 
                 </div>

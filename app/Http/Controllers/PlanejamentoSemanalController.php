@@ -28,11 +28,9 @@ class PlanejamentoSemanalController extends Controller
         $filtro_ano = $request->input('ano');
         if (!isset($filtro_ano) or is_null($filtro_ano))
             $filtro_ano = date('Y');
-        $filtro_trimestre = $request->input('trimestre');
-        $filtro_idade_faixa_etaria = $request->input('idade_faixa_etaria');
-
+       
         $filtro = array(
-            'ano' => $filtro_ano, 'trimestre' => $filtro_trimestre, 'idade_faixa_etaria' => $filtro_idade_faixa_etaria
+            'ano' => $filtro_ano
         );
 
         $turmas = null;

@@ -23,6 +23,6 @@ class Auxiliar
     }
 
     public static function obterAnos(){
-        return ['2020', '2021', '2022', '2023', '2024', '2025'];
+        return ['2018','2019', '2020', '2021', '2022', '2023', '2024', '2025'];
     }
 }

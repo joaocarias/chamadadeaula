@@ -18,8 +18,16 @@ use App\Lib\Meses;
 
 class ChamadaTurmaAlunoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $filtro_ano = $request->input('ano');
+        if (!isset($filtro_ano) or is_null($filtro_ano))
+            $filtro_ano = date('Y');
+       
+        $filtro = array(
+            'ano' => $filtro_ano
+        );
+
         $profissional = Profissional::where('user_id', Auth::user()->id)->first();
         $turmas = null;
         
@@ -31,19 +39,25 @@ class ChamadaTurmaAlunoController extends Controller
         }
 
         if(in_array("ADMINISTRADOR", $permissoes)){
-            $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
+            $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')                                    
                                 ->where('turmas.deleted_at', null)
+                                ->when($filtro_ano, function ($query, $filtro) {
+                                    return $query->where('turmas.ano', $filtro);
+                                })
                                 ->orderby('turmas.nome', 'ASC')
                                 ->get('turma_professors.*');
         }else if (isset($profissional)) {
             $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
                                 ->where('professor_id', $profissional->id)
                                 ->where('turmas.deleted_at', null)
+                                ->when($filtro_ano, function ($query, $filtro) {
+                                    return $query->where('turmas.ano', $filtro);
+                                })
                                 ->orderby('turmas.nome', 'ASC')
                                 ->get('turma_professors.*');
         }
 
-        return view('chamada_turma_aluno.index', ['turmas' => $turmas]);
+        return view('chamada_turma_aluno.index', ['turmas' => $turmas, 'filtro' => $filtro, '_anos' => Auxiliar::obterAnos()]);
     }
 
     public function registro(Request $request, $id)
