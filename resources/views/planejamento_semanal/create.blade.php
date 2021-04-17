@@ -184,7 +184,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="eu_o_outro_e_o_nos" value="1" name="eu_o_outro_e_o_nos">
                                             <label class="form-check-label" for="eu_o_outro_e_o_nos">Eu, o outro e o nós;</label>
-                                            <input id="conteudo_eu_o_outro_e_o_nos" type="text" class="form-control col-md-6 @error('conteudo_eu_o_outro_e_o_nos') is-invalid @enderror" name="conteudo_eu_o_outro_e_o_nos" value="{{ old('conteudo_teu_o_outro_e_o_nos', $planejamento->conteudo_eu_o_outro_e_o_nos ?? '') }}" autocomplete="conteudo_eu_o_outro_e_o_nos" maxlength="254">
+                                            <input id="conteudo_eu_o_outro_e_o_nos" type="text" class="form-control col-md-6 @error('conteudo_eu_o_outro_e_o_nos') is-invalid @enderror" name="conteudo_eu_o_outro_e_o_nos" value="{{ old('conteudo_teu_o_outro_e_o_nos', $planejamento->conteudo_eu_o_outro_e_o_nos ?? '') }}" autocomplete="conteudo_eu_o_outro_e_o_nos" maxlength="1000">
 
                                             @error('conteudo_o_outro_e_o_nos')
                                             <span class="invalid-feedback" role="alert">
@@ -198,7 +198,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="corpo_gestos_e_movimentos" name="corpo_gestos_e_movimentos" value="1">
                                             <label class="form-check-label" for="corpo_gestos_e_movimentos">Corpo, gestos e movimentos;</label>
-                                            <input id="conteudo_corpo_gestos_e_movimentos" type="text" class="form-control col-md-6 @error('conteudo_corpo_gestos_e_movimentos') is-invalid @enderror" name="conteudo_corpo_gestos_e_movimentos" value="{{ old('conteudo_corpo_gestos_e_movimentos', $planejamento->conteudo_corpo_gestos_e_movimentos ?? '') }}" autocomplete="conteudo_corpo_gestos_e_movimentos" maxlength="254">
+                                            <input id="conteudo_corpo_gestos_e_movimentos" type="text" class="form-control col-md-6 @error('conteudo_corpo_gestos_e_movimentos') is-invalid @enderror" name="conteudo_corpo_gestos_e_movimentos" value="{{ old('conteudo_corpo_gestos_e_movimentos', $planejamento->conteudo_corpo_gestos_e_movimentos ?? '') }}" autocomplete="conteudo_corpo_gestos_e_movimentos" maxlength="1000">
 
                                             @error('conteudo_corpo_gestos_e_movimentos')
                                             <span class="invalid-feedback" role="alert">
@@ -212,7 +212,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="tracos_sons_cores_e_formas" name="tracos_sons_cores_e_formas" value="1">
                                             <label class="form-check-label" for="tracos_sons_cores_e_formas">Traços, sons, cores e formas;</label>
-                                            <input id="conteudo_tracos_sons_cores_e_formas" type="text" class="form-control col-md-6 @error('conteudo_tracos_sons_cores_e_formas') is-invalid @enderror" name="conteudo_tracos_sons_cores_e_formas" value="{{ old('conteudo_tracos_sons_cores_e_formas', $planejamento->conteudo_tracos_sons_cores_e_formas ?? '') }}" autocomplete="conteudo_tracos_sons_cores_e_formas" maxlength="254">
+                                            <input id="conteudo_tracos_sons_cores_e_formas" type="text" class="form-control col-md-6 @error('conteudo_tracos_sons_cores_e_formas') is-invalid @enderror" name="conteudo_tracos_sons_cores_e_formas" value="{{ old('conteudo_tracos_sons_cores_e_formas', $planejamento->conteudo_tracos_sons_cores_e_formas ?? '') }}" autocomplete="conteudo_tracos_sons_cores_e_formas" maxlength="1000">
 
                                             @error('conteudo_tracos_sons_cores_e_formas')
                                             <span class="invalid-feedback" role="alert">
@@ -226,7 +226,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="escuta_fala_pensamento_e_imaginacao" name="escuta_fala_pensamento_e_imaginacao" value="1">
                                             <label class="form-check-label" for="escuta_fala_pensamento_e_imaginacao">Escuta, fala, pensamentos e imaginação;</label>
-                                            <input id="conteudo_escuta_fala_pensamento_e_imaginacao" type="text" class="form-control col-md-6 @error('conteudo_escuta_fala_pensamento_e_imaginacao') is-invalid @enderror" name="conteudo_escuta_fala_pensamento_e_imaginacao" value="{{ old('conteudo_escuta_fala_pensamento_e_imaginacao', $planejamento->conteudo_escuta_fala_pensamento_e_imaginacao ?? '') }}" autocomplete="conteudo_escuta_fala_pensamento_e_imaginacao" maxlength="254">
+                                            <input id="conteudo_escuta_fala_pensamento_e_imaginacao" type="text" class="form-control col-md-6 @error('conteudo_escuta_fala_pensamento_e_imaginacao') is-invalid @enderror" name="conteudo_escuta_fala_pensamento_e_imaginacao" value="{{ old('conteudo_escuta_fala_pensamento_e_imaginacao', $planejamento->conteudo_escuta_fala_pensamento_e_imaginacao ?? '') }}" autocomplete="conteudo_escuta_fala_pensamento_e_imaginacao" maxlength="1000">
 
                                             @error('conteudo_escuta_fala_pensamento_e_imaginacao')
                                             <span class="invalid-feedback" role="alert">
@@ -240,7 +240,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="espaco_tempo_qunatidades_relacoes_e_transformacoes" name="espaco_tempo_qunatidades_relacoes_e_transformacoes" value="1">
                                             <label class="form-check-label" for="espaco_tempo_qunatidades_relacoes_e_transformacoes">Espaço, tempo, quantidades, relações e transformações;</label>
-                                            <input id="conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes" type="text" class="form-control col-md-6 @error('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes') is-invalid @enderror" name="conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes" value="{{ old('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes', $planejamento->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes ?? '') }}" autocomplete="conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes" maxlength="254">
+                                            <input id="conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes" type="text" class="form-control col-md-6 @error('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes') is-invalid @enderror" name="conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes" value="{{ old('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes', $planejamento->conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes ?? '') }}" autocomplete="conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes" maxlength="1000">
 
                                             @error('conteudo_espaco_tempo_qunatidades_relacoes_e_transformacoes')
                                             <span class="invalid-feedback" role="alert">
