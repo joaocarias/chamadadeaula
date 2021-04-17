@@ -21,4 +21,8 @@ class Auxiliar
         $dOK = $d[2].'-'.$d[1].'-'.$d[0];
         return $dOK;     
     }
+
+    public static function obterAnos(){
+        return ['2020', '2021', '2022', '2023', '2024', '2025'];
+    }
 }

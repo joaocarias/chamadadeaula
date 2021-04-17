@@ -24,15 +24,16 @@ use Illuminate\Support\Facades\Storage;
 class PlanejamentoSemanalController extends Controller
 {
     public function index(Request $request)
-    {           
-        $filtro_ano = $request->input('ano');        
+    {
+        $filtro_ano = $request->input('ano');
+        if (!isset($filtro_ano) or is_null($filtro_ano))
+            $filtro_ano = date('Y');
         $filtro_trimestre = $request->input('trimestre');
         $filtro_idade_faixa_etaria = $request->input('idade_faixa_etaria');
 
-        $filtro = Array( 'ano' => $filtro_ano
-                        , 'trimestre' => $filtro_trimestre
-                        , 'idade_faixa_etaria' => $filtro_idade_faixa_etaria
-                    );
+        $filtro = array(
+            'ano' => $filtro_ano, 'trimestre' => $filtro_trimestre, 'idade_faixa_etaria' => $filtro_idade_faixa_etaria
+        );
 
         $turmas = null;
         $permissoes = array();
@@ -43,53 +44,46 @@ class PlanejamentoSemanalController extends Controller
         }
 
         if (in_array("ADMINISTRADOR", $permissoes)) {
-           // $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
+            // $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
             $list = DB::table('planejamento_semanals')
-                        ->when($filtro_ano, function ($query, $filtro) {
-                            return $query->where('ano', $filtro);
-                        })
-                        ->when($filtro_trimestre, function ($query, $filtro) {
-                            return $query->where('trimestre', $filtro);
-                        })
-                        ->when($filtro_idade_faixa_etaria, function ($query, $filtro) {
-                            return $query->where('idade_faixa_etaria', $filtro);
-                        })
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
+                ->when($filtro_ano, function ($query, $filtro) {
+                    return $query->where('ano', $filtro);
+                })
+                ->orderBy('created_at', 'DESC')
+                ->get();
 
-            $turmas = Turma::orderby('nome', 'asc')->get();
+            $turmas = Turma::when($filtro_ano, function ($query, $filtro) {
+                return $query->where('ano', $filtro);
+            })->orderby('nome', 'asc')->get();
         } else {
-            $professor = Profissional::where('tipo_profissional_id', '1')                   
+            $professor = Profissional::where('tipo_profissional_id', '1')
                 ->where('user_id', Auth::user()->id)
                 ->first();
 
-            $list = (isset($professor)) ?                         
-                        DB::table('planejamento_semanals')
-                        ->when($filtro_ano, function ($query, $filtro) {
-                            return $query->where('ano', $filtro);
-                        })
-                        ->when($filtro_trimestre, function ($query, $filtro) {
-                            return $query->where('trimestre', $filtro);
-                        })
-                        ->when($filtro_idade_faixa_etaria, function ($query, $filtro) {
-                            return $query->where('idade_faixa_etaria', $filtro);
-                        })
-                        ->where('professor_id', $professor->id)
-                        ->orderBy('created_at', 'DESC')
-                        ->get()
+            $list = (isset($professor)) ?
+                DB::table('planejamento_semanals')
+                ->when($filtro_ano, function ($query, $filtro) {
+                    return $query->where('ano', $filtro);
+                })
+                ->where('professor_id', $professor->id)
+                ->orderBy('created_at', 'DESC')
+                ->get()
                 : null;
 
-            if (isset($professor) && !is_null($professor)) {                
+            if (isset($professor) && !is_null($professor)) {
                 $turmasProfessorIds = TurmaProfessor::where('professor_id', $professor->id)->select('turma_id')->distinct()->get();
-                $turmas = $turmasProfessorIds = Turma::whereIn('id', $turmasProfessorIds)->orderby('nome', 'asc')->get();
+                $turmas = Turma::when($filtro_ano, function ($query, $filtro) {
+                        return $query->where('ano', $filtro);
+                    })->whereIn('id', $turmasProfessorIds)->orderby('nome', 'asc')->get();
             }
         }
 
-        return view('planejamento_semanal.index'
-            , ['planejamentos' => $list
-            , 'turmas' => $turmas
-            , 'filtro' => $filtro
-            ]);
+        return view(
+            'planejamento_semanal.index',
+            [
+                'planejamentos' => $list, 'turmas' => $turmas, 'filtro' => $filtro, '_anos' => Auxiliar::obterAnos()
+            ]
+        );
     }
 
     public function create()
@@ -186,7 +180,7 @@ class PlanejamentoSemanalController extends Controller
             'ano' => 'required',
             'turma_id' => 'required',
             'tema_do_projeto' => 'required|min:3|max:254',
-            
+
             'arquivo' => 'required',
         ];
 
@@ -196,7 +190,7 @@ class PlanejamentoSemanalController extends Controller
             'turma_id' => 'Campo Obrigatório!',
             'tema_do_projeto.required' => 'Campo Obrigatório!',
             'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
-            
+
             'arquivo.required' => 'Campo Obrigatório',
         ];
 
@@ -216,8 +210,8 @@ class PlanejamentoSemanalController extends Controller
 
         if ($request->hasFile('arquivo') && $request->file('arquivo')->isValid()) {
             $obj->arquivo = $request->file('arquivo')->store('planejamento_semanal');
-            $name = basename($obj->arquivo);  
-            move_uploaded_file($request->file('arquivo'), 'armazenamento/planejamento_semanal/'.$name);            
+            $name = basename($obj->arquivo);
+            move_uploaded_file($request->file('arquivo'), 'armazenamento/planejamento_semanal/' . $name);
         }
 
         $obj->tipo_documento = 'DIGITAL';
@@ -453,7 +447,7 @@ class PlanejamentoSemanalController extends Controller
             }
         }
 
-        if(isset($obj) && !is_null($obj) && isset($obj->data_da_revisao) && !is_null($obj->data_da_revisao) ){
+        if (isset($obj) && !is_null($obj) && isset($obj->data_da_revisao) && !is_null($obj->data_da_revisao)) {
             $obj->data_da_revisao = Auxiliar::converterDataTimeBR($obj->data_da_revisao);
         }
 
@@ -504,7 +498,7 @@ class PlanejamentoSemanalController extends Controller
         $regras = [
             'ano' => 'required',
             'turma_id' => 'required',
-            'tema_do_projeto' => 'required|min:3|max:254',           
+            'tema_do_projeto' => 'required|min:3|max:254',
             'conteudo_tema' => 'required|min:3',
         ];
 
@@ -513,7 +507,7 @@ class PlanejamentoSemanalController extends Controller
             'ano.required' => 'Campo Obrigatório!',
             'turma_id' => 'Campo Obrigatório!',
             'tema_do_projeto.required' => 'Campo Obrigatório!',
-            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',            
+            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
             'conteudo_tema' => 'Campo Obrigatório!',
             'conteudo_tema.min' => 'É necessário no mínimo 3 caracteres!',
         ];
@@ -579,7 +573,8 @@ class PlanejamentoSemanalController extends Controller
         return redirect()->route('planejamentossemanais')->withStatus(__('Cadastro Não Atualizado!'));
     }
 
-    public function update_revisar(Request $request, $id){
+    public function update_revisar(Request $request, $id)
+    {
         $this->validacao($request);
         $planejamento = PlanejamentoSemanal::find($id);
         if (isset($planejamento)) {
@@ -881,7 +876,7 @@ class PlanejamentoSemanalController extends Controller
             'ano' => 'required',
             'turma_id' => 'required',
             'tema_do_projeto' => 'required|min:3|max:254',
-            
+
             'habilidades' => 'required|min:3',
             'conteudo_tema' => 'required|min:3',
             'metodologia' => 'required|min:3',
@@ -895,7 +890,7 @@ class PlanejamentoSemanalController extends Controller
             'turma_id' => 'Campo Obrigatório!',
             'tema_do_projeto.required' => 'Campo Obrigatório!',
             'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
-            
+
             'habilidades' => 'Campo Obrigatório!',
             'habilidades.min' => 'É necessário no mínimo 3 caracteres!',
             'conteudo_tema' => 'Campo Obrigatório!',
@@ -911,7 +906,8 @@ class PlanejamentoSemanalController extends Controller
         $request->validate($regras, $messagens);
     }
 
-    public function turma($id){
+    public function turma($id)
+    {
         $turma = Turma::find($id);
 
         $permissoes = array();
@@ -933,7 +929,7 @@ class PlanejamentoSemanalController extends Controller
                 ->orderBy('created_at', 'DESC')->get()
                 : null;
         }
-        
+
         return view('planejamento_semanal.index_turma', ['planejamentos' => $list, 'turma' => $turma]);
     }
 }

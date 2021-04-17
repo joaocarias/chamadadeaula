@@ -4,8 +4,6 @@ use App\Enum\Trimestres;
 
 $title = "Planejamento Semanal";
 
-$_anos = ['2020', '2021', '2022', '2023'];
-
 ?>
 
 @extends('layouts.app')
@@ -58,12 +56,54 @@ $_anos = ['2020', '2021', '2022', '2023'];
         </div>
     </div>
 
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">Filtrar Chamada por Ano</div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <form method="GET" class="form-inline" action="{{ route('planejamentossemanais') }}">
+
+                            <div class="form-group mx-sm-3 mb-2">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i> </div>
+                                    </div>
+
+                                    <select id="ano" type="text" class="form-control @error('ano') is-invalid @enderror" name="ano" autocomplete="ano">
+                                        <option selected disabled>-- Selecione --</option>
+
+                                        @foreach($_anos as $_ano)
+                                        <option value="{{ __($_ano) }}" @if ( old('ano', $filtro['ano'] ?? '' )==$_ano ) {{ 'selected' }} @endif>{{ __($_ano) }}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+                                @error('ano')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3">
+                                <i class="fas fa-search"></i>
+                                {{ __('Definir Ano') }}
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
-                    @if(isset($turmas))
+                    @if(isset($turmas) and count($turmas) > 0)
 
                     <table class="table table-hover">
                         <thead>
@@ -91,100 +131,21 @@ $_anos = ['2020', '2021', '2022', '2023'];
                     </table>
 
                     @else
-                    <p>Nenhuma turma encontrada para o usuário.</p>
+                    <div class="alert alert-warning" role="alert">
+                        Nenhuma registro encontrado!
+                    </div>      
                     @endif
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <form method="GET" action="{{ route('planejamentossemanais') }}">
-                
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <div class="card mb-3">
-                            <div class="card-header">{{ __('Filtro de Planejamento') }}</div>
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <label for="ano" class="col-form-label">{{ __('Ano') }}</label>
-
-                                        <select id="ano" type="text" class="form-control @error('ano') is-invalid @enderror" name="ano" autocomplete="ano">
-                                            <option selected disabled>-- Selecione --</option>
-
-                                            @foreach($_anos as $_ano)
-                                            <option value="{{ __($_ano) }}" @if ( old('ano', $filtro['ano'] ?? '' ) == $_ano ) {{ 'selected' }} @endif>{{ __($_ano) }}</option>
-                                            @endforeach
-
-                                        </select>
-
-                                        @error('ano')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="trimestre" class="col-form-label">{{ __('Trimestre') }}</label>
-
-                                        <select id="trimestre" type="text" class="form-control @error('trimestre') is-invalid @enderror" name="trimestre" autocomplete="trimestre">
-                                            <option selected disabled>-- Selecione --</option>
-                                            <option value="1" @if ( old('trimestre', $filtro['trimestre'] ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('1º - Primeiro') }}</option>
-                                            <option value="2" @if ( old('trimestre', $filtro['trimestre'] ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('2º - Segundo') }}</option>
-                                            <option value="3" @if ( old('trimestre', $filtro['trimestre'] ?? '' ) == '3' ) {{ 'selected' }} @endif>{{ __('3º - Terceiro') }}</option>
-                                        </select>
-
-                                        @error('trimestre')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="idade_faixa_etaria" class="col-form-label">{{ __('Idade/Faixa Etária') }}</label>
-
-                                        <select id="idade_faixa_etaria" type="text" class="form-control @error('idade_faixa_etaria') is-invalid @enderror" name="idade_faixa_etaria" autocomplete="idade_faixa_etaria">
-                                            <option selected disabled>-- Selecione --</option>
-                                            <option value="1" @if ( old('idade_faixa_etaria', $filtro['idade_faixa_etaria'] ?? '' ) == '1' ) {{ 'selected' }} @endif>{{ __('Bebês (de zero a um ano e seis meses)') }}</option>
-                                            <option value="2" @if ( old('idade_faixa_etaria', $filtro['idade_faixa_etaria'] ?? '' ) == '2' ) {{ 'selected' }} @endif>{{ __('Crianças bem pequenas (um ano e sete meses a três anos e onze meses)') }}</option>
-                                        </select>
-
-                                        @error('idade_faixa_etaria')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                            
-                                    <div class="col-md-3 d-flex ">
-                                        <button type="submit" class="btn btn-primary mt-auto btn-block">
-                                            <i class="fas fa-search"></i>
-                                            {{ __('Filtrar') }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header">{{ __('Planejamentos') }}</div>
                 <div class="card-body">
-                    @if(isset($planejamentos))
+                    @if(isset($planejamentos) and count($planejamentos) > 0)
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -231,7 +192,9 @@ $_anos = ['2020', '2021', '2022', '2023'];
                         </tbody>
                     </table>
                     @else
-                    <p>Usuário não possui planejamentos!</p>
+                    <div class="alert alert-warning" role="alert">
+                        Nenhuma registro encontrado!
+                    </div>  
                     @endif
                 </div>
             </div>
