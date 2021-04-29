@@ -147,8 +147,8 @@ $title = "Planejamento Semanal";
                                 <td>{{ __($item->ano) }}</td>
                                 <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>
                                 <td>{{ __($item->tema_do_projeto) }}</td>
-                                <td>{{ __(isset($item->turma) ? $item->turma->nome : '' ) }}</td>
-                                <td>{{ __(isset($item->professor) ? $item->professor->nome : '' ) }}</td>
+                                <td>{{ isset($item->turma) && !is_null($item->turma) ? __($item->turma->nome) : __('')  }}</td>
+                                <td>{{ __(isset($item->professor) && !is_null($item->professor) ? $item->professor->nome : '' ) }}</td>
                                 <td>{{ __($item->periodo_semanal) }}</td>
                                 <td>{{ __($item->conteudo_tema) }}</td>
                                 <td>

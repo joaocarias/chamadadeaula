@@ -43,8 +43,9 @@ class PlanejamentoSemanalController extends Controller
 
         if (in_array("ADMINISTRADOR", $permissoes)) {
             // $list = PlanejamentoSemanal::orderBy('created_at', 'DESC')->get();
-            $list = DB::table('planejamento_semanals')
-                ->when($filtro_ano, function ($query, $filtro) {
+            //$list = DB::table('planejamento_semanals')
+            $list = PlanejamentoSemanal::
+                when($filtro_ano, function ($query, $filtro) {
                     return $query->where('ano', $filtro);
                 })
                 ->orderBy('created_at', 'DESC')
@@ -59,8 +60,7 @@ class PlanejamentoSemanalController extends Controller
                 ->first();
 
             $list = (isset($professor)) ?
-                DB::table('planejamento_semanals')
-                ->when($filtro_ano, function ($query, $filtro) {
+                 PlanejamentoSemanal::when($filtro_ano, function ($query, $filtro) {
                     return $query->where('ano', $filtro);
                 })
                 ->where('professor_id', $professor->id)

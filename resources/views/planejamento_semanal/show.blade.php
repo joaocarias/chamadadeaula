@@ -76,7 +76,9 @@ if (isset(Auth::user()->regras)) {
                         </div>
 
                         <div class="col-md-6">
-                            Professor (a): <strong>{{ __($planejamento->professor->nome)  }}</strong>
+                            Professor (a): <strong>{{ isset($planejamento->professor) && !is_null($planejamento->professor) 
+                                                        ?   __($planejamento->professor->nome)
+                                                        :   __("")  }}</strong>
                         </div>
                     </div>
 
