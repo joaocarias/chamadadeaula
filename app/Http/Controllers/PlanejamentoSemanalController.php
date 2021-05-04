@@ -134,7 +134,7 @@ class PlanejamentoSemanalController extends Controller
 
     public function store(Request $request)
     {
-        $this->validacao($request);
+        //$this->validacao($request);
 
         $obj = new PlanejamentoSemanal();
         $obj->ano = $request->input('ano');
@@ -174,25 +174,25 @@ class PlanejamentoSemanalController extends Controller
 
     public function store_upload(Request $request)
     {
-        $regras = [
-            'ano' => 'required',
-            'turma_id' => 'required',
-            'tema_do_projeto' => 'required|min:3|max:254',
+        // $regras = [
+        //     'ano' => 'required',
+        //     'turma_id' => 'required',
+        //     'tema_do_projeto' => 'required|min:3|max:254',
 
-            'arquivo' => 'required',
-        ];
+        //     'arquivo' => 'required',
+        // ];
 
-        $messagens = [
-            'required' => 'Campo Obrigatório!',
-            'ano.required' => 'Campo Obrigatório!',
-            'turma_id' => 'Campo Obrigatório!',
-            'tema_do_projeto.required' => 'Campo Obrigatório!',
-            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
+        // $messagens = [
+        //     'required' => 'Campo Obrigatório!',
+        //     'ano.required' => 'Campo Obrigatório!',
+        //     'turma_id' => 'Campo Obrigatório!',
+        //     'tema_do_projeto.required' => 'Campo Obrigatório!',
+        //     'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
 
-            'arquivo.required' => 'Campo Obrigatório',
-        ];
+        //     'arquivo.required' => 'Campo Obrigatório',
+        // ];
 
-        $request->validate($regras, $messagens);
+        // $request->validate($regras, $messagens);
 
         $obj = new PlanejamentoSemanal();
         $obj->ano = $request->input('ano');
@@ -493,24 +493,24 @@ class PlanejamentoSemanalController extends Controller
 
     public function update_upload_arquivo(Request $request, $id)
     {
-        $regras = [
-            'ano' => 'required',
-            'turma_id' => 'required',
-            'tema_do_projeto' => 'required|min:3|max:254',
-            'conteudo_tema' => 'required|min:3',
-        ];
+        // $regras = [
+        //     'ano' => 'required',
+        //     'turma_id' => 'required',
+        //     'tema_do_projeto' => 'required|min:3|max:254',
+        //     'conteudo_tema' => 'required|min:3',
+        // ];
 
-        $messagens = [
-            'required' => 'Campo Obrigatório!',
-            'ano.required' => 'Campo Obrigatório!',
-            'turma_id' => 'Campo Obrigatório!',
-            'tema_do_projeto.required' => 'Campo Obrigatório!',
-            'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
-            'conteudo_tema' => 'Campo Obrigatório!',
-            'conteudo_tema.min' => 'É necessário no mínimo 3 caracteres!',
-        ];
+        // $messagens = [
+        //     'required' => 'Campo Obrigatório!',
+        //     'ano.required' => 'Campo Obrigatório!',
+        //     'turma_id' => 'Campo Obrigatório!',
+        //     'tema_do_projeto.required' => 'Campo Obrigatório!',
+        //     'tema_do_projeto.min' => 'É necessário no mínimo 3 caracteres!',
+        //     'conteudo_tema' => 'Campo Obrigatório!',
+        //     'conteudo_tema.min' => 'É necessário no mínimo 3 caracteres!',
+        // ];
 
-        $request->validate($regras, $messagens);
+        // $request->validate($regras, $messagens);
 
         $planejamento = PlanejamentoSemanal::find($id);
         if (isset($planejamento)) {
@@ -714,7 +714,7 @@ class PlanejamentoSemanalController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validacao($request);
+    //    $this->validacao($request);
         $planejamento = PlanejamentoSemanal::find($id);
         if (isset($planejamento)) {
             $stringLog = "";
