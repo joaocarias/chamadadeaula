@@ -34,7 +34,7 @@
     <link href="{{ asset('lib/datepicker/css/bootstrap-datepicker.css') }}" rel="stylesheet">
 
     <!-- Summernote -->
-    <link href="{{ asset('lib/summernote/summernote.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/summernote/summernote-bs4.min.css') }}" rel="stylesheet">
 
 
     <!-- Styles -->
@@ -186,7 +186,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
     <script src="{{ asset('lib/datepicker/js/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('lib/datepicker/locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
-    <script src="{{ asset('lib/summernote/summernote.min.js') }}"></script>
+    <script src="{{ asset('lib/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('lib/summernote/lang/summernote-pt-BR.min.js') }}"></script>
 
     @hasSection('javascript')

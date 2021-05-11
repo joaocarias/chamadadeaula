@@ -212,6 +212,30 @@ class PlanejamentoSemanalController extends Controller
             move_uploaded_file($request->file('arquivo'), 'armazenamento/planejamento_semanal/' . $name);
         }
 
+        if ($request->hasFile('arquivo2') && $request->file('arquivo2')->isValid()) {
+            $obj->arquivo2 = $request->file('arquivo2')->store('planejamento_semanal');
+            $name = basename($obj->arquivo2);
+            move_uploaded_file($request->file('arquivo2'), 'armazenamento/planejamento_semanal/' . $name);
+        }
+
+        if ($request->hasFile('arquivo3') && $request->file('arquivo3')->isValid()) {
+            $obj->arquivo3 = $request->file('arquivo3')->store('planejamento_semanal');
+            $name = basename($obj->arquivo3);
+            move_uploaded_file($request->file('arquivo3'), 'armazenamento/planejamento_semanal/' . $name);
+        }
+
+        if ($request->hasFile('arquivo4') && $request->file('arquivo4')->isValid()) {
+            $obj->arquivo4 = $request->file('arquivo4')->store('planejamento_semanal');
+            $name = basename($obj->arquivo4);
+            move_uploaded_file($request->file('arquivo4'), 'armazenamento/planejamento_semanal/' . $name);
+        }
+
+        if ($request->hasFile('arquivo5') && $request->file('arquivo5')->isValid()) {
+            $obj->arquivo5 = $request->file('arquivo5')->store('planejamento_semanal');
+            $name = basename($obj->arquivo5);
+            move_uploaded_file($request->file('arquivo5'), 'armazenamento/planejamento_semanal/' . $name);
+        }
+
         $obj->tipo_documento = 'DIGITAL';
 
         $obj->usuario_cadastro = Auth::user()->id;
@@ -436,20 +460,48 @@ class PlanejamentoSemanalController extends Controller
         $mpdf->Output();
     }
 
+    private function criarUrlArquivos($obj){
+        $listaArquivos = Array();
+        if(isset($obj->arquivo) and !is_null($obj->arquivo) and strlen($obj->arquivo) > 0){
+            array_push($listaArquivos, Storage::url($obj->arquivo));
+        }
+
+        if(isset($obj->arquivo2) and !is_null($obj->arquivo2) and strlen($obj->arquivo2) > 0){
+            array_push($listaArquivos, Storage::url($obj->arquivo2));
+        }                
+        
+        if(isset($obj->arquivo3) and !is_null($obj->arquivo3) and strlen($obj->arquivo3) > 0){
+            array_push($listaArquivos, Storage::url($obj->arquivo3));
+        }                
+        
+        if(isset($obj->arquivo4) and !is_null($obj->arquivo4) and strlen($obj->arquivo4) > 0){
+            array_push($listaArquivos, Storage::url($obj->arquivo4));
+        }                
+        
+        if(isset($obj->arquivo5) and !is_null($obj->arquivo5) and strlen($obj->arquivo5) > 0){
+            array_push($listaArquivos, Storage::url($obj->arquivo5));
+        }                
+
+        return $listaArquivos;
+    }
+
     public function show($id)
     {
         $obj = PlanejamentoSemanal::find($id);
+        $listaArquivos = Array();
         if (isset($obj)) {
             if ($obj->tipo_documento == 'DIGITAL') {
                 $obj->url_arquivo = Storage::url($obj->arquivo);
-            }
+            
+                $listaArquivos = $this->criarUrlArquivos($obj);
+            }            
         }
 
         if (isset($obj) && !is_null($obj) && isset($obj->data_da_revisao) && !is_null($obj->data_da_revisao)) {
             $obj->data_da_revisao = Auxiliar::converterDataTimeBR($obj->data_da_revisao);
         }
 
-        return view('planejamento_semanal.show', ['planejamento' => $obj]);
+        return view('planejamento_semanal.show', ['planejamento' => $obj, 'listaArquivos' => $listaArquivos]);
     }
 
     public function edit($id)

@@ -325,17 +325,23 @@ $_anos = ['2020', '2021', '2022', '2023'];
 <script type="text/javascript">
     $(document).ready(function($) {
         $('.summernote').summernote({
+            tabDisable: true, 
             tabsize: 2,
+            focus: true,
             height: 100,
             lang: 'pt-BR',
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana', 'Roboto'],
             toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
+                ['style', ['style']],   
+                ['fontname', ['fontname']],             
+                ['font', ['bold', 'underline', 'clear', 'strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
                 ['color', ['color']],
+                ['height', ['height']]                
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
                 ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']]
+                ['view', ['fullscreen', 'codeview', 'help']],   
             ]
         });
     });

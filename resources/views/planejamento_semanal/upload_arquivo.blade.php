@@ -175,6 +175,55 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label for="arquivo2" class="col-form-label">{{ __('Arquivo 2') }}</label>
+                                        <input id="arquivo2" type="file" class="form-control @error('arquivo2') is-invalid @enderror" name="arquivo2" value="{{ old('arquivo2', $planejamento->arquivo2 ?? '') }}" autocomplete="arquivo2" maxlength="254" >
+
+                                        @error('arquivo2')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label for="arquivo3" class="col-form-label">{{ __('Arquivo 3') }}</label>
+                                        <input id="arquivo3" type="file" class="form-control @error('arquivo3') is-invalid @enderror" name="arquivo3" value="{{ old('arquivo3', $planejamento->arquivo3 ?? '') }}" autocomplete="arquivo3" maxlength="254" >
+
+                                        @error('arquivo3')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label for="arquivo4" class="col-form-label">{{ __('Arquivo 4') }}</label>
+                                        <input id="arquivo4" type="file" class="form-control @error('arquivo4') is-invalid @enderror" name="arquivo4" value="{{ old('arquivo4', $planejamento->arquivo4 ?? '') }}" autocomplete="arquivo4" maxlength="254" >
+
+                                        @error('arquivo4')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label for="arquivo5" class="col-form-label">{{ __('Arquivo 5') }}</label>
+                                        <input id="arquivo5" type="file" class="form-control @error('arquivo5') is-invalid @enderror" name="arquivo5" value="{{ old('arquivo5', $planejamento->arquivo5 ?? '') }}" autocomplete="arquivo5" maxlength="254" >
+
+                                        @error('arquivo5')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

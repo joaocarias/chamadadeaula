@@ -104,6 +104,27 @@ if (isset(Auth::user()->regras)) {
                         </div>
                     </div>
 
+                    @if(isset($listaArquivos) and !is_null($listaArquivos) and count($listaArquivos) > 0)
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">                            
+                            <strong>Arquivo(s)</strong>
+                            <ol>
+                            <?php $i = 1; ?>
+                            @foreach($listaArquivos as $item)
+                                <li> <a href="{{ __($item) }}" target="_brank"> Arquivo {{ __($i) }} </a> </li>
+                                <?php $i++; ?>
+                            @endforeach
+                            </ol>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="row">
                         <div class="col-md-12">
                             <hr />
@@ -126,7 +147,7 @@ if (isset(Auth::user()->regras)) {
                             <div class="alert alert-info alert-dismissible fade show" role="alert">
                                 <strong>Planejamento Semanal não Revisado.</strong>
                                 @if(in_array("ADMINISTRADOR", $permissoes))
-                                <a href="{{ route('editar_revisar_planejamento_semanal', ['id' => $planejamento->id ]) }}" >Clique aqui para realizar a revisão.</a>
+                                <a href="{{ route('editar_revisar_planejamento_semanal', ['id' => $planejamento->id ]) }}">Clique aqui para realizar a revisão.</a>
                                 @endif
                             </div>
                             @endif
