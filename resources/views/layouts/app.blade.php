@@ -175,7 +175,7 @@
         </main>
 
         <div class="main-footer">
-            <p>Versão 1.0 ©2020 - Desenvolvido por João Carias de França</p>
+            <p>Versão 1.0.9 ©2020-2021 - Desenvolvido por João Carias de França</p>
         </div>
 
     </div>

@@ -48,11 +48,11 @@
                         </div>
 
                         <div class="col-md-3">
-                            CPF: <strong>{{ __($turma->ano)  }}</strong>
+                            Ano: <strong>{{ __($turma->ano)  }}</strong>
                         </div>
 
                         <div class="col-md-3">
-                            Tipo: <strong>@if(isset($turma->turno_id))
+                            Turno: <strong>@if(isset($turma->turno_id))
                                 {{ __($turma->turno->nome)  }}
                                 @else
                                 {{ __("Não Informado!")  }}
@@ -233,7 +233,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button href="#" class="btn btn-primary url-modal-submit-form"> <i class="far fa-trash-alt"></i> Associar Professor</button>
+                <button href="#" class="btn btn-primary url-modal-submit-form"> <i class="far fa-edit"></i> Associar Professor</button>
                 <button type="button" class="btn btn-dark" data-dismiss="modal"> <i class="fas fa-ban"></i> Cancelar</button>
             </div>
         </div>
@@ -265,7 +265,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button href="#" class="btn btn-primary url-modal-submit-form-aluno"> <i class="far fa-trash-alt"></i> Associar Aluno</button>
+                <button href="#" class="btn btn-primary url-modal-submit-form-aluno"> <i class="far fa-edit"></i> Associar Aluno</button>
                 <button type="button" class="btn btn-dark" data-dismiss="modal"> <i class="fas fa-ban"></i> Cancelar</button>
             </div>
         </div>
@@ -280,27 +280,32 @@
         dropdownParent: $('#ModalAssociarAluno')
     });
 
-    $('.btn-excluir').on('click', function() {
+    $('.btn-excluir').on('click', function(e) {
+        e.preventDefault();
         var id = $(this).attr('id-turma');
         $('#url-modal-excluir').attr('href', '/turmas/excluir/' + id);
         $('#ModalExcluir').modal('show');
     });
 
-    $('.btn-inserir-professor').on('click', function() {
+    $('.btn-inserir-professor').on('click', function(e) {
+        e.preventDefault();
         var id = $(this).attr('id-turma');
         $('#ModalAssociarProfessor').modal('show');
     });
 
-    $('.url-modal-submit-form').on('click', function() {
+    $('.url-modal-submit-form').on('click', function(e) {
+        e.preventDefault();
         $('.form-associa-professor').submit();
     });
 
-    $('.btn-inserir-aluno').on('click', function() {
+    $('.btn-inserir-aluno').on('click', function(e) {
+        e.preventDefault();
         var id = $(this).attr('id-turma');
         $('#ModalAssociarAluno').modal('show');
     });
 
-    $('.url-modal-submit-form-aluno').on('click', function() {
+    $('.url-modal-submit-form-aluno').on('click', function(e) {
+        e.preventDefault();
         $('.form-associa-aluno').submit();
     });
 </script>

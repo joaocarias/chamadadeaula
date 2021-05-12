@@ -48,7 +48,7 @@ $title = "Planejamento Semanal";
             <div class="card mb-3">
                 <div class="card-header">Turma: {{ __($turma->nome) }}</div>
                 <div class="card-body">
-                    @if(isset($planejamentos))
+                    @if(isset($planejamentos) and count($planejamentos) > 0)
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -59,7 +59,8 @@ $title = "Planejamento Semanal";
                                 <th scope="col">Professor</th>
                                 <th scope="col">Período/Semana</th>
                                 <th scope="col">Conteúdo/Tema</th>
-                                <td scope="col">Revisão</th>
+                                <th scope="col">Revisão</th>
+                                <th scope="col"></th>
                                 <th scope="col"></th>
                             <tr>
                         </thead>
@@ -88,12 +89,19 @@ $title = "Planejamento Semanal";
                                 <td class="text-right">
                                     <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
                                 </td>
+                                <td class="text-right">
+                                @if($item->revisado)
+                                    <a href="{{ route('copiar_planejamento_semanal', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-copy"></i> &nbsp; Copiar</a>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                     @else
-                    <p>Usuário não possui planejamentos!</p>
+                    <div class="alert alert-warning" role="alert">
+                        Nenhum registro encontrado!
+                    </div>  
                     @endif
                 </div>
             </div>

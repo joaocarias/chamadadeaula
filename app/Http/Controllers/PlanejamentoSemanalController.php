@@ -108,6 +108,30 @@ class PlanejamentoSemanalController extends Controller
         ]);
     }
 
+    public function copiar($id)
+    {
+        $turmas = Turma::orderBy('nome', 'ASC')->get();
+        $anoAtual = date("Y");
+
+        $planejamento = PlanejamentoSemanal::find($id);;
+        $planejamento->ano = $anoAtual;
+
+        $professor = Profissional::where('user_id', Auth::user()->id)
+            ->where('tipo_profissional_id', '1')
+            ->first();
+
+        $professores = Profissional::where('tipo_profissional_id', '1')->orderBy('nome', 'ASC')->get();
+
+        if (isset($professor) && !is_null($professor)) {
+            $planejamento->professor_id = $professor->id;
+        }
+
+        return view('planejamento_semanal.create', [
+            'planejamento' => $planejamento, 'turmas' => $turmas,
+            'professores' => $professores
+        ]);
+    }
+
     public function uploadarquivo()
     {
         $turmas = Turma::orderBy('nome', 'ASC')->get();
@@ -329,7 +353,7 @@ class PlanejamentoSemanalController extends Controller
         <table width="100%" style="margin-top: 15px;">
             <tr>
                 <td width="100%" style="text-align:justify">
-                    <u>HABILIDADES</u> correspondentes a todos os campos de experiências a serem trabalhados durante o período (objetivos procedimentais/específicos)
+                    <u>OBJETIVOS ESPECÍFICOS</u> correspondentes a todos os campos de experiências a serem trabalhados durante o período (objetivos procedimentais/específicos)
                 </td>
             </tr>
             <tr>
@@ -982,4 +1006,6 @@ class PlanejamentoSemanalController extends Controller
 
         return view('planejamento_semanal.index_turma', ['planejamentos' => $list, 'turma' => $turma]);
     }
+
+    
 }

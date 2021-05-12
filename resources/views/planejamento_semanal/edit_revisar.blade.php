@@ -157,7 +157,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                         <?php
 
                                         ?>
-                                        <label for="habilidades" class="col-form-label">{{ __('* Habilidades') }}</label>
+                                        <label for="habilidades" class="col-form-label">{{ __('* Objetivos Específicos') }}</label>
                                         <textarea id="habilidades" class="summernote @error('habilidades') is-invalid @enderror" name="habilidades" autocomplete="habilidades" required>{{ old('habilidades', $planejamento->habilidades ?? '') }}</textarea>
 
                                         @error('habilidades')

@@ -171,6 +171,10 @@ if (isset(Auth::user()->regras)) {
                             @endif
 
                             <a href="#" class="btn btn-danger btn-sm btn-excluir" id-planejamento="{{ $planejamento->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
+                            @if($planejamento->revisado)
+                                <a href="{{ route('copiar_planejamento_semanal', [$planejamento->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-copy"></i> &nbsp; Copiar</a>
+                            @endif
+                            <a href="{{ route('planejamentossemanais') }}" class="btn btn-secondary btn-sm btn-voltar" > <i class="fas fa-angle-double-left"></i> Voltar </a>
                         </div>
                     </div>
                 </div>

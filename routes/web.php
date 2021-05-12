@@ -89,7 +89,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/planejamentossemanais/revisar/{id}', 'PlanejamentoSemanalController@edit_revisar')->name('editar_revisar_planejamento_semanal');
   Route::put('/planejamentossemanais/update_revisar/{id}', 'PlanejamentoSemanalController@update_revisar')->name('revisar_planejamento_semanal');
   Route::get('/planejamentossemanais/turma/{id}', 'PlanejamentoSemanalController@turma')->name('planejamento_semanal_de_turma');
+  Route::get('/planejamentossemanais/copiar/{id}', 'PlanejamentoSemanalController@copiar')->name('copiar_planejamento_semanal');
   
+
   /* Relatos */
   Route::get('/relatorios', 'RelatoController@index')->name('relatorios');
   Route::get('/relatorios/turma/{id}', 'RelatoController@turma')->name('relatorios_de_turma');
