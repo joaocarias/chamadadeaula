@@ -42,7 +42,7 @@
                 <div class="card-header">Filtrar Chamada por Data</div>
                 <div class="card-body">
                     <div class="row justify-content-center">
-                        <form class="form-inline" method="GET" action="{{ route('registro_chamada', ['id' => $turmaProfessor->id]) }}">
+                        <form class="form-inline" method="GET" action="{{ route('registro_chamada', ['id' => $turmaProfessor->turma_id]) }}">
 
                             <div class="form-group mx-sm-3 mb-2">
                                 <div class="input-group mb-2">

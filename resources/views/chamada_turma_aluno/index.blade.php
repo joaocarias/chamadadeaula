@@ -68,15 +68,15 @@
                             <tr>
                         </thead>
                         <tbody>
-                            @foreach ($turmas as $item)
+                            @foreach ($turmas as $turma)
                             <tr>
-                                <td scope="row">{{ __($item->turma_id) }}</td>                                                              
-                                <td>{{ __($item->turma->nome) }}</td>  
-                                <td>{{ __($item->turma->ano) }}</td>
-                                <td>{{ __($item->turma->turno->nome) }}</td>                              
+                                <td scope="row">{{ __($turma->id) }}</td>                                                              
+                                <td>{{ __($turma->nome) }}</td>  
+                                <td>{{ __($turma->ano) }}</td>
+                                <td>{{ __($turma->turno->nome) }}</td>                              
                                 <td class="text-right">
-                                    <a href="{{ route('registro_chamada', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="fas fa-book-reader"></i> &nbsp; Chamada</a>
-                                    <a href="{{ route('imprimir_registro_chamada', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="fas fa-print"></i> &nbsp; Imprimir</a>
+                                    <a href="{{ route('registro_chamada', [$turma->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="fas fa-book-reader"></i> &nbsp; Chamada</a>
+                                    <a href="{{ route('imprimir_registro_chamada', [$turma->id]) }}" class="btn btn-dark btn-sm"><i class="fas fa-print"></i> &nbsp; Imprimir</a>
                                 </td>
                             </tr>
                             @endforeach

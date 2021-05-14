@@ -39,25 +39,31 @@ class ChamadaTurmaAlunoController extends Controller
         }
 
         if(in_array("ADMINISTRADOR", $permissoes)){
-            $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')                                    
-                                ->where('turmas.deleted_at', null)
+            $turmas = Turma::join('turma_professors', 'turmas.id', '=', 'turma_professors.turma_id')                                    
+                                ->where('turma_professors.deleted_at', null)
                                 ->when($filtro_ano, function ($query, $filtro) {
                                     return $query->where('turmas.ano', $filtro);
                                 })
+                                ->distinct()
                                 ->orderby('turmas.nome', 'ASC')
-                                ->get('turma_professors.*');
+                                ->get('turmas.*');
         }else if (isset($profissional)) {
-            $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
-                                ->where('professor_id', $profissional->id)
-                                ->where('turmas.deleted_at', null)
+            $turmas = Turma::join('turma_professors', 'turmas.id', '=', 'turma_professors.turma_id')
+                                ->where('turma_professors.professor_id', $profissional->id)
+                                ->where('turma_professors.deleted_at', null)
                                 ->when($filtro_ano, function ($query, $filtro) {
                                     return $query->where('turmas.ano', $filtro);
                                 })
+                                ->distinct()
                                 ->orderby('turmas.nome', 'ASC')
-                                ->get('turma_professors.*');
+                                ->get('turmas.*');
         }
 
-        return view('chamada_turma_aluno.index', ['turmas' => $turmas, 'filtro' => $filtro, '_anos' => Auxiliar::obterAnos()]);
+        return view('chamada_turma_aluno.index', 
+                    [
+                        'turmas' => $turmas
+                        , 'filtro' => $filtro
+                        , '_anos' => Auxiliar::obterAnos()]);
     }
 
     public function registro(Request $request, $id)
@@ -66,21 +72,28 @@ class ChamadaTurmaAlunoController extends Controller
         if (!isset($data)) {
             $data = date("d/m/Y");
         }
-        $turmaProfessor = TurmaProfessor::find($id);
-        $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')->where('turma_id', $turmaProfessor->turma_id)->where('alunos.deleted_at', null)->orderby('alunos.nome')->get();
+
+        $turmaProfessor = TurmaProfessor::where('turma_id', $id)->first();
+        $turmaAlunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')
+                                    ->where('turma_id', $turmaProfessor->turma_id)
+                                    ->where('alunos.deleted_at', null)
+                                    ->orderby('alunos.nome')->get();
 
         $chamadaTurmaAluno = ChamadaTurmaAluno::where('turma_id', $turmaProfessor->turma_id)
-            ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))
-            ->get();
+                                    ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))
+                                    ->get();
 
         $justificativaTurma = Justificativa::where('turma_id', $turmaProfessor->turma_id)
-            ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))
-            ->get();
+                                    ->where('data_da_aula', Auxiliar::converterDataParaUSA($data))
+                                    ->get();
 
         return view(
             'chamada_turma_aluno.registro',
             [
-                'turmaProfessor' => $turmaProfessor, 'turmaAlunos' => $turmaAlunos, 'data' => $data, 'chamadaTurmaAluno' => $chamadaTurmaAluno,
+                'turmaProfessor' => $turmaProfessor
+                , 'turmaAlunos' => $turmaAlunos
+                , 'data' => $data
+                , 'chamadaTurmaAluno' => $chamadaTurmaAluno,
                 'justificativaTurma' => $justificativaTurma
             ]
         );
@@ -178,7 +191,7 @@ class ChamadaTurmaAlunoController extends Controller
 
     public function imprimir($id)
     {
-        $turmaProfessor = TurmaProfessor::find($id);
+        $turmaProfessor = TurmaProfessor::where('turma_id', $id)->first();
         $turmaAluno = TurmaAluno::where('turma_id', $turmaProfessor->turma_id)->first();
         $mes = date('m');
         $ano =  date('Y');
