@@ -71,38 +71,40 @@
         <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header">Chamada de Aula para a data <strong>{{ $data }}</strong></div>
-                <div class="card-body">   
+                <div class="card-body">
+                    <div class="table-responsive">
                         <table class="table table-hover">
-                        <thead>
-                            <tr>                                                                                        
-                                <th scope="col">Justificativa</th>                               
-                                <th scope="col"></th>
-                            <tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($justificativaTurma as $item)
-                            <tr>                                            
-                                <td>{{ __($item->justificativa) }}</td>                                
-                                <td class="text-right">
-                                   <a href="#" class="btn btn-danger btn-sm btn-excluir" id-turma="{{ $turmaProfessor->id }}" id-justificativa="{{ $item->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Justificativa</th>
+                                    <th scope="col"></th>
+                                <tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($justificativaTurma as $item)
+                                <tr>
+                                    <td>{{ __($item->justificativa) }}</td>
+                                    <td class="text-right">
+                                        <a href="#" class="btn btn-danger btn-sm btn-excluir" id-turma="{{ $turmaProfessor->id }}" id-justificativa="{{ $item->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     @else
-               
+
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header">Chamada de Aula para a data <strong>{{ $data }}</strong></div>
                 <div class="card-body">
                     <div class="row justify-content-center">
-
+                    <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -139,7 +141,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-
+                    </div>
                         <!-- Botão para acionar modal -->
                         <button type="button" class="btn btn-primary btn-salvar-chamada">
                             <i class="far fa-save"></i> Salvar Chamada
@@ -158,7 +160,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                    <div class="col-md-12">
+                        <div class="col-md-12">
                             <!-- Botão para acionar modal -->
                             <a class="btn btn-danger" data-toggle="collapse" href="#collapseJustificar" role="button" aria-expanded="false" aria-controls="collapseJustificar">
                                 <i class="far fa-save"></i> Realizar Justificativa
@@ -168,18 +170,18 @@
                         <div class="collapse col-md-12" id="collapseJustificar">
                             <form method="GET" action="{{ route('justificar', ['id' => $turmaProfessor->id]) }}">
                                 <div class="form-group">
-                                  
-                                        <input type="hidden" id="data_justificativa" name="data_justificativa" value="{{ old('data', $data ?? '') }}">
-                                        <label for="justificativa" class="col-form-label text-md-right">{{ __('* Justificativa') }}</label>
-                                        <textarea id="justificativa" class="form-control @error('justificativa') is-invalid @enderror" name="justificativa" required maxlength="1000" rows="3"></textarea>
 
-                                        @error('justificativa')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <button type="submit" class="btn btn-primary mb-3"><i class="fas fa-laptop-code"></i> Salvar Justificativa</button>
+                                    <input type="hidden" id="data_justificativa" name="data_justificativa" value="{{ old('data', $data ?? '') }}">
+                                    <label for="justificativa" class="col-form-label text-md-right">{{ __('* Justificativa') }}</label>
+                                    <textarea id="justificativa" class="form-control @error('justificativa') is-invalid @enderror" name="justificativa" required maxlength="1000" rows="3"></textarea>
+
+                                    @error('justificativa')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-3"><i class="fas fa-laptop-code"></i> Salvar Justificativa</button>
                             </form>
                         </div>
                     </div>
@@ -224,25 +226,25 @@
     </div>
 
     <!-- Modal Excluir -->
-<div class="modal fade" id="ModalExcluir" tabindex="-1" role="dialog" aria-labelledby="TituloModalExcluir" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="TituloModalExcluir"><i class="fas fa-exclamation-circle"></i> Excluir!</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Deseja Excluir o Cadastro?</p>
-            </div>
-            <div class="modal-footer">
-                <a id="url-modal-excluir" href="#" class="btn btn-danger"> <i class="far fa-trash-alt"></i> Confirmar e Excluir</a>
-                <button type="button" class="btn btn-dark" data-dismiss="modal"> <i class="fas fa-ban"></i> Cancelar</button>
+    <div class="modal fade" id="ModalExcluir" tabindex="-1" role="dialog" aria-labelledby="TituloModalExcluir" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalExcluir"><i class="fas fa-exclamation-circle"></i> Excluir!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja Excluir o Cadastro?</p>
+                </div>
+                <div class="modal-footer">
+                    <a id="url-modal-excluir" href="#" class="btn btn-danger"> <i class="far fa-trash-alt"></i> Confirmar e Excluir</a>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal"> <i class="fas fa-ban"></i> Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
     @endsection
 
     @section('javascript')
@@ -258,7 +260,7 @@
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'pt-BR',
-               // endDate: '{{__(date("d/m/Y"))}}',
+                // endDate: '{{__(date("d/m/Y"))}}',
                 todayBtn: 'linked',
                 todayHighlight: true,
             });
@@ -271,9 +273,9 @@
 
                 if ($(this).hasClass("btn-p")) {
                     console.log("btn-p");
-                    if($(this).hasClass("btn-outline-success")){
+                    if ($(this).hasClass("btn-outline-success")) {
                         $(this).removeClass("btn-outline-success").addClass("btn-success");
-                    
+
                         $('.btn-f-' + id_btn).removeClass("btn-danger").addClass("btn-outline-danger");
 
                         if (presentes.indexOf(id_aluno) < 0) {
@@ -282,17 +284,17 @@
 
                         if (faltosos.indexOf(id_aluno) >= 0) {
                             faltosos.splice(faltosos.indexOf(id_aluno), 1);
-                        }         
+                        }
 
                         if (removerPresentes.indexOf(id_aluno) >= 0) {
                             removerPresentes.splice(removerPresentes.indexOf(id_aluno), 1);
-                        }           
-                    }else if($(this).hasClass("btn-success")){
+                        }
+                    } else if ($(this).hasClass("btn-success")) {
                         $(this).removeClass("btn-success").addClass("btn-outline-success");
-                    
+
                         if (presentes.indexOf(id_aluno) >= 0) {
                             presentes.splice(presentes.indexOf(id_aluno), 1);
-                        } 
+                        }
 
                         if (removerPresentes.indexOf(id_aluno) < 0) {
                             removerPresentes.push(id_aluno);
@@ -301,12 +303,12 @@
                     console.log(presentes);
                     console.log(faltosos);
                     console.log(removerPresentes);
-                    console.log(removerFaltosos);                    
+                    console.log(removerFaltosos);
                 }
 
-                if ($(this).hasClass("btn-f")) {                   
+                if ($(this).hasClass("btn-f")) {
 
-                    if($(this).hasClass("btn-outline-danger")){
+                    if ($(this).hasClass("btn-outline-danger")) {
                         $(this).removeClass("btn-outline-danger").addClass("btn-danger");
                         $('.btn-p-' + id_btn).removeClass("btn-success").addClass("btn-outline-success");
 
@@ -321,16 +323,16 @@
                         if (removerFaltosos.indexOf(id_aluno) >= 0) {
                             removerFaltosos.splice(removerFaltosos.indexOf(id_aluno), 1);
                         }
-                    }else if($(this).hasClass("btn-danger")){
+                    } else if ($(this).hasClass("btn-danger")) {
                         $(this).removeClass("btn-danger").addClass("btn-outline-danger");
-                    
+
                         if (faltosos.indexOf(id_aluno) >= 0) {
                             faltosos.splice(faltosos.indexOf(id_aluno), 1);
                         }
 
                         if (removerFaltosos.indexOf(id_aluno) < 0) {
                             removerFaltosos.push(id_aluno);
-                        }                         
+                        }
                     }
                     console.log(presentes);
                     console.log(faltosos);
@@ -412,12 +414,12 @@
         });
     </script>
 
-<script type="text/javascript">
-    $('.btn-excluir').on('click', function() {
-        var id = $(this).attr('id-justificativa');
-        var idturma = $(this).attr('id-turma');
-        $('#url-modal-excluir').attr('href', '/chamadas/excluirjustificativa/' + id + "?idturma=" + idturma );
-        $('#ModalExcluir').modal('show');
-    });
-</script>
+    <script type="text/javascript">
+        $('.btn-excluir').on('click', function() {
+            var id = $(this).attr('id-justificativa');
+            var idturma = $(this).attr('id-turma');
+            $('#url-modal-excluir').attr('href', '/chamadas/excluirjustificativa/' + id + "?idturma=" + idturma);
+            $('#ModalExcluir').modal('show');
+        });
+    </script>
     @endsection

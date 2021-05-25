@@ -56,7 +56,7 @@
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
                     @if(isset($turmas) && count($turmas) > 0)
-
+                    <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -82,6 +82,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
 
                     @else
                     <div class="alert alert-warning" role="alert">

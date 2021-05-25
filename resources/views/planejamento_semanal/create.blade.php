@@ -37,7 +37,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-3">
                                         <label for="ano" class="col-form-label">{{ __('Ano') }}</label>
 
-                                        <select id="ano" type="text" class="form-control @error('ano') is-invalid @enderror" name="ano" autocomplete="ano" >
+                                        <select id="ano" type="text" class="form-control @error('ano') is-invalid @enderror" name="ano" autocomplete="ano">
                                             <option selected disabled>-- Selecione --</option>
 
                                             @foreach($_anos as $_ano)
@@ -56,7 +56,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-3">
                                         <label for="turma_id" class="col-form-label">{{ __('Turma') }}</label>
 
-                                        <select id="turma_id" type="text" class="form-control @error('turma_id') is-invalid @enderror" name="turma_id" autocomplete="turma_id" >
+                                        <select id="turma_id" type="text" class="form-control @error('turma_id') is-invalid @enderror" name="turma_id" autocomplete="turma_id">
                                             <option selected disabled>-- Selecione --</option>
 
                                             @foreach($turmas as $turma)
@@ -155,7 +155,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="habilidades" class="col-form-label">{{ __('Objetivos Específicos') }}</label>
-                                        <textarea id="habilidades" class="summernote @error('habilidades') is-invalid @enderror" name="habilidades" >{{ old('habilidades', $planejamento->habilidades ?? '') }}</textarea>
+                                        <textarea id="habilidades" class="summernote @error('habilidades') is-invalid @enderror" name="habilidades">{{ old('habilidades', $planejamento->habilidades ?? '') }}</textarea>
 
                                         @error('habilidades')
                                         <span class="invalid-feedback" role="alert">
@@ -255,7 +255,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="metodologia" class="col-form-label">{{ __('Metodologia') }}</label>
-                                        <textarea id="metodologia" class="summernote @error('metodologia') is-invalid @enderror" name="metodologia" autocomplete="metodologia" >{{ old('metodologia', $planejamento->metodologia ?? '') }}</textarea>
+                                        <textarea id="metodologia" class="summernote @error('metodologia') is-invalid @enderror" name="metodologia" autocomplete="metodologia">{{ old('metodologia', $planejamento->metodologia ?? '') }}</textarea>
 
                                         @error('metodologia')
                                         <span class="invalid-feedback" role="alert">
@@ -270,7 +270,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="recursos_didaticos" class="col-form-label">{{ __('Recursos Didáticos') }}</label>
-                                        <textarea id="recursos_didaticos" class="summernote @error('recursos_didaticos') is-invalid @enderror" name="recursos_didaticos" autocomplete="recursos_didaticos" >{{ old('recursos_didaticos', $planejamento->recursos_didaticos ?? '') }}</textarea>
+                                        <textarea id="recursos_didaticos" class="summernote @error('recursos_didaticos') is-invalid @enderror" name="recursos_didaticos" autocomplete="recursos_didaticos">{{ old('recursos_didaticos', $planejamento->recursos_didaticos ?? '') }}</textarea>
 
                                         @error('recursos_didaticos')
                                         <span class="invalid-feedback" role="alert">
@@ -285,7 +285,7 @@ $_anos = ['2020', '2021', '2022', '2023'];
                                     <div class="col-md-12">
 
                                         <label for="como_sera_a_avaliacao" class="col-form-label">{{ __('Como Será a Avaliação') }}</label>
-                                        <textarea id="como_sera_a_avaliacao" class="summernote @error('como_sera_a_avaliacao') is-invalid @enderror" name="como_sera_a_avaliacao" >{{ old('como_sera_a_avaliacao', $planejamento->como_sera_a_avaliacao ?? '') }}</textarea>
+                                        <textarea id="como_sera_a_avaliacao" class="summernote @error('como_sera_a_avaliacao') is-invalid @enderror" name="como_sera_a_avaliacao">{{ old('como_sera_a_avaliacao', $planejamento->como_sera_a_avaliacao ?? '') }}</textarea>
 
                                         @error('como_sera_a_avaliacao')
                                         <span class="invalid-feedback" role="alert">
@@ -325,24 +325,71 @@ $_anos = ['2020', '2021', '2022', '2023'];
 <script type="text/javascript">
     $(document).ready(function($) {
         $('.summernote').summernote({
-            tabDisable: true, 
+            tabDisable: true,
             tabsize: 2,
             focus: true,
             height: 100,
             lang: 'pt-BR',
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana', 'Roboto'],
             toolbar: [
-                ['style', ['style']],   
-                ['fontname', ['fontname']],             
+                ['style', ['style']],
+                ['fontname', ['fontname']],
                 ['font', ['bold', 'underline', 'clear', 'strikethrough', 'superscript', 'subscript']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
-                ['height', ['height']]                
+                ['height', ['height']]
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
                 ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']],   
-            ]
+                ['view', ['fullscreen', 'codeview', 'help']],
+                ['mybutton', ['Maiusculo', 'Minusculo']],
+            ],
+            buttons: {
+                Maiusculo: function(context) {
+                    var layoutInfo = context.layoutInfo;
+                    var $note = layoutInfo.note;
+                    
+                    var ui = $.summernote.ui;
+                                     
+                    var button = ui.button({
+                        contents: 'M',
+                        tooltip: 'Maiúsculo',
+                        click: function(e) {        
+                          
+                            var range = $note.summernote('createRange');
+                                                      
+                            var selection = range.toString();
+                            var modded = selection.toUpperCase();
+                            
+                            context.invoke('editor.insertText', modded);
+                        }
+                    });
+
+                    return button.render(); // return button as jquery object
+                },
+                Minusculo: function(context) {
+                    var layoutInfo = context.layoutInfo;
+                    var $note = layoutInfo.note;
+                    
+                    var ui = $.summernote.ui;
+                                     
+                    var button = ui.button({
+                        contents: 'm',
+                        tooltip: 'minúsculo',
+                        click: function(e) {        
+                          
+                            var range = $note.summernote('createRange');
+                                                      
+                            var selection = range.toString();
+                            var modded = selection.toLowerCase();
+                            
+                            context.invoke('editor.insertText', modded);
+                        }
+                    });
+
+                    return button.render(); // return button as jquery object
+                }
+            }
         });
     });
 </script>

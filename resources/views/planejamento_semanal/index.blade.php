@@ -64,7 +64,7 @@ $title = "Planejamento Semanal";
                 <div class="card-body">
                     <div class="row justify-content-center">
                         <form method="GET" class="form-inline" action="{{ route('planejamentossemanais') }}">
-                        @include('layouts.filtro_ano')
+                            @include('layouts.filtro_ano')
                         </form>
                     </div>
                 </div>
@@ -78,36 +78,36 @@ $title = "Planejamento Semanal";
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
                     @if(isset($turmas) and count($turmas) > 0)
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Ano</th>
-                                <th scope="col">Turno</th>
-                                <th scope="col"></th>
-                            <tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($turmas as $item)
-                            <tr>
-                                <td scope="row">{{ __($item->id) }}</td>
-                                <td>{{ __($item->nome) }}</td>
-                                <td>{{ __($item->ano) }}</td>
-                                <td>{{ __($item->turno->nome) }}</td>
-                                <td class="text-right">
-                                    <a href="{{ route('planejamento_semanal_de_turma', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Ano</th>
+                                    <th scope="col">Turno</th>
+                                    <th scope="col"></th>
+                                <tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($turmas as $item)
+                                <tr>
+                                    <td scope="row">{{ __($item->id) }}</td>
+                                    <td>{{ __($item->nome) }}</td>
+                                    <td>{{ __($item->ano) }}</td>
+                                    <td>{{ __($item->turno->nome) }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ route('planejamento_semanal_de_turma', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     @else
                     <div class="alert alert-warning" role="alert">
                         Nenhum registro encontrado!
-                    </div>      
+                    </div>
                     @endif
                 </div>
             </div>
@@ -120,55 +120,57 @@ $title = "Planejamento Semanal";
                 <div class="card-header">{{ __('Planejamentos') }}</div>
                 <div class="card-body">
                     @if(isset($planejamentos) and count($planejamentos) > 0)
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Ano</th>
-                                <th scope="col">Trimestre</th>
-                                <th scope="col">Tema do Projeto</th>
-                                <th scope="col">Turma</th>
-                                <th scope="col">Professor</th>
-                                <th scope="col">Período/Semana</th>
-                                <th scope="col">Conteúdo/Tema</th>
-                                <td scope="col">Revisão</th>
-                                <th scope="col"></th>
-                            <tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($planejamentos as $item)
-                            <tr>
-                                <td>@if($item->tipo_documento == 'DIGITAL')
-                                    <i class="fas fa-upload" data-toggle="tooltip" data-placement="top" title="Planejamento Importado"></i>
-                                    @else
-                                    <i class="far fa-file" data-toggle="tooltip" data-placement="top" title="Planejamento Cadastrado no Sistema"> </i>
-                                    @endif
-                                </td>
-                                <td>{{ __($item->ano) }}</td>
-                                <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>
-                                <td>{{ __($item->tema_do_projeto) }}</td>
-                                <td>{{ isset($item->turma) && !is_null($item->turma) ? __($item->turma->nome) : __('')  }}</td>
-                                <td>{{ __(isset($item->professor) && !is_null($item->professor) ? $item->professor->nome : '' ) }}</td>
-                                <td>{{ __($item->periodo_semanal) }}</td>
-                                <td>{{ __($item->conteudo_tema) }}</td>
-                                <td>
-                                    @if($item->revisado)
-                                    <span class="badge badge-success">Revisado</span>
-                                    @else
-                                    <span class="badge badge-danger">Não Revisado</span>
-                                    @endif
-                                </td>
-                                <td class="text-right">
-                                    <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Ano</th>
+                                    <th scope="col">Trimestre</th>
+                                    <th scope="col">Tema do Projeto</th>
+                                    <th scope="col">Turma</th>
+                                    <th scope="col">Professor</th>
+                                    <th scope="col">Período/Semana</th>
+                                    <th scope="col">Conteúdo/Tema</th>
+                                    <td scope="col">Revisão</th>
+                                    <th scope="col"></th>
+                                <tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($planejamentos as $item)
+                                <tr>
+                                    <td>@if($item->tipo_documento == 'DIGITAL')
+                                        <i class="fas fa-upload" data-toggle="tooltip" data-placement="top" title="Planejamento Importado"></i>
+                                        @else
+                                        <i class="far fa-file" data-toggle="tooltip" data-placement="top" title="Planejamento Cadastrado no Sistema"> </i>
+                                        @endif
+                                    </td>
+                                    <td>{{ __($item->ano) }}</td>
+                                    <td>{{ __(Trimestres::descricao($item->trimestre)) }}</td>
+                                    <td>{{ __($item->tema_do_projeto) }}</td>
+                                    <td>{{ isset($item->turma) && !is_null($item->turma) ? __($item->turma->nome) : __('')  }}</td>
+                                    <td>{{ __(isset($item->professor) && !is_null($item->professor) ? $item->professor->nome : '' ) }}</td>
+                                    <td>{{ __($item->periodo_semanal) }}</td>
+                                    <td>{{ __($item->conteudo_tema) }}</td>
+                                    <td>
+                                        @if($item->revisado)
+                                        <span class="badge badge-success">Revisado</span>
+                                        @else
+                                        <span class="badge badge-danger">Não Revisado</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-right">
+                                        <a href="{{ route('exibir_planejamento_semanal', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     @else
                     <div class="alert alert-warning" role="alert">
                         Nenhum registro encontrado!
-                    </div>  
+                    </div>
                     @endif
                 </div>
             </div>

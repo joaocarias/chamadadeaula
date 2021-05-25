@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">                    
+                <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i> &nbsp; Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Turmas</li>
                 </ol>
@@ -35,46 +35,48 @@
             <div class="row">
                 <div class="col-md-12">
                     <a href="{{ route('nova_turma') }}" class="btn btn-primary">
-                    <i class="far fa-file-alt"></i> &nbsp;
+                        <i class="far fa-file-alt"></i> &nbsp;
                         Cadastrar
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
                     @if(isset($turmas))
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>                                                        
-                                <th scope="col">Nome</th>
-                                <th scope="col">Ano</th>             
-                                <th scope="col">Turno</th>                                                       
-                                <th scope="col"></th>
-                            <tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($turmas as $item)
-                            <tr>
-                                <td scope="row">{{ __($item->id) }}</td>                                                              
-                                <td>{{ __($item->nome) }}</td>
-                                <td>{{ __($item->ano) }}</td>
-                                <td>{{ __($item->turno->nome) }}</td>                                
-                                <td class="text-right">
-                                    <a href="{{ route('exibir_turma', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Ano</th>
+                                    <th scope="col">Turno</th>
+                                    <th scope="col"></th>
+                                <tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($turmas as $item)
+                                <tr>
+                                    <td scope="row">{{ __($item->id) }}</td>
+                                    <td>{{ __($item->nome) }}</td>
+                                    <td>{{ __($item->ano) }}</td>
+                                    <td>{{ __($item->turno->nome) }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ route('exibir_turma', [$item->id]) }}" class="btn btn-dark btn-sm"><i class="far fa-folder-open"></i> &nbsp; Detalhes</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     @else
-                        <p>Não existe Turma cadastrada!</p>
+                    <p>Não existe Turma cadastrada!</p>
                     @endif
                 </div>
             </div>

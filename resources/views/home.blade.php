@@ -39,11 +39,12 @@ if (isset(Auth::user()->regras)) {
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
                     @if(isset($turmas) && count($turmas) > 0)
-
+                    <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Ano</th>
                                 <th scope="col">Turma</th>
                                 <th scope="col"></th>
                             <tr>
@@ -52,6 +53,7 @@ if (isset(Auth::user()->regras)) {
                             @foreach ($turmas as $item)
                             <tr>
                                 <td scope="row">{{ __($item->turma_id) }}</td>
+                                <td>{{ __($item->ano) }}</td>
                                 <td>{{ __($item->turma->nome) }}</td>
                                 <td class="text-right">
                                     <a href="{{ route('registro_chamada', [$item->id]) }}" class="btn btn-vermelho-cmei btn-sm"><i class="fas fa-book-reader"></i> &nbsp; Chamada</a>
@@ -61,10 +63,15 @@ if (isset(Auth::user()->regras)) {
                             @endforeach
                         </tbody>
                     </table>
-
+                    </div>
                     @else
                     <p>Não foi possível encontrar turma cadastrada!</p>
                     @endif
+
+                    <hr >
+                    <p><a href="{{ route('chamadas') }}" class="btn btn-dark">
+                        <i class="fas fa-book-reader"></i> &nbsp; Ir para Chamadas<a>
+                    </p>                 
 
                 </div>
             </div>
@@ -78,6 +85,7 @@ if (isset(Auth::user()->regras)) {
             <div class="card mb-3">
                 <div class="card-header">{{ __('Últimos Alunos Cadastrados') }}</div>
                 <div class="card-body">
+                <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -98,7 +106,11 @@ if (isset(Auth::user()->regras)) {
                             @endforeach
                         </tbody>
                     </table>
-
+                </div>
+                    <hr >
+                    <p><a href="{{ route('alunos') }}" class="btn btn-dark">
+                                    <i class="fas fa-user-graduate"></i> &nbsp; Ir para Alunos<a>
+                    </p>   
                 </div>
             </div>
         </div>
@@ -111,6 +123,7 @@ if (isset(Auth::user()->regras)) {
             <div class="card mb-3">
                 <div class="card-header">{{ __('Últimos Planejamentos Cadastrados') }}</div>
                 <div class="card-body">
+                <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -156,7 +169,11 @@ if (isset(Auth::user()->regras)) {
                             @endforeach
                         </tbody>
                     </table>
-
+                </div>
+                <hr >
+                <p><a href="{{ route('planejamentossemanais') }}" 
+                        class="btn btn-dark"
+                        > <i class="far fa-calendar-alt"></i> &nbsp; Ir para Planejamentos<a></p>
                 </div>
             </div>
         </div>
@@ -169,6 +186,7 @@ if (isset(Auth::user()->regras)) {
             <div class="card mb-3">
                 <div class="card-header">{{ __('Últimos Relatórios Cadastrados') }}</div>
                 <div class="card-body">
+                <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>                               
@@ -203,7 +221,11 @@ if (isset(Auth::user()->regras)) {
                             @endforeach
                         </tbody>
                     </table>
-
+                </div>
+                    <hr >
+                    <p><a href="{{ route('relatorios') }}" class="btn btn-dark"> 
+                            <i class="far fa-file-alt"></i> &nbsp;
+                             Ir para Relatórios<a></p>
                 </div>
             </div>
         </div>

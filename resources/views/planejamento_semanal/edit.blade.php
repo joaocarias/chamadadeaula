@@ -346,7 +346,53 @@ $_anos = ['2020', '2021', '2022', '2023'];
                 ['insert', ['link', 'picture', 'video']],
                 ['view', ['fullscreen', 'codeview', 'help']],              
                 
-            ]
+            ],
+            buttons: {
+                Maiusculo: function(context) {
+                    var layoutInfo = context.layoutInfo;
+                    var $note = layoutInfo.note;
+                    
+                    var ui = $.summernote.ui;
+                                     
+                    var button = ui.button({
+                        contents: 'M',
+                        tooltip: 'Maiúsculo',
+                        click: function(e) {        
+                          
+                            var range = $note.summernote('createRange');
+                                                      
+                            var selection = range.toString();
+                            var modded = selection.toUpperCase();
+                           
+                            context.invoke('editor.insertText', modded);
+                        }
+                    });
+
+                    return button.render(); // return button as jquery object
+                },
+                Minusculo: function(context) {
+                    var layoutInfo = context.layoutInfo;
+                    var $note = layoutInfo.note;
+                    
+                    var ui = $.summernote.ui;
+                                     
+                    var button = ui.button({
+                        contents: 'm',
+                        tooltip: 'minúsculo',
+                        click: function(e) {        
+                          
+                            var range = $note.summernote('createRange');
+                                                      
+                            var selection = range.toString();
+                            var modded = selection.toLowerCase();
+                                                       
+                            context.invoke('editor.insertText', modded);
+                        }
+                    });
+
+                    return button.render(); // return button as jquery object
+                }
+            }
         });
     });
 </script>
