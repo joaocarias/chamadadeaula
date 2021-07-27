@@ -9,10 +9,21 @@ use Illuminate\Support\Facades\Auth;
 
 class AlunoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $alunos = Aluno::orderBy('nome','ASC')->get();
-        return view('aluno.index', ['alunos' => $alunos]); 
+        $filtro_nome = $request->input('nome');
+        if (!isset($filtro_nome) or is_null($filtro_nome))
+            $filtro_nome = "";
+       
+        $filtro = array(
+            'nome' => $filtro_nome
+        );
+
+        $alunos = Aluno::when($filtro_nome, function ($query, $filtro) {
+                                    return $query->where('nome', 'like', '%'. $filtro .'%');
+                                })->orderBy('nome','ASC')->get();
+
+        return view('aluno.index', ['alunos' => $alunos, 'filtro' => $filtro]); 
     }
 
     public function create()

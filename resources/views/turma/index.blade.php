@@ -46,6 +46,21 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
+                <div class="card-header">Filtrar por Ano</div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <form method="GET" class="form-inline" action="{{ route('turmas') }}">
+                            @include('layouts.filtro_ano')
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
                 <div class="card-header">{{ __('Turmas') }}</div>
                 <div class="card-body">
                     @if(isset($turmas))

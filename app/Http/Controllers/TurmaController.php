@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Aluno;
+use App\Lib\Auxiliar;
 use App\LogSistema;
 use App\Profissional;
 use App\Turma;
@@ -14,10 +15,21 @@ use Illuminate\Support\Facades\Auth;
 
 class TurmaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $turmas = Turma::OrderBy('nome', 'ASC')->get();
-        return view('turma.index', ['turmas' => $turmas]); 
+        $filtro_ano = $request->input('ano');
+        if (!isset($filtro_ano) or is_null($filtro_ano))
+            $filtro_ano = date('Y');
+       
+        $filtro = array(
+            'ano' => $filtro_ano
+        );
+
+        $turmas = Turma::when($filtro_ano, function ($query, $filtro) {
+                                return $query->where('ano', $filtro);
+                            })->OrderBy('nome', 'ASC')
+                            ->get();
+        return view('turma.index', ['turmas' => $turmas, 'filtro' => $filtro, '_anos' => Auxiliar::obterAnos()]); 
     }
 
     public function create()

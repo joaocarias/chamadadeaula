@@ -43,6 +43,36 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">Filtrar Nome</div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <form method="GET" class="form-inline" action="{{ route('alunos') }}">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <div class="input-group mb-2">
+                                
+                                <label for="nome" class="col-form-label text-md-right">{{ __('Nome do Aluno: ') }}</label>
+                                <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome', $filtro['nome'] ?? '') }}" autocomplete="nome" required maxlength="255">
+                                
+                            </div>
+                            @error('ano')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-dark mb-3">
+                            <i class="fas fa-search"></i>
+                            {{ __('Buscar Aluno') }}
+                        </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="row">
         <div class="col-md-12">
