@@ -27,6 +27,7 @@ class HomeController extends Controller
         if (isset($profissional)) {
             $turmas = TurmaProfessor::join('turmas', 'turma_professors.turma_id', '=', 'turmas.id')
                                     ->where('professor_id', $profissional->id)
+                                    ->where('turmas.deleted_at',null)
                                     ->orderby('turmas.nome', 'ASC')
                                     ->get();
         }
