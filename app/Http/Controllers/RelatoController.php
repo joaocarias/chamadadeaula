@@ -100,7 +100,10 @@ class RelatoController extends Controller
         $turma = Turma::find($id);
         $alunos = null;
         if (isset($turma)) {
-            $alunos = TurmaAluno::where('turma_id', $turma->id)->get();
+            //$alunos = TurmaAluno::where('turma_id', $turma->id)->where('deleted_at',null)->get();
+            $alunos = TurmaAluno::join('alunos', 'turma_alunos.aluno_id', '=', 'alunos.id')
+                                    ->where('turma_id', $turma->id)
+                                    ->where('alunos.deleted_at', null)->get();
             $relatorios = Relato::where('turma_id', $turma->id)->orderby('trimestre', 'asc')->get();
         }
 
