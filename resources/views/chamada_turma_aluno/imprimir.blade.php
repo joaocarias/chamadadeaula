@@ -94,7 +94,8 @@
                                             <option value="2021" @if ( old('ano', $ano ?? '' ) == '2021' ) {{ 'selected' }} @endif>{{ __('2021') }}</option>
                                             <option value="2022" @if ( old('ano', $ano ?? '' ) == '2022' ) {{ 'selected' }} @endif>{{ __('2022') }}</option>
                                             <option value="2023" @if ( old('ano', $ano ?? '' ) == '2023' ) {{ 'selected' }} @endif>{{ __('2023') }}</option>
-                                            
+                                            <option value="2024" @if ( old('ano', $ano ?? '' ) == '2024' ) {{ 'selected' }} @endif>{{ __('2023') }}</option>
+                                            <option value="2025" @if ( old('ano', $ano ?? '' ) == '2025' ) {{ 'selected' }} @endif>{{ __('2023') }}</option>
                                         </select>
 
                                     </div>
